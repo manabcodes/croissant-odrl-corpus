@@ -1,0 +1,497 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Eustia1/OmniCoT/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-real",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "real/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "validation"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "Eustia1/OmniCoT - 'default' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/scene_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "scene_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/qa_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "qa_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/subtype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "subtype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cot",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cot"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/random_objects",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "random_objects"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "real_splits/split_name"
+      },
+      "@id": "real_splits",
+      "name": "real_splits",
+      "description": "Splits for the real config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "real_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "real_splits/split_name": "real"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "real",
+      "description": "Eustia1/OmniCoT - 'real' subset\n\nAdditional information:\n- 1 skipped column: random_objects",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "real/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "real/(?:partial-)?(real)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "real_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/scene_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "scene_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/qa_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "qa_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/subtype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "subtype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "real/cot",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-real"
+            },
+            "extract": {
+              "column": "cot"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "OmniCoT",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tOmniCoT Panoramic CoT QA (ImageFolder)\n\t\n\nThis dataset contains omnidirectional/panoramic images paired with multi-type QA samples, including chain-of-thought (CoT) rationales.\n\n\t\n\t\t\n\t\n\t\n\t\tData format\n\t\n\nThis repository follows the ImageFolder format with metadata.jsonl for each split:\ntrain/\nimages/...\nmetadata.jsonl\nvalidation/\nimages/...\nmetadata.jsonl\ntest/\nimages/...\nmetadata.jsonl\nreal/\nimages/...\nmetadata.jsonl\nEach line in metadata.jsonl is one QA sample. Multiple QA\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Eustia1/OmniCoT.",
+  "alternateName": [
+    "Eustia1/OmniCoT",
+    "OmniCoT Panoramic CoT QA"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Haocong He",
+    "url": "https://huggingface.co/Eustia1"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "image-text-to-text",
+    "English",
+    "mit",
+    "10K - 100K",
+    "imagefolder",
+    "Image",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "panoramic",
+    "omnidirectional",
+    "cot",
+    "reasoning",
+    "vqa"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/Eustia1/OmniCoT",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

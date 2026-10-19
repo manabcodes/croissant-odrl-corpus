@@ -1,0 +1,1251 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/meldynamics/liepa-3/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dial",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dial/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-phon",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "phon/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-read",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "read/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-spon",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "spon/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dial_splits/split_name"
+      },
+      "@id": "dial_splits",
+      "name": "dial_splits",
+      "description": "Splits for the dial config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dial_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dial_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dial",
+      "description": "meldynamics/liepa-3 - 'dial' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dial/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dial/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dial_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 44100
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/age_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "age_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/lang_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "lang_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/region",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "region"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/county",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "county"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/file_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "file_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/file_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/segment_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "segment_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/start_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "start_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/end_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "end_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dial/duration_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dial"
+            },
+            "extract": {
+              "column": "duration_ms"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "phon_splits/split_name"
+      },
+      "@id": "phon_splits",
+      "name": "phon_splits",
+      "description": "Splits for the phon config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "phon_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "phon_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "phon",
+      "description": "meldynamics/liepa-3 - 'phon' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "phon/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "phon/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "phon_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 44100
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/phono",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "phono"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/age_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "age_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/lang_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "lang_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/region",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "region"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/county",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "county"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/file_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "file_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/file_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/segment_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "segment_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/start_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "start_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/end_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "end_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "phon/duration_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-phon"
+            },
+            "extract": {
+              "column": "duration_ms"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "read_splits/split_name"
+      },
+      "@id": "read_splits",
+      "name": "read_splits",
+      "description": "Splits for the read config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "read_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "read_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "read",
+      "description": "meldynamics/liepa-3 - 'read' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "read/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "read/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "read_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 44100
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/age_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "age_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/lang_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "lang_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/region",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "region"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/county",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "county"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/file_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "file_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/file_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/segment_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "segment_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/start_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "start_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/end_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "end_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "read/duration_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-read"
+            },
+            "extract": {
+              "column": "duration_ms"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "spon_splits/split_name"
+      },
+      "@id": "spon_splits",
+      "name": "spon_splits",
+      "description": "Splits for the spon config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spon_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "spon_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "spon",
+      "description": "meldynamics/liepa-3 - 'spon' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spon/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "spon/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "spon_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 44100
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/phono",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "phono"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/age_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "age_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/lang_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "lang_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/region",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "region"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/county",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "county"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/file_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "file_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/file_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/segment_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "segment_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/start_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "start_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/end_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "end_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spon/duration_ms",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spon"
+            },
+            "extract": {
+              "column": "duration_ms"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "liepa-3",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tLIEPA-3 \u2014 Lithuanian Speech Corpus\n\t\n\nDidysis lietuvi\u0173 kalbos garsynas (LIEPA-3)\n\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nLIEPA-3 is a large, open corpus of Lithuanian speech (~10,000 hours,\n~7.5 million audio files) built for automatic speech recognition (ASR),\ntext-to-speech (TTS) and linguistic research. It spans read, spontaneous,\nphonetically-annotated and dialectal speech recorded under a wide range of\nconditions (studio, dictaphone, radio, TV, telephone, audiobooks).\nOfficial\u2026 See the full description on the dataset page: https://huggingface.co/datasets/meldynamics/liepa-3.",
+  "alternateName": [
+    "meldynamics/liepa-3",
+    "LIEPA-3 Lithuanian Speech Corpus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "MEL DYNAMICS, MB",
+    "url": "https://huggingface.co/meldynamics"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "text-to-speech",
+    "expert-generated",
+    "found",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "Lithuanian",
+    "cc-by-4.0",
+    "1M - 10M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "audio",
+    "speech",
+    "lithuanian",
+    "lt",
+    "baltic-languages",
+    "speech-recognition",
+    "asr",
+    "text-to-speech",
+    "tts",
+    "liepa",
+    "liepa-3"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/meldynamics/liepa-3",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

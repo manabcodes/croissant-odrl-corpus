@@ -1,0 +1,634 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/EuniAI/TerminalWorld/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-full",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "full/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sample",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sample/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-verified",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "verified/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "full_splits/split_name"
+      },
+      "@id": "full_splits",
+      "name": "full_splits",
+      "description": "Splits for the full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "full_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "full",
+      "description": "EuniAI/TerminalWorld - 'full' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "full/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/artifact_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "artifact_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/requires_docker",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "requires_docker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/terminal_domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "terminal_domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/source_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "source_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/pii_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "pii_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sample_splits/split_name"
+      },
+      "@id": "sample_splits",
+      "name": "sample_splits",
+      "description": "Splits for the sample config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sample_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sample",
+      "description": "EuniAI/TerminalWorld - 'sample' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sample/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sample_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/artifact_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "artifact_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/requires_docker",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "requires_docker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/terminal_domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "terminal_domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/source_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "source_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/pii_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "pii_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "verified_splits/split_name"
+      },
+      "@id": "verified_splits",
+      "name": "verified_splits",
+      "description": "Splits for the verified config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verified_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "verified_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "verified",
+      "description": "EuniAI/TerminalWorld - 'verified' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verified/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "verified/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "verified_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/artifact_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "artifact_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/requires_docker",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "requires_docker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/terminal_domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "terminal_domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/source_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "source_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/pii_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "pii_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verified/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verified"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TerminalWorld",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTerminalWorld\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nTerminalWorld is a benchmark dataset for evaluating AI agents on real-world terminal and command-line tasks. It contains 1,530 terminal-based tasks reverse-engineered from publicly available terminal recordings, covering domains such as data processing, system administration, networking, security, version control, containers and orchestration, debugging and testing, environment setup, and scientific computing.\nEach task includes a\u2026 See the full description on the dataset page: https://huggingface.co/datasets/EuniAI/TerminalWorld.",
+  "alternateName": [
+    "EuniAI/TerminalWorld",
+    "TerminalWorld"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "EuniAI",
+    "url": "https://huggingface.co/EuniAI"
+  },
+  "keywords": [
+    "text-generation",
+    "reinforcement-learning",
+    "question-answering",
+    "English",
+    "cc-by-4.0",
+    "1K - 10K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2605.22535",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "terminal-agents",
+    "coding-agents",
+    "cli",
+    "benchmark",
+    "evaluation",
+    "agent-evaluation",
+    "arxiv:2605.22535"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/EuniAI/TerminalWorld",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

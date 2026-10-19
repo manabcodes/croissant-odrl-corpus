@@ -1,0 +1,583 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/osunlp/Mind2Web/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "osunlp/Mind2Web - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/website",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "website"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/subdomain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "subdomain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/annotation_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "annotation_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/confirmed_task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "confirmed_task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/action_reprs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "action_reprs"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/actions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/action_uid",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "actions"
+                },
+                "transform": {
+                  "jsonPath": "action_uid"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/cleaned_html",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "actions"
+                },
+                "transform": {
+                  "jsonPath": "cleaned_html"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/neg_candidates",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/neg_candidates/attributes",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "neg_candidates"
+                      },
+                      {
+                        "jsonPath": "attributes"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/neg_candidates/backend_node_id",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "neg_candidates"
+                      },
+                      {
+                        "jsonPath": "backend_node_id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/neg_candidates/tag",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "neg_candidates"
+                      },
+                      {
+                        "jsonPath": "tag"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/operation",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/operation/op",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "operation"
+                      },
+                      {
+                        "jsonPath": "op"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/operation/original_op",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "operation"
+                      },
+                      {
+                        "jsonPath": "original_op"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/operation/value",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "operation"
+                      },
+                      {
+                        "jsonPath": "value"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/pos_candidates",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/pos_candidates/attributes_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "pos_candidates"
+                      },
+                      {
+                        "jsonPath": "attributes"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/pos_candidates/backend_node_id_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "pos_candidates"
+                      },
+                      {
+                        "jsonPath": "backend_node_id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/pos_candidates/is_original_target",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "pos_candidates"
+                      },
+                      {
+                        "jsonPath": "is_original_target"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/pos_candidates/is_top_level_target",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "pos_candidates"
+                      },
+                      {
+                        "jsonPath": "is_top_level_target"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/actions/pos_candidates/tag_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "actions"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "pos_candidates"
+                      },
+                      {
+                        "jsonPath": "tag"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/actions/raw_html",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "actions"
+                },
+                "transform": {
+                  "jsonPath": "raw_html"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Mind2Web",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Dataset Name\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nMind2Web is a dataset for developing and evaluating generalist agents for the web that can follow language instructions to complete complex tasks on any website. Existing datasets for web agents either use simulated websites or only cover a limited set of websites and tasks, thus not suitable for generalist web agents. With over 2,000 open-ended tasks collected from 137 websites spanning 31 domains and crowdsourced action\u2026 See the full description on the dataset page: https://huggingface.co/datasets/osunlp/Mind2Web.",
+  "alternateName": [
+    "osunlp/Mind2Web"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OSU NLP Group",
+    "url": "https://huggingface.co/osunlp"
+  },
+  "keywords": [
+    "English",
+    "cc-by-4.0",
+    "< 1K",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2306.06070",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "Web Agent"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://osu-nlp-group.github.io/Mind2Web/",
+  "url": "https://huggingface.co/datasets/osunlp/Mind2Web",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

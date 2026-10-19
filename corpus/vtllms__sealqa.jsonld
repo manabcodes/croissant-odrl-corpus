@@ -1,0 +1,963 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/vtllms/sealqa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-longseal",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "longseal/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-seal_0",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "seal_0/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-seal_hard",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "seal_hard/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "longseal_splits/split_name"
+      },
+      "@id": "longseal_splits",
+      "name": "longseal_splits",
+      "description": "Splits for the longseal config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "longseal_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "longseal_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "longseal",
+      "description": "vtllms/sealqa - 'longseal' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "longseal/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "longseal_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/urls",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "urls"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/freshness",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "freshness"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/question_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "question_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/effective_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "effective_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/search_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "search_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/topic",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "topic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/canary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-longseal"
+            },
+            "extract": {
+              "column": "canary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/golds",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/golds/date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "golds"
+                },
+                "transform": {
+                  "jsonPath": "date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/golds/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "golds"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/golds/title",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "golds"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/golds/url",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "golds"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/12_docs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/12_docs/date_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "12_docs"
+                },
+                "transform": {
+                  "jsonPath": "date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/12_docs/text_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "12_docs"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/12_docs/title_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "12_docs"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/12_docs/url_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "12_docs"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/20_docs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/20_docs/date_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "20_docs"
+                },
+                "transform": {
+                  "jsonPath": "date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/20_docs/text_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "20_docs"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/20_docs/title_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "20_docs"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/20_docs/url_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "20_docs"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "longseal/30_docs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/30_docs/date_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "30_docs"
+                },
+                "transform": {
+                  "jsonPath": "date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/30_docs/text_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "30_docs"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/30_docs/title_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "30_docs"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "longseal/30_docs/url_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-longseal"
+                },
+                "extract": {
+                  "column": "30_docs"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "seal_0_splits/split_name"
+      },
+      "@id": "seal_0_splits",
+      "name": "seal_0_splits",
+      "description": "Splits for the seal_0 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "seal_0_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "seal_0",
+      "description": "vtllms/sealqa - 'seal_0' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "seal_0/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "seal_0_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/urls",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "urls"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/freshness",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "freshness"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/question_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "question_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/effective_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "effective_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/search_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "search_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/topic",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "topic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_0/canary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_0"
+            },
+            "extract": {
+              "column": "canary"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "seal_hard_splits/split_name"
+      },
+      "@id": "seal_hard_splits",
+      "name": "seal_hard_splits",
+      "description": "Splits for the seal_hard config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "seal_hard_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "seal_hard",
+      "description": "vtllms/sealqa - 'seal_hard' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "seal_hard/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "seal_hard_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/urls",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "urls"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/freshness",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "freshness"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/question_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "question_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/effective_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "effective_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/search_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "search_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/topic",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "topic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seal_hard/canary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seal_hard"
+            },
+            "extract": {
+              "column": "canary"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "sealqa",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tSealQA\n\t\n\nSealQA is a new challenge benchmark for evaluating SEarch- Augmented Language models on fact-seeking questions where web search yields conflicting, noisy, or unhelpful results.\nNext update: Aug 16 2026\nYou can find older versions at this link\n\n\t\n\t\t\n\t\n\t\n\t\tLoad dataset\n\t\n\nfrom datasets import load_dataset\n\nseal_0 = load_dataset(\"vtllms/sealqa\", name=\"seal_0\", split=\"test\")\nseal_hard = load_dataset(\"vtllms/sealqa\", name=\"seal_hard\", split=\"test\")\nlongseal =\u2026 See the full description on the dataset page: https://huggingface.co/datasets/vtllms/sealqa.",
+  "alternateName": [
+    "vtllms/sealqa",
+    "SEALQA"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "VT LLMs",
+    "url": "https://huggingface.co/vtllms"
+  },
+  "keywords": [
+    "question-answering",
+    "apache-2.0",
+    "< 1K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2506.01062",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/vtllms/sealqa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

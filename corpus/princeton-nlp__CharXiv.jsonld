@@ -1,0 +1,463 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/princeton-nlp/CharXiv/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "validation"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "princeton-nlp/CharXiv - 'default' subset\n\nAdditional information:\n- 2 splits: validation, test\n- 6 skipped columns: descriptive_q1, descriptive_q2, descriptive_q3, descriptive_q4, reasoning_q_source, reasoning_a_type",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image",
+          "name": "default/image",
+          "description": "Image column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/category",
+          "name": "default/category",
+          "description": "Column 'category' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/year",
+          "name": "default/year",
+          "description": "Column 'year' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/original_figure_path",
+          "name": "default/original_figure_path",
+          "description": "Column 'original_figure_path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "original_figure_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/original_id",
+          "name": "default/original_id",
+          "description": "Column 'original_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "original_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/figure_path",
+          "name": "default/figure_path",
+          "description": "Column 'figure_path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "figure_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/num_subplots",
+          "name": "default/num_subplots",
+          "description": "Column 'num_subplots' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "num_subplots"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/subplot_row",
+          "name": "default/subplot_row",
+          "description": "Column 'subplot_row' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "subplot_row"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/subplot_col",
+          "name": "default/subplot_col",
+          "description": "Column 'subplot_col' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "subplot_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/subplot_loc",
+          "name": "default/subplot_loc",
+          "description": "Column 'subplot_loc' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "subplot_loc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/descriptive_a1",
+          "name": "default/descriptive_a1",
+          "description": "Column 'descriptive_a1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "descriptive_a1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/descriptive_a2",
+          "name": "default/descriptive_a2",
+          "description": "Column 'descriptive_a2' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "descriptive_a2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/descriptive_a3",
+          "name": "default/descriptive_a3",
+          "description": "Column 'descriptive_a3' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "descriptive_a3"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/descriptive_a4",
+          "name": "default/descriptive_a4",
+          "description": "Column 'descriptive_a4' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "descriptive_a4"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/reasoning_q",
+          "name": "default/reasoning_q",
+          "description": "Column 'reasoning_q' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "reasoning_q"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/reasoning_a",
+          "name": "default/reasoning_a",
+          "description": "Column 'reasoning_a' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "reasoning_a"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "CharXiv",
+  "description": "\n\t\n\t\t\n\t\tCharXiv: Charting Gaps in Realistic Chart Understanding in Multimodal LLMs\n\t\n\nNeurIPS 2024\n\ud83c\udfe0Home (\ud83d\udea7Still in construction) | \ud83e\udd17Data | \ud83e\udd47Leaderboard | \ud83d\udda5\ufe0fCode | \ud83d\udcc4Paper\nThis repo contains the full dataset for our paper CharXiv: Charting Gaps in Realistic Chart Understanding in Multimodal LLMs, which is a diverse and challenging chart understanding benchmark fully curated by human experts. It includes 2,323 high-resolution charts manually sourced from arXiv preprints. Each chart is\u2026 See the full description on the dataset page: https://huggingface.co/datasets/princeton-nlp/CharXiv.",
+  "alternateName": [
+    "princeton-nlp/CharXiv"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Princeton NLP group",
+    "url": "https://huggingface.co/princeton-nlp"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "document-question-answering",
+    "question-answering",
+    "English",
+    "cc-by-sa-4.0",
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2406.18521",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "chart-understanding",
+    "chart-reasoning",
+    "scientific-figure",
+    "multimodal-large-language-models",
+    "chart",
+    "chart-question-answering",
+    "vision-language"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/princeton-nlp/CharXiv",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

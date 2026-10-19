@@ -1,0 +1,424 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HuggingFaceM4/FairFace/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-0.25",
+      "name": "parquet-files-for-config-0.25",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "0.25/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-1.25",
+      "name": "parquet-files-for-config-1.25",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "1.25/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "0.25_splits/split_name"
+      },
+      "@id": "0.25_splits",
+      "name": "0.25_splits",
+      "description": "Splits for the 0.25 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "0.25_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "0.25_splits/split_name": "train"
+        },
+        {
+          "0.25_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "0.25",
+      "name": "0.25",
+      "description": "HuggingFaceM4/FairFace - '0.25' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/split",
+          "name": "0.25/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "0\\.25/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "0.25_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/image",
+          "name": "0.25/image",
+          "description": "Image column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/age",
+          "name": "0.25/age",
+          "description": "ClassLabel column 'age' from the Hugging Face parquet file.\nLabels:\n0-2 (0), 3-9 (1), 10-19 (2), 20-29 (3), 30-39 (4), 40-49 (5), 50-59 (6), 60-69 (7), more than 70 (8)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "column": "age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/gender",
+          "name": "0.25/gender",
+          "description": "ClassLabel column 'gender' from the Hugging Face parquet file.\nLabels:\nMale (0), Female (1)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/race",
+          "name": "0.25/race",
+          "description": "ClassLabel column 'race' from the Hugging Face parquet file.\nLabels:\nEast Asian (0), Indian (1), Black (2), White (3), Middle Eastern (4), Latino_Hispanic (5), Southeast Asian (6)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "column": "race"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "0.25/service_test",
+          "name": "0.25/service_test",
+          "description": "Column 'service_test' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-0.25"
+            },
+            "extract": {
+              "column": "service_test"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "1.25_splits/split_name"
+      },
+      "@id": "1.25_splits",
+      "name": "1.25_splits",
+      "description": "Splits for the 1.25 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "1.25_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "1.25_splits/split_name": "train"
+        },
+        {
+          "1.25_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "1.25",
+      "name": "1.25",
+      "description": "HuggingFaceM4/FairFace - '1.25' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/split",
+          "name": "1.25/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "1\\.25/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "1.25_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/image",
+          "name": "1.25/image",
+          "description": "Image column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/age",
+          "name": "1.25/age",
+          "description": "ClassLabel column 'age' from the Hugging Face parquet file.\nLabels:\n0-2 (0), 3-9 (1), 10-19 (2), 20-29 (3), 30-39 (4), 40-49 (5), 50-59 (6), 60-69 (7), more than 70 (8)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "column": "age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/gender",
+          "name": "1.25/gender",
+          "description": "ClassLabel column 'gender' from the Hugging Face parquet file.\nLabels:\nMale (0), Female (1)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/race",
+          "name": "1.25/race",
+          "description": "ClassLabel column 'race' from the Hugging Face parquet file.\nLabels:\nEast Asian (0), Indian (1), Black (2), White (3), Middle Eastern (4), Latino_Hispanic (5), Southeast Asian (6)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "column": "race"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1.25/service_test",
+          "name": "1.25/service_test",
+          "description": "Column 'service_test' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1.25"
+            },
+            "extract": {
+              "column": "service_test"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "FairFace",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for FairFace\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nFairFace is a face image dataset which is race balanced. It contains 108,501 images from 7 different race groups: White, Black, Indian, East Asian, Southeast Asian, Middle Eastern, and Latino.\nImages were collected from the YFCC-100M Flickr dataset and labeled with race, gender, and age groups.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\n[More Information Needed]\n\n\t\n\t\t\n\t\tLanguages\n\t\n\n[More Information Needed]\n\n\t\n\t\t\n\t\tDataset\u2026 See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceM4/FairFace.",
+  "alternateName": [
+    "HuggingFaceM4/FairFace"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "HuggingFaceM4",
+    "url": "https://huggingface.co/HuggingFaceM4"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Image",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://github.com/joojs/fairface",
+  "url": "https://huggingface.co/datasets/HuggingFaceM4/FairFace",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

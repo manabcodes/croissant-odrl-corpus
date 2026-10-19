@@ -1,0 +1,718 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/TLAIM/TAIX-Ray/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-original",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "original/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        },
+        {
+          "default_splits/split_name": "val"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "TLAIM/TAIX-Ray - 'default' subset\n\nAdditional information:\n- 3 splits: train, test, val",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test|val)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/UID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "UID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Fold",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Fold"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PatientID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PatientID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PhysicianID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PhysicianID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/StudyDate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "StudyDate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Age",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/HeartSize",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "HeartSize"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PulmonaryCongestion",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PulmonaryCongestion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PleuralEffusion_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PleuralEffusion_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PleuralEffusion_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PleuralEffusion_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PulmonaryOpacities_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PulmonaryOpacities_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/PulmonaryOpacities_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "PulmonaryOpacities_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Atelectasis_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Atelectasis_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Atelectasis_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Atelectasis_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/Image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "Image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "original_splits/split_name"
+      },
+      "@id": "original_splits",
+      "name": "original_splits",
+      "description": "Splits for the original config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "original_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "original_splits/split_name": "train"
+        },
+        {
+          "original_splits/split_name": "test"
+        },
+        {
+          "original_splits/split_name": "val"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "original",
+      "description": "TLAIM/TAIX-Ray - 'original' subset\n\nAdditional information:\n- 3 splits: train, test, val",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "original/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "original/(?:partial-)?(train|test|val)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "original_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/UID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "UID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Fold",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Fold"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PatientID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PatientID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PhysicianID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PhysicianID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/StudyDate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "StudyDate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Age",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/HeartSize",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "HeartSize"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PulmonaryCongestion",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PulmonaryCongestion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PleuralEffusion_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PleuralEffusion_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PleuralEffusion_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PleuralEffusion_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PulmonaryOpacities_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PulmonaryOpacities_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/PulmonaryOpacities_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "PulmonaryOpacities_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Atelectasis_Right",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Atelectasis_Right"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Atelectasis_Left",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Atelectasis_Left"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original/Image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original"
+            },
+            "extract": {
+              "column": "Image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TAIX-Ray",
+  "identifier": "10.57967/hf/7823",
+  "description": "\n\t\n\t\t\n\t\tTAIX-Ray Dataset\n\t\n\nTAIX-Ray is a comprehensive dataset of approximately 200k bedside chest radiographs from around 50k intensive care patients at University Hospital Aachen, Germany, collected between 2010 and 2024.\nTrained radiologists provided structured reports at the time of acquisition, assessing key findings such as cardiomegaly, pulmonary congestion, pleural effusion, pulmonary opacities, and atelectasis on an ordinal scale.\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tCode & Details\n\t\n\nThe code for data\u2026 See the full description on the dataset page: https://huggingface.co/datasets/TLAIM/TAIX-Ray.",
+  "alternateName": [
+    "TLAIM/TAIX-Ray"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Truhn Lab for Artificial Intelligence in Medicine",
+    "url": "https://huggingface.co/TLAIM"
+  },
+  "keywords": [
+    "image-classification",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "doi:10.57967/hf/7823",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "x-ray",
+    "medical",
+    "chest"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/TLAIM/TAIX-Ray",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

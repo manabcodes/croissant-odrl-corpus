@@ -1,0 +1,728 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/qiaojin/PubMedQA/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pqa_artificial",
+      "name": "parquet-files-for-config-pqa_artificial",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pqa_artificial/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pqa_labeled",
+      "name": "parquet-files-for-config-pqa_labeled",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pqa_labeled/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pqa_unlabeled",
+      "name": "parquet-files-for-config-pqa_unlabeled",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pqa_unlabeled/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pqa_artificial_splits/split_name"
+      },
+      "@id": "pqa_artificial_splits",
+      "name": "pqa_artificial_splits",
+      "description": "Splits for the pqa_artificial config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pqa_artificial_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pqa_artificial",
+      "name": "pqa_artificial",
+      "description": "qiaojin/PubMedQA - 'pqa_artificial' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/split",
+          "name": "pqa_artificial/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_artificial"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pqa_artificial/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pqa_artificial_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/pubid",
+          "name": "pqa_artificial/pubid",
+          "description": "Column 'pubid' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_artificial"
+            },
+            "extract": {
+              "column": "pubid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/question",
+          "name": "pqa_artificial/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_artificial"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/context",
+          "name": "pqa_artificial/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_artificial/context/contexts",
+              "name": "pqa_artificial/context/contexts",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_artificial"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "contexts"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_artificial/context/labels",
+              "name": "pqa_artificial/context/labels",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_artificial"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "labels"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_artificial/context/meshes",
+              "name": "pqa_artificial/context/meshes",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_artificial"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "meshes"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/long_answer",
+          "name": "pqa_artificial/long_answer",
+          "description": "Column 'long_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_artificial"
+            },
+            "extract": {
+              "column": "long_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_artificial/final_decision",
+          "name": "pqa_artificial/final_decision",
+          "description": "Column 'final_decision' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_artificial"
+            },
+            "extract": {
+              "column": "final_decision"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pqa_labeled_splits/split_name"
+      },
+      "@id": "pqa_labeled_splits",
+      "name": "pqa_labeled_splits",
+      "description": "Splits for the pqa_labeled config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pqa_labeled_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pqa_labeled",
+      "name": "pqa_labeled",
+      "description": "qiaojin/PubMedQA - 'pqa_labeled' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/split",
+          "name": "pqa_labeled/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_labeled"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pqa_labeled/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pqa_labeled_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/pubid",
+          "name": "pqa_labeled/pubid",
+          "description": "Column 'pubid' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_labeled"
+            },
+            "extract": {
+              "column": "pubid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/question",
+          "name": "pqa_labeled/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_labeled"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/context",
+          "name": "pqa_labeled/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_labeled/context/contexts",
+              "name": "pqa_labeled/context/contexts",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_labeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "contexts"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_labeled/context/labels",
+              "name": "pqa_labeled/context/labels",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_labeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "labels"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_labeled/context/meshes",
+              "name": "pqa_labeled/context/meshes",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_labeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "meshes"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_labeled/context/reasoning_required_pred",
+              "name": "pqa_labeled/context/reasoning_required_pred",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_labeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "reasoning_required_pred"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_labeled/context/reasoning_free_pred",
+              "name": "pqa_labeled/context/reasoning_free_pred",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_labeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "reasoning_free_pred"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/long_answer",
+          "name": "pqa_labeled/long_answer",
+          "description": "Column 'long_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_labeled"
+            },
+            "extract": {
+              "column": "long_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_labeled/final_decision",
+          "name": "pqa_labeled/final_decision",
+          "description": "Column 'final_decision' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_labeled"
+            },
+            "extract": {
+              "column": "final_decision"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pqa_unlabeled_splits/split_name"
+      },
+      "@id": "pqa_unlabeled_splits",
+      "name": "pqa_unlabeled_splits",
+      "description": "Splits for the pqa_unlabeled config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pqa_unlabeled_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pqa_unlabeled",
+      "name": "pqa_unlabeled",
+      "description": "qiaojin/PubMedQA - 'pqa_unlabeled' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled/split",
+          "name": "pqa_unlabeled/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_unlabeled"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pqa_unlabeled/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pqa_unlabeled_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled/pubid",
+          "name": "pqa_unlabeled/pubid",
+          "description": "Column 'pubid' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_unlabeled"
+            },
+            "extract": {
+              "column": "pubid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled/question",
+          "name": "pqa_unlabeled/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_unlabeled"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled/context",
+          "name": "pqa_unlabeled/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_unlabeled/context/contexts",
+              "name": "pqa_unlabeled/context/contexts",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_unlabeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "contexts"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_unlabeled/context/labels",
+              "name": "pqa_unlabeled/context/labels",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_unlabeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "labels"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pqa_unlabeled/context/meshes",
+              "name": "pqa_unlabeled/context/meshes",
+              "description": "Column 'context' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pqa_unlabeled"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "meshes"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pqa_unlabeled/long_answer",
+          "name": "pqa_unlabeled/long_answer",
+          "description": "Column 'long_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pqa_unlabeled"
+            },
+            "extract": {
+              "column": "long_answer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "PubMedQA",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for [Dataset Name]\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe task of PubMedQA is to answer research questions with yes/no/maybe (e.g.: Do preoperative statins reduce atrial fibrillation after coronary artery bypass grafting?) using the corresponding abstracts.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\nThe official leaderboard is available at: https://pubmedqa.github.io/.\n500 questions in the pqa_labeled are used as the test set. They can be found at\u2026 See the full description on the dataset page: https://huggingface.co/datasets/qiaojin/PubMedQA.",
+  "alternateName": [
+    "qiaojin/PubMedQA",
+    "PubMedQA"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Qiao Jin",
+    "url": "https://huggingface.co/qiaojin"
+  },
+  "keywords": [
+    "question-answering",
+    "multiple-choice-qa",
+    "expert-generated",
+    "machine-generated",
+    "expert-generated",
+    "monolingual",
+    "original",
+    "English",
+    "mit",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:1909.06146",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "sameAs": "https://pubmedqa.github.io/",
+  "url": "https://huggingface.co/datasets/qiaojin/PubMedQA",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

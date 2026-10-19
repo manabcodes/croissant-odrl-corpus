@@ -1,0 +1,1376 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tmquan/anle-toaan-gov-vn/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-documents",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "documents/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-embed",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "embed/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-reduce",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "reduce/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sentences",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sentences/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "documents_splits/split_name"
+      },
+      "@id": "documents_splits",
+      "name": "documents_splits",
+      "description": "Splits for the documents config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "documents_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "documents_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "documents",
+      "description": "tmquan/anle-toaan-gov-vn - 'documents' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "documents/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "documents/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "documents_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/doc_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "doc_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/web_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "web_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/pdf_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "pdf_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/official_document_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "official_document_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/official_document_id_normalized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "official_document_id_normalized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/number",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/id_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "id_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/instance_level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "instance_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/court",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "court"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/court_level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "court_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/issued_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "issued_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/date_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "date_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/precedent_number",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "precedent_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/is_precedent",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "is_precedent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/citations_law",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/article",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "article"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/chapter",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "chapter"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/clause",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "clause"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/kind",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "kind"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/law_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "law_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/law_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "law_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/point",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "point"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/ref",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "ref"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/section",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "section"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/sentence_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "sentence_id"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/span",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "span"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_law/year",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_law"
+                },
+                "transform": {
+                  "jsonPath": "year"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/citations_case",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/code",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "code"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/domain",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "domain"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/id_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/level",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "level"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/number",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "number"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/sentence_id_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "sentence_id"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/span_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "span"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "documents/citations_case/year_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-documents"
+                },
+                "extract": {
+                  "column": "citations_case"
+                },
+                "transform": {
+                  "jsonPath": "year"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/citations_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "citations_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/num_law_citations",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "num_law_citations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/num_case_citations",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "num_case_citations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/markdown",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "markdown"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/markdown_chars",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "markdown_chars"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/num_pages",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "num_pages"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/confidence",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "confidence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/flags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "flags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "embed_splits/split_name"
+      },
+      "@id": "embed_splits",
+      "name": "embed_splits",
+      "description": "Splits for the embed config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "embed_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "embed_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "embed",
+      "description": "tmquan/anle-toaan-gov-vn - 'embed' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "embed/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embed"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "embed/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "embed_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embed/doc_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embed"
+            },
+            "extract": {
+              "column": "doc_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embed/embedding",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embed"
+            },
+            "extract": {
+              "column": "embedding"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embed/embedding_dim",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embed"
+            },
+            "extract": {
+              "column": "embedding_dim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embed/embedding_model_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embed"
+            },
+            "extract": {
+              "column": "embedding_model_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "reduce_splits/split_name"
+      },
+      "@id": "reduce_splits",
+      "name": "reduce_splits",
+      "description": "Splits for the reduce config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reduce_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "reduce_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "reduce",
+      "description": "tmquan/anle-toaan-gov-vn - 'reduce' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "reduce/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "reduce_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/doc_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "doc_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/pca_x",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "pca_x"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/pca_y",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "pca_y"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/tsne_x",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "tsne_x"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/tsne_y",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "tsne_y"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/umap_x",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "umap_x"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reduce/umap_y",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reduce"
+            },
+            "extract": {
+              "column": "umap_y"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sentences_splits/split_name"
+      },
+      "@id": "sentences_splits",
+      "name": "sentences_splits",
+      "description": "Splits for the sentences config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sentences_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sentences_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sentences",
+      "description": "tmquan/anle-toaan-gov-vn - 'sentences' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sentences/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sentences_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/sentence_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "sentence_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/doc_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "doc_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/sent_idx",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "sent_idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/char_start",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "char_start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/char_end",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "char_end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/instance_level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "instance_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sentences/precedent_number",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sentences"
+            },
+            "extract": {
+              "column": "precedent_number"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "anle-toaan-gov-vn",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tVietnamese \u00c1n l\u1ec7 Corpus \u2014 anle.toaan.gov.vn\n\t\n\n\n\ud83c\uddfb\ud83c\uddf3 T\u00f3m t\u1eaft. B\u1ed9 d\u1eef li\u1ec7u \u0111a c\u1ea5p c\u1ee7a c\u00e1c b\u1ea3n \u00e1n + \u00e1n l\u1ec7\nVi\u1ec7t Nam thu th\u1eadp t\u1eeb c\u1ed5ng anle.toaan.gov.vn\nc\u1ee7a T\u00f2a \u00e1n nh\u00e2n d\u00e2n t\u1ed1i cao. M\u1ed7i v\u0103n b\u1ea3n ph\u00e1p l\u00fd \u0111i k\u00e8m markdown\n\u0111\u00e3 chu\u1ea9n ho\u00e1 ti\u1ebfng Vi\u1ec7t (NFC + ch\u00ednh t\u1ea3 hi\u1ec7n \u0111\u1ea1i) v\u00e0 l\u1edbp c\u1ea5u tr\u00fac\nph\u00e2n c\u1ea5p \u0111\u1ea7y \u0111\u1ee7: document \u2192 section \u2192 paragraph \u2192 sentence.\nB\u1ed9 d\u1eef li\u1ec7u ship b\u1ed1n c\u1ea5u h\u00ecnh HF t\u01b0\u01a1ng \u1ee9ng b\u1ed1n giai \u0111o\u1ea1n pipeline:\ndocuments (m\u1eb7c \u0111\u1ecbnh) \u00b7 sentences (m\u1ee9c c\u00e2u) \u00b7 embed (vector\n4096-D) \u00b7 reduce (PCA /\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tmquan/anle-toaan-gov-vn.",
+  "alternateName": [
+    "tmquan/anle-toaan-gov-vn",
+    "Vietnamese \u00c1n l\u1ec7 + B\u1ea3n \u00e1n Corpus"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Tran Minh Quan",
+    "url": "https://huggingface.co/tmquan"
+  },
+  "keywords": [
+    "text-classification",
+    "text-retrieval",
+    "question-answering",
+    "text-generation",
+    "sentence-similarity",
+    "feature-extraction",
+    "original",
+    "Vietnamese",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "legal",
+    "vietnamese",
+    "vietnam",
+    "law",
+    "precedent",
+    "court-judgment",
+    "an-le"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/tmquan/anle-toaan-gov-vn",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

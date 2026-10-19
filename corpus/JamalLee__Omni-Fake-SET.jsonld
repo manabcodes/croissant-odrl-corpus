@@ -1,0 +1,683 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/JamalLee/Omni-Fake-SET/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-image",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "image/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-audio",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "audio/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-avth",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "avth/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-video",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "video/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "image_splits/split_name"
+      },
+      "@id": "image_splits",
+      "name": "image_splits",
+      "description": "Splits for the image config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "image_splits/split_name": "train"
+        },
+        {
+          "image_splits/split_name": "validation"
+        },
+        {
+          "image_splits/split_name": "masks"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "image",
+      "description": "JamalLee/Omni-Fake-SET - 'image' subset\n\nAdditional information:\n- 3 splits: train, validation, masks",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "image/(?:partial-)?(train|validation|masks)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "image_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/mask",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "mask"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/generator",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "generator"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "audio_splits/split_name"
+      },
+      "@id": "audio_splits",
+      "name": "audio_splits",
+      "description": "Splits for the audio config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "audio_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "audio_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "audio",
+      "description": "JamalLee/Omni-Fake-SET - 'audio' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "audio/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "audio/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "audio_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/generator",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "generator"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audio/spoof_intervals",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-audio"
+            },
+            "extract": {
+              "column": "spoof_intervals"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1,-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "avth_splits/split_name"
+      },
+      "@id": "avth_splits",
+      "name": "avth_splits",
+      "description": "Splits for the avth config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "avth_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "avth_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "avth",
+      "description": "JamalLee/Omni-Fake-SET - 'avth' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "avth/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "avth/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "avth_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "avth/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "avth/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "avth/generator",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "column": "generator"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "avth/filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "avth/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-avth"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "video_splits/split_name"
+      },
+      "@id": "video_splits",
+      "name": "video_splits",
+      "description": "Splits for the video config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "video_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "video_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "video",
+      "description": "JamalLee/Omni-Fake-SET - 'video' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "video/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "video/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "video_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video/generator",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "column": "generator"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video/filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Omni-Fake-SET",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tOmni-Fake-SET\n\t\n\nOmni-Fake-SET is the in-distribution split of Omni-Fake, a unified multimodal deepfake dataset for social-media forensics. It covers image, audio, video, and audio\u2013video talking-head (AV-TH) modalities. Each modality uses the same three-way label space: real, fully synthetic, and tampered. Pair with the held-out benchmark Omni-Fake-OOD for out-of-distribution evaluation.\n\nPaper: arXiv:2605.01638\nProject page: Omni-Fake\nLicense: CC-BY-4.0\n\n\n\t\n\t\t\n\t\n\t\n\t\tVideo (hybrid\u2026 See the full description on the dataset page: https://huggingface.co/datasets/JamalLee/Omni-Fake-SET.",
+  "alternateName": [
+    "JamalLee/Omni-Fake-SET",
+    "Omni-Fake-SET"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jamal Lee",
+    "url": "https://huggingface.co/JamalLee"
+  },
+  "keywords": [
+    "image-classification",
+    "audio-classification",
+    "video-classification",
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "parquet",
+    "Audio",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2605.01638",
+    "arxiv:2505.12620",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "deepfake-detection",
+    "forensics",
+    "multimodal",
+    "social-media",
+    "image-classification",
+    "audio-classification"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/JamalLee/Omni-Fake-SET",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,1561 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/laion/Emolia/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "laion/Emolia - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/json",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/characters_per_second",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "characters_per_second"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/dnsmos",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "dnsmos"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/duration",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "duration"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/emotion_annotation",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Affection_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Affection_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Age_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Age_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Amusement_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Amusement_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Anger_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Anger_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Arousal_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Arousal_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Astonishment_Surprise_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Astonishment_Surprise_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Authenticity_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Authenticity_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Awe_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Awe_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Background_Noise_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Background_Noise_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Bitterness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Bitterness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Concentration_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Concentration_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Confident_vs._Hesitant_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Confident_vs._Hesitant_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Confusion_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Confusion_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Contemplation_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Contemplation_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Contempt_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Contempt_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Contentment_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Contentment_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Disappointment_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Disappointment_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Disgust_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Disgust_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Distress_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Distress_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Doubt_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Doubt_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Elation_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Elation_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Embarrassment_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Embarrassment_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Emotional_Numbness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Emotional_Numbness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Fatigue_Exhaustion_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Fatigue_Exhaustion_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Fear_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Fear_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Gender_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Gender_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Helplessness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Helplessness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/High-Pitched_vs._Low-Pitched_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['High-Pitched_vs._Low-Pitched_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Hope_Enthusiasm_Optimism_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Hope_Enthusiasm_Optimism_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Impatience_and_Irritability_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Impatience_and_Irritability_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Infatuation_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Infatuation_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Interest_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Interest_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Intoxication_Altered_States_of_Consciousness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Intoxication_Altered_States_of_Consciousness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Jealousy___Envy_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Jealousy_&_Envy_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Longing_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Longing_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Malevolence_Malice_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Malevolence_Malice_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Monotone_vs._Expressive_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Monotone_vs._Expressive_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Pain_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Pain_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Pleasure_Ecstasy_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Pleasure_Ecstasy_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Pride_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Pride_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Recording_Quality_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Recording_Quality_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Relief_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Relief_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Sadness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Sadness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Serious_vs._Humorous_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Serious_vs._Humorous_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Sexual_Lust_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Sexual_Lust_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Shame_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Shame_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Soft_vs._Harsh_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Soft_vs._Harsh_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Sourness_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Sourness_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Submissive_vs._Dominant_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Submissive_vs._Dominant_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Teasing_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Teasing_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Thankfulness_Gratitude_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Thankfulness_Gratitude_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Triumph_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Triumph_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Valence_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "Valence_best"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Vulnerable_vs._Emotionally_Detached_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Vulnerable_vs._Emotionally_Detached_best']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/emotion_annotation/Warm_vs._Cold_best",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "emotion_annotation"
+                      },
+                      {
+                        "jsonPath": "['Warm_vs._Cold_best']"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/emotion_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "emotion_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/speaker",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "speaker"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/wav",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "wav"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/wavelm_timbre_embedding",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "wavelm_timbre_embedding"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/mp3",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "mp3"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__url__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__url__"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Emolia",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Emolia\n\t\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nThis dataset is an enhanced version of the Emilia dataset, enriched with detailed emotion annotations. The annotations were generated using models from the EmoNet suite to provide deeper insight into the emotional content of speech. This work is based on the research and models described in the blog post \"Do They See What We See?\".\nThe annotations include 54 scores for each sample, covering a wide range of emotional and\u2026 See the full description on the dataset page: https://huggingface.co/datasets/laion/Emolia.",
+  "alternateName": [
+    "laion/Emolia"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "LAION eV",
+    "url": "https://huggingface.co/laion"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10M - 100M",
+    "webdataset",
+    "Audio",
+    "Text",
+    "Datasets",
+    "WebDataset",
+    "Croissant",
+    "arxiv:2501.15907",
+    "arxiv:2506.09827",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/laion/Emolia",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

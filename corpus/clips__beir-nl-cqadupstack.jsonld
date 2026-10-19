@@ -1,0 +1,513 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/clips/beir-nl-cqadupstack/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-corpus",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "corpus/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-queries",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "queries/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "corpus_splits/split_name"
+      },
+      "@id": "corpus_splits",
+      "name": "corpus_splits",
+      "description": "Splits for the corpus config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "corpus_splits/split_name": "android"
+        },
+        {
+          "corpus_splits/split_name": "english"
+        },
+        {
+          "corpus_splits/split_name": "gaming"
+        },
+        {
+          "corpus_splits/split_name": "gis"
+        },
+        {
+          "corpus_splits/split_name": "mathematica"
+        },
+        {
+          "corpus_splits/split_name": "physics"
+        },
+        {
+          "corpus_splits/split_name": "programmers"
+        },
+        {
+          "corpus_splits/split_name": "stats"
+        },
+        {
+          "corpus_splits/split_name": "tex"
+        },
+        {
+          "corpus_splits/split_name": "unix"
+        },
+        {
+          "corpus_splits/split_name": "webmasters"
+        },
+        {
+          "corpus_splits/split_name": "wordpress"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "corpus",
+      "description": "clips/beir-nl-cqadupstack - 'corpus' subset\n\nAdditional information:\n- 12 splits: android, english, gaming, gis, mathematica, physics, programmers, stats, tex, unix, webmasters, wordpress",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "corpus/(?:partial-)?(android|english|gaming|gis|mathematica|physics|programmers|stats|tex|unix|webmasters|wordpress)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "corpus_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "queries_splits/split_name"
+      },
+      "@id": "queries_splits",
+      "name": "queries_splits",
+      "description": "Splits for the queries config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "queries_splits/split_name": "android"
+        },
+        {
+          "queries_splits/split_name": "english"
+        },
+        {
+          "queries_splits/split_name": "gaming"
+        },
+        {
+          "queries_splits/split_name": "gis"
+        },
+        {
+          "queries_splits/split_name": "mathematica"
+        },
+        {
+          "queries_splits/split_name": "physics"
+        },
+        {
+          "queries_splits/split_name": "programmers"
+        },
+        {
+          "queries_splits/split_name": "stats"
+        },
+        {
+          "queries_splits/split_name": "tex"
+        },
+        {
+          "queries_splits/split_name": "unix"
+        },
+        {
+          "queries_splits/split_name": "webmasters"
+        },
+        {
+          "queries_splits/split_name": "wordpress"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "queries",
+      "description": "clips/beir-nl-cqadupstack - 'queries' subset\n\nAdditional information:\n- 12 splits: android, english, gaming, gis, mathematica, physics, programmers, stats, tex, unix, webmasters, wordpress",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "queries/(?:partial-)?(android|english|gaming|gis|mathematica|physics|programmers|stats|tex|unix|webmasters|wordpress)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "queries_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_splits/split_name"
+      },
+      "@id": "test_splits",
+      "name": "test_splits",
+      "description": "Splits for the test config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_splits/split_name": "android"
+        },
+        {
+          "test_splits/split_name": "english"
+        },
+        {
+          "test_splits/split_name": "gaming"
+        },
+        {
+          "test_splits/split_name": "gis"
+        },
+        {
+          "test_splits/split_name": "mathematica"
+        },
+        {
+          "test_splits/split_name": "physics"
+        },
+        {
+          "test_splits/split_name": "programmers"
+        },
+        {
+          "test_splits/split_name": "stats"
+        },
+        {
+          "test_splits/split_name": "tex"
+        },
+        {
+          "test_splits/split_name": "unix"
+        },
+        {
+          "test_splits/split_name": "webmasters"
+        },
+        {
+          "test_splits/split_name": "wordpress"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test",
+      "description": "clips/beir-nl-cqadupstack - 'test' subset\n\nAdditional information:\n- 12 splits: android, english, gaming, gis, mathematica, physics, programmers, stats, tex, unix, webmasters, wordpress",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test/(?:partial-)?(android|english|gaming|gis|mathematica|physics|programmers|stats|tex|unix|webmasters|wordpress)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/query-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "query-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/corpus-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "corpus-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/score",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "beir-nl-cqadupstack",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for BEIR-NL Benchmark\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nBEIR-NL is a Dutch-translated version of the BEIR benchmark, a diverse and heterogeneous collection of datasets covering various domains from biomedical and financial texts to general web content. Our benchmark is integrated into the Massive Multilingual Text Embedding Benchmark (MMTEB).\nBEIR-NL contains the following tasks:\n\nFact-checking: FEVER, Climate-FEVER, SciFact\nQuestion-Answering: NQ, HotpotQA, FiQA-2018\u2026 See the full description on the dataset page: https://huggingface.co/datasets/clips/beir-nl-cqadupstack.",
+  "alternateName": [
+    "clips/beir-nl-cqadupstack",
+    "BEIR-NL"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "CLiPS",
+    "url": "https://huggingface.co/clips"
+  },
+  "keywords": [
+    "text-retrieval",
+    "Dutch",
+    "apache-2.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2412.08329",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/clips/beir-nl-cqadupstack",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

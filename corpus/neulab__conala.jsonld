@@ -1,0 +1,420 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/neulab/conala/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-curated",
+      "name": "parquet-files-for-config-curated",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "curated/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mined",
+      "name": "parquet-files-for-config-mined",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mined/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "curated_splits/split_name"
+      },
+      "@id": "curated_splits",
+      "name": "curated_splits",
+      "description": "Splits for the curated config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "curated_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "curated_splits/split_name": "train"
+        },
+        {
+          "curated_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "curated",
+      "name": "curated",
+      "description": "neulab/conala - 'curated' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "curated/split",
+          "name": "curated/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-curated"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "curated/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "curated_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "curated/question_id",
+          "name": "curated/question_id",
+          "description": "Column 'question_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-curated"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "curated/intent",
+          "name": "curated/intent",
+          "description": "Column 'intent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-curated"
+            },
+            "extract": {
+              "column": "intent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "curated/rewritten_intent",
+          "name": "curated/rewritten_intent",
+          "description": "Column 'rewritten_intent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-curated"
+            },
+            "extract": {
+              "column": "rewritten_intent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "curated/snippet",
+          "name": "curated/snippet",
+          "description": "Column 'snippet' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-curated"
+            },
+            "extract": {
+              "column": "snippet"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mined_splits/split_name"
+      },
+      "@id": "mined_splits",
+      "name": "mined_splits",
+      "description": "Splits for the mined config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mined_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mined_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mined",
+      "name": "mined",
+      "description": "neulab/conala - 'mined' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mined/split",
+          "name": "mined/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mined/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mined_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/question_id",
+          "name": "mined/question_id",
+          "description": "Column 'question_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/parent_answer_post_id",
+          "name": "mined/parent_answer_post_id",
+          "description": "Column 'parent_answer_post_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "parent_answer_post_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/prob",
+          "name": "mined/prob",
+          "description": "Column 'prob' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "prob"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/snippet",
+          "name": "mined/snippet",
+          "description": "Column 'snippet' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "snippet"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/intent",
+          "name": "mined/intent",
+          "description": "Column 'intent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "intent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mined/id",
+          "name": "mined/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mined"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "conala",
+  "description": "CoNaLa is a dataset of code and natural language pairs crawled from Stack Overflow, for more details please refer to this paper: https://arxiv.org/pdf/1805.08949.pdf or the dataset page https://conala-corpus.github.io/.",
+  "alternateName": [
+    "neulab/conala",
+    "CoNaLa"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NeuLab @ LTI/CMU",
+    "url": "https://huggingface.co/neulab"
+  },
+  "keywords": [
+    "crowdsourced",
+    "expert-generated",
+    "monolingual",
+    "original",
+    "code",
+    "mit",
+    "100K - 1M",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:1805.08949",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code-generation"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/neulab/conala",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

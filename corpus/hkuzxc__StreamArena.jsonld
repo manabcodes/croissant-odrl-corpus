@@ -1,0 +1,587 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/hkuzxc/StreamArena/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-questions",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "questions/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-video_meta",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "video_meta/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "questions_splits/split_name"
+      },
+      "@id": "questions_splits",
+      "name": "questions_splits",
+      "description": "Splits for the questions config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "questions_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "questions_splits/split_name": "zh"
+        },
+        {
+          "questions_splits/split_name": "en"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "questions",
+      "description": "hkuzxc/StreamArena - 'questions' subset\n\nAdditional information:\n- 2 splits: zh, en\n- 2 skipped columns: answer, qdesc",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "questions/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "questions/(?:partial-)?(zh|en)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "questions_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/qid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/qtype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "qtype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/ask_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "ask_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/ask_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "ask_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/ref_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "ref_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/ref_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "ref_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/horizon_layer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "horizon_layer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/horizon_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "horizon_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/evidence_ts_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "evidence_ts_sec"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "questions/evidence_hint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-questions"
+            },
+            "extract": {
+              "column": "evidence_hint"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "video_meta_splits/split_name"
+      },
+      "@id": "video_meta_splits",
+      "name": "video_meta_splits",
+      "description": "Splits for the video_meta config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "video_meta_splits/split_name": "zh"
+        },
+        {
+          "video_meta_splits/split_name": "en"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "video_meta",
+      "description": "hkuzxc/StreamArena - 'video_meta' subset\n\nAdditional information:\n- 2 splits: zh, en",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "video_meta/(?:partial-)?(zh|en)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "video_meta_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/duration_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/n_questions",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "n_questions"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/channel",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "channel"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/youtube_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "youtube_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/L1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "L1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/L2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "L2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/L3_tags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "L3_tags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "video_meta/was_live",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-video_meta"
+            },
+            "extract": {
+              "column": "was_live"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "StreamArena",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tStreamArena\n\t\n\n\n\n\nA benchmark for always-on, streaming video QA agents.\nThe user watches a long video (52\u2013134 min) with an AI assistant.\nThe assistant must answer questions in real time, sometimes based on the current frame,\nsometimes by recalling earlier content, sometimes by calling external tools,\nand sometimes by proactively waiting for a future moment to speak up.\n\nOverview of StreamArena. Top row: (a) source domains, (b) task types, (c) video durations, (d) temporal gaps\u2026 See the full description on the dataset page: https://huggingface.co/datasets/hkuzxc/StreamArena.",
+  "alternateName": [
+    "hkuzxc/StreamArena",
+    "StreamArena"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Xichen Zhang",
+    "url": "https://huggingface.co/hkuzxc"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "video-classification",
+    "Chinese",
+    "English",
+    "cc-by-nc-4.0",
+    "1K - 10K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2608.05703",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "video-qa",
+    "streaming",
+    "long-video",
+    "multimodal",
+    "benchmark",
+    "proactive-agent"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/hkuzxc/StreamArena",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

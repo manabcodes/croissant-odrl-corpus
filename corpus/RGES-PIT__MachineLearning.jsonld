@@ -1,0 +1,1404 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/RGES-PIT/MachineLearning/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-epochs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "epochs/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "metadata/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-observations",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "observations/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "epochs_splits/split_name"
+      },
+      "@id": "epochs_splits",
+      "name": "epochs_splits",
+      "description": "Splits for the epochs config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "epochs_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "epochs_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "epochs",
+      "description": "RGES-PIT/MachineLearning - 'epochs' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "epochs/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "epochs_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/epoch_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "column": "epoch_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/bjd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "column": "bjd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/obs_x",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "column": "obs_x"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/obs_y",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "column": "obs_y"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "epochs/obs_z",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-epochs"
+            },
+            "extract": {
+              "column": "obs_z"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "metadata_splits/split_name"
+      },
+      "@id": "metadata_splits",
+      "name": "metadata_splits",
+      "description": "Splits for the metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "metadata",
+      "description": "RGES-PIT/MachineLearning - 'metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/event_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "event_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/sim_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "sim_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/SubRun",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "SubRun"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Field",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Field"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/EventID",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "EventID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/final_weight",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "final_weight"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/ObsGroup_0_chi2",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "ObsGroup_0_chi2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/t0lens1",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "t0lens1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/tE_ref",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "tE_ref"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/tE_helio",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "tE_helio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/u0lens1",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "u0lens1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/rho",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "rho"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/piE",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "piE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/piEE",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "piEE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/piEN",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "piEN"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/piEll",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "piEll"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/piErp",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "piErp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/rE",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "rE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/thetaE",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "thetaE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/ra_deg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "ra_deg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/dec_deg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "dec_deg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/galactic_l",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "galactic_l"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/galactic_b",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "galactic_b"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs_F213"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs2_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs2_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs2_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs2_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/fs2_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "fs2_F213"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_F213"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_F213"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_F213"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_Is_Binary",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_Is_Binary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_q",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_q"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_combined_logP",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_combined_logP"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_total_mass",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_total_mass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_rho",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_rho"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_s",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_s"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_alpha",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_alpha"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_inc",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_inc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_phase",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_phase"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_mass",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_mass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_q",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_q"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_s",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_s"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_period",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_period"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_semimajoraxis",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_semimajoraxis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_orbphase",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_orbphase"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Planet_inclination",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Planet_inclination"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_Mass",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_Mass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_Dist",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_Dist"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_Teff",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_Teff"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_logg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_logg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Lens_Fe_H",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Lens_Fe_H"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_Mass",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_Mass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_Dist",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_Dist"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_Teff",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_Teff"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_logg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_logg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source_Fe_H",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source_Fe_H"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_Mass",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_Mass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_Dist",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_Dist"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_Teff",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_Teff"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_logg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_logg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/Source2_Fe_H",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "Source2_Fe_H"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/extinction_F146",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "extinction_F146"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/extinction_F087",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "extinction_F087"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/extinction_F213",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "extinction_F213"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "observations_splits/split_name"
+      },
+      "@id": "observations_splits",
+      "name": "observations_splits",
+      "description": "Splits for the observations config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "observations_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "observations_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "observations",
+      "description": "RGES-PIT/MachineLearning - 'observations' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "observations/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "observations/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "observations_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/event_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "event_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/epoch_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "epoch_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/filt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "filt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/flux_uJy",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "flux_uJy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/flux_err_uJy",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "flux_err_uJy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/true_flux_uJy",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "true_flux_uJy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "observations/saturation_flag",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-observations"
+            },
+            "extract": {
+              "column": "saturation_flag"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "MachineLearning",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tMachine Learning Tier\n\t\n\nThis dataset is a collection of synthetic microlensing light curves from the Nancy Grace Roman Space Telescope Galactic Bulge Time Domain Survey. It is intended for the training and benchmarking of machine learning models for microlensing event classification, parameter estimation, and anomaly detection.\nThe raw distribution of event properties is not representative of what Roman will see, but should span a statistically larger set of events. More\u2026 See the full description on the dataset page: https://huggingface.co/datasets/RGES-PIT/MachineLearning.",
+  "alternateName": [
+    "RGES-PIT/MachineLearning"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Roman Galactic Exoplanet Survey Project Infrastructure Team",
+    "url": "https://huggingface.co/RGES-PIT"
+  },
+  "keywords": [
+    "cc0-1.0",
+    "10B - 100B",
+    "Tabular",
+    "Text",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/RGES-PIT/MachineLearning",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC0 1.0 Universal \u2014 public domain dedication",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,708 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/When2Call/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-train_pref",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "train_pref/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-train_sft",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "train_sft/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_splits/split_name"
+      },
+      "@id": "test_splits",
+      "name": "test_splits",
+      "description": "Splits for the test config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_splits/split_name": "llm_judge"
+        },
+        {
+          "test_splits/split_name": "mcq"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test",
+      "description": "nvidia/When2Call - 'test' subset\n\nAdditional information:\n- 2 splits: llm_judge, mcq",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test/(?:partial-)?(llm_judge|mcq)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/uuid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "uuid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/source_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/correct_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "correct_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/answers",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "test/answers/direct",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "direct"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/answers/tool_call",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "tool_call"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/answers/request_for_info",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "request_for_info"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/answers/cannot_answer",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "cannot_answer"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/target_tool",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "target_tool"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/orig_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "orig_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/orig_question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "orig_question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/held_out_param",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "held_out_param"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "train_pref_splits/split_name"
+      },
+      "@id": "train_pref_splits",
+      "name": "train_pref_splits",
+      "description": "Splits for the train_pref config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "train_pref_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_pref",
+      "description": "nvidia/When2Call - 'train_pref' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train_pref"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "train_pref/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "train_pref_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train_pref"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/messages/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/messages/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref/chosen_response",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/chosen_response/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "chosen_response"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/chosen_response/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "chosen_response"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_pref/rejected_response",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/rejected_response/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "rejected_response"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "train_pref/rejected_response/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_pref"
+                },
+                "extract": {
+                  "column": "rejected_response"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "train_sft_splits/split_name"
+      },
+      "@id": "train_sft_splits",
+      "name": "train_sft_splits",
+      "description": "Splits for the train_sft config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_sft_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "train_sft_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train_sft",
+      "description": "nvidia/When2Call - 'train_sft' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_sft/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train_sft"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "train_sft/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "train_sft_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_sft/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train_sft"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train_sft/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "train_sft/messages/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_sft"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "train_sft/messages/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-train_sft"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "When2Call",
+  "description": "\n\t\n\t\t\n\t\tWhen2Call\n\t\n\n\n \ud83d\udcbe Github\u00a0\u00a0 | \u00a0\u00a0 \ud83d\udcc4 Paper\n\n\n\n\t\n\t\t\n\t\tDataset Description:\n\t\n\nWhen2Call is a benchmark designed to evaluate tool-calling decision-making for large language models (LLMs), including when to generate a tool call, when to ask follow-up questions, when to admit the question can't be answered with the tools provided, and what to do if the question seems to require tool use but a tool call can't be made. \nWe find that state-of-the-art tool-calling LMs show significant room for\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/When2Call.",
+  "alternateName": [
+    "nvidia/When2Call"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "function-calling",
+    "tool-calling",
+    "Synthetic",
+    "nvidia"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/When2Call",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

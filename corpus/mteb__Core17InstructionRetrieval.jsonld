@@ -1,0 +1,696 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/mteb/Core17InstructionRetrieval/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-corpus",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "corpus/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-instruction",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "instruction/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-qrel_diff",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "qrel_diff/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-qrels",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "qrels/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-queries",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "queries/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-top_ranked",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "top_ranked/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "corpus_splits/split_name"
+      },
+      "@id": "corpus_splits",
+      "name": "corpus_splits",
+      "description": "Splits for the corpus config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "corpus_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "corpus",
+      "description": "mteb/Core17InstructionRetrieval - 'corpus' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "corpus/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "corpus_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "instruction_splits/split_name"
+      },
+      "@id": "instruction_splits",
+      "name": "instruction_splits",
+      "description": "Splits for the instruction config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruction_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "instruction_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "instruction",
+      "description": "mteb/Core17InstructionRetrieval - 'instruction' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "instruction/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "instruction_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/query-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "column": "query-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "qrel_diff_splits/split_name"
+      },
+      "@id": "qrel_diff_splits",
+      "name": "qrel_diff_splits",
+      "description": "Splits for the qrel_diff config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qrel_diff_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "qrel_diff_splits/split_name": "qrel_diff"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "qrel_diff",
+      "description": "mteb/Core17InstructionRetrieval - 'qrel_diff' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qrel_diff/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrel_diff"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "qrel_diff/(?:partial-)?(qrel_diff)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "qrel_diff_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qrel_diff/query-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrel_diff"
+            },
+            "extract": {
+              "column": "query-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qrel_diff/corpus-ids",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrel_diff"
+            },
+            "extract": {
+              "column": "corpus-ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "qrels_splits/split_name"
+      },
+      "@id": "qrels_splits",
+      "name": "qrels_splits",
+      "description": "Splits for the qrels config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qrels_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "qrels_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "qrels",
+      "description": "mteb/Core17InstructionRetrieval - 'qrels' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qrels/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrels"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "qrels/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "qrels_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qrels/query-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrels"
+            },
+            "extract": {
+              "column": "query-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qrels/corpus-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrels"
+            },
+            "extract": {
+              "column": "corpus-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qrels/score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qrels"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "queries_splits/split_name"
+      },
+      "@id": "queries_splits",
+      "name": "queries_splits",
+      "description": "Splits for the queries config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "queries_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "queries",
+      "description": "mteb/Core17InstructionRetrieval - 'queries' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "queries/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "queries_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "top_ranked_splits/split_name"
+      },
+      "@id": "top_ranked_splits",
+      "name": "top_ranked_splits",
+      "description": "Splits for the top_ranked config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "top_ranked_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "top_ranked_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "top_ranked",
+      "description": "mteb/Core17InstructionRetrieval - 'top_ranked' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "top_ranked/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-top_ranked"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "top_ranked/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "top_ranked_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "top_ranked/query-id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-top_ranked"
+            },
+            "extract": {
+              "column": "query-id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "top_ranked/corpus-ids",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-top_ranked"
+            },
+            "extract": {
+              "column": "corpus-ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Core17InstructionRetrieval",
+  "description": "\n  Core17InstructionRetrieval\n  An MTEB dataset\n  Massive Text Embedding Benchmark\n\n\nMeasuring retrieval instruction following ability on Core17 narratives for the FollowIR benchmark.\n\n\t\n\t\t\n\n\n\n\n\t\t\nTask category\nt2t\n\n\nDomains\nNews, Written\n\n\nReferencehttps://arxiv.org/abs/2403.15246\n\n\n\t\n\nSource datasets:\n\njhu-clsp/core17-instructions-mteb\n\n\n\t\n\t\t\n\t\tHow to evaluate on this task\n\t\n\nYou can evaluate an embedding model on this dataset using the following code:\nimport mteb\n\ntask =\u2026 See the full description on the dataset page: https://huggingface.co/datasets/mteb/Core17InstructionRetrieval.",
+  "alternateName": [
+    "mteb/Core17InstructionRetrieval"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Massive Text Embedding Benchmark",
+    "url": "https://huggingface.co/mteb"
+  },
+  "keywords": [
+    "text-ranking",
+    "derived",
+    "monolingual",
+    "jhu-clsp/core17-instructions-mteb",
+    "English",
+    "mit",
+    "10K - 100K",
+    "parquet",
+    "optimized-parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2403.15246",
+    "arxiv:2502.13595",
+    "arxiv:2210.07316",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "mteb",
+    "text"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/mteb/Core17InstructionRetrieval",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

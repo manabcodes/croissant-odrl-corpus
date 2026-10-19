@@ -1,0 +1,1019 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Chainticks/perp-data/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-funding",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "funding/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-liquidations",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "liquidations/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-open_interest",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "open_interest/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-trades",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "trades/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "funding_splits/split_name"
+      },
+      "@id": "funding_splits",
+      "name": "funding_splits",
+      "description": "Splits for the funding config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "funding_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "funding_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "funding",
+      "description": "Chainticks/perp-data - 'funding' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "funding/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "funding/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "funding_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/exchange_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "exchange_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/funding_rate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "funding_rate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/index_price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "index_price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/mark_price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "mark_price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/premium",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "premium"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/recorded_at",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "recorded_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/schema_version",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "schema_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/source_kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "source_kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "funding/raw_json",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-funding"
+            },
+            "extract": {
+              "column": "raw_json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "liquidations_splits/split_name"
+      },
+      "@id": "liquidations_splits",
+      "name": "liquidations_splits",
+      "description": "Splits for the liquidations config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "liquidations_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "liquidations",
+      "description": "Chainticks/perp-data - 'liquidations' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "liquidations/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "liquidations_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/block_number",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "block_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/exchange_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "exchange_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/liquidation_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "liquidation_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/notional_usd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "notional_usd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/recorded_at",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "recorded_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/schema_version",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "schema_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/side",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "side"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/size",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/source_kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "source_kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "liquidations/raw_json",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-liquidations"
+            },
+            "extract": {
+              "column": "raw_json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "open_interest_splits/split_name"
+      },
+      "@id": "open_interest_splits",
+      "name": "open_interest_splits",
+      "description": "Splits for the open_interest config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "open_interest_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "open_interest",
+      "description": "Chainticks/perp-data - 'open_interest' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "open_interest/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "open_interest_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/exchange_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "exchange_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/index_price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "index_price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/mark_price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "mark_price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/open_interest_base",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "open_interest_base"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/open_interest_usd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "open_interest_usd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/recorded_at",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "recorded_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/schema_version",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "schema_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/source_kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "source_kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "open_interest/raw_json",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-open_interest"
+            },
+            "extract": {
+              "column": "raw_json"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "trades_splits/split_name"
+      },
+      "@id": "trades_splits",
+      "name": "trades_splits",
+      "description": "Splits for the trades config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "trades_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "trades_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "trades",
+      "description": "Chainticks/perp-data - 'trades' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "trades/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "trades/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "trades_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/block_number",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "block_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/exchange_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "exchange_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/notional_usd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "notional_usd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/recorded_at",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "recorded_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/schema_version",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "schema_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/side",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "side"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/size",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/source_kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "source_kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/trade_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "trade_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trades/raw_json",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trades"
+            },
+            "extract": {
+              "column": "raw_json"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "perp-data",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tChainticks Perp Data\n\t\n\nFree, daily-updated perpetuals market data intended for quant research, backtesting, and market microstructure analysis.\nimport pandas as pd\n\nDATE = \"YYYY-MM-DD\"\nURL = \"https://huggingface.co/datasets/Chainticks/perp-data/resolve/main/hyperliquid_chain/trades/date={DATE}/part-0000.parquet\"\n\ntrades = pd.read_parquet(URL.format(DATE=DATE))  # first shard; see _manifest.json for all part files\nprint(trades.head())\n\nThis repository is initialized for\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Chainticks/perp-data.",
+  "alternateName": [
+    "Chainticks/perp-data",
+    "Chainticks Perp Data"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Chainticks",
+    "url": "https://huggingface.co/Chainticks"
+  },
+  "keywords": [
+    "tabular-regression",
+    "cc-by-4.0",
+    "100M - 1B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "pandas",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "finance",
+    "crypto",
+    "defi",
+    "trading",
+    "parquet",
+    "time-series",
+    "pandas",
+    "duckdb",
+    "polars",
+    "mlcroissant"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/Chainticks/perp-data",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

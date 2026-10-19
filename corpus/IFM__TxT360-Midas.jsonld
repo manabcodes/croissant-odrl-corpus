@@ -1,0 +1,437 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/IFM/TxT360-Midas/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage1",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage1/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage2",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage2/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage3",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage3/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage4",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage4/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage1_splits/split_name"
+      },
+      "@id": "stage1_splits",
+      "name": "stage1_splits",
+      "description": "Splits for the stage1 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage1_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage1_splits/split_name": "other_behaviors"
+        },
+        {
+          "stage1_splits/split_name": "reasoning_behaviors"
+        },
+        {
+          "stage1_splits/split_name": "thinking_traces"
+        },
+        {
+          "stage1_splits/split_name": "web"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage1",
+      "description": "IFM/TxT360-Midas - 'stage1' subset\n\nAdditional information:\n- 4 splits: other_behaviors, reasoning_behaviors, thinking_traces, web",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage1/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage1/(?:partial-)?(other_behaviors|reasoning_behaviors|thinking_traces|web)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage1_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage2_splits/split_name"
+      },
+      "@id": "stage2_splits",
+      "name": "stage2_splits",
+      "description": "Splits for the stage2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage2_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage2_splits/split_name": "other_behaviors"
+        },
+        {
+          "stage2_splits/split_name": "reasoning_behaviors"
+        },
+        {
+          "stage2_splits/split_name": "thinking_traces"
+        },
+        {
+          "stage2_splits/split_name": "web"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage2",
+      "description": "IFM/TxT360-Midas - 'stage2' subset\n\nAdditional information:\n- 4 splits: other_behaviors, reasoning_behaviors, thinking_traces, web",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage2/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage2/(?:partial-)?(other_behaviors|reasoning_behaviors|thinking_traces|web)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage3_splits/split_name"
+      },
+      "@id": "stage3_splits",
+      "name": "stage3_splits",
+      "description": "Splits for the stage3 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage3_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage3_splits/split_name": "thinking_traces"
+        },
+        {
+          "stage3_splits/split_name": "web"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage3",
+      "description": "IFM/TxT360-Midas - 'stage3' subset\n\nAdditional information:\n- 2 splits: thinking_traces, web",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage3/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage3/(?:partial-)?(thinking_traces|web)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage3_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage4_splits/split_name"
+      },
+      "@id": "stage4_splits",
+      "name": "stage4_splits",
+      "description": "Splits for the stage4 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage4_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage4_splits/split_name": "thinking_traces"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage4",
+      "description": "IFM/TxT360-Midas - 'stage4' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage4/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage4/(?:partial-)?(thinking_traces)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage4_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TxT360-Midas",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTxT360-MidAS: Mid-training Actual and Synthetic data\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nTxT360-Midas is a mid-training dataset designed to extend language model context length up to 512k tokens while injecting strong reasoning capabilities via synthetic data.\nTxT360-Midas was used to mid-train the K2-V2 LLM, yielding base model with strong long-context performance and reasoning abilities. Resulting model demonstrates strong performance on complex mathematical and logic puzzle tasks.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/IFM/TxT360-Midas.",
+  "alternateName": [
+    "IFM/TxT360-Midas"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "IFM",
+    "url": "https://huggingface.co/IFM"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "1B - 10B",
+    "Text",
+    "arxiv:2512.06201",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/IFM/TxT360-Midas",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,743 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/stanford-star/relbench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-databases",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "databases/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tasks",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tasks/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "databases_splits/split_name"
+      },
+      "@id": "databases_splits",
+      "name": "databases_splits",
+      "description": "Splits for the databases config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "databases_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "databases_splits/split_name": "eval"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "databases",
+      "description": "stanford-star/relbench - 'databases' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "databases/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "databases/(?:partial-)?(eval)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "databases_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_tables",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_rows",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_rows"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_tasks",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_tasks"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/tasks_binary_classification",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "tasks_binary_classification"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/tasks_regression",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "tasks_regression"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/tasks_recommendation",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "tasks_recommendation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/size_gb",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "size_gb"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/val_timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "val_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/test_timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "test_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/source_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "source_url"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tasks_splits/split_name"
+      },
+      "@id": "tasks_splits",
+      "name": "tasks_splits",
+      "description": "Splits for the tasks config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tasks_splits/split_name": "eval"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tasks",
+      "description": "stanford-star/relbench - 'tasks' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tasks/(?:partial-)?(eval)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tasks_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/database",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "database"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_rows_train",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_rows_train"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_rows_val",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_rows_val"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_rows_test",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_rows_test"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_unique_entities",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_unique_entities"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/pct_train_test_entity_overlap",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "pct_train_test_entity_overlap"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_dst_entities",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_dst_entities"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/metric",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "metric"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/entity_table",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "entity_table"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/entity_col",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "entity_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/src_entity_table",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "src_entity_table"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/src_entity_col",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "src_entity_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/dst_entity_table",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "dst_entity_table"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/dst_entity_col",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "dst_entity_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/target_col",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "target_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/time_col",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "time_col"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/timedelta",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "timedelta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/num_eval_timestamps",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "num_eval_timestamps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/eval_k",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "eval_k"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "relbench",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tRelBench v1 databases\n\t\n\nThe original RelBench v1 relational databases, each in its\nown subdirectory in the self-describing manifest layout (plain parquet + manifest.yaml):\n<dataset>/\n  manifest.yaml                 # tables, primary keys, foreign-key graph, val/test timestamps\n  schema.svg                    # ER diagram\n  db/*.parquet                  # relational tables (plain parquet)\n  tasks/<task>/manifest.yaml    # task spec (+ duckdb SQL for `forecast` tasks)\u2026 See the full description on the dataset page: https://huggingface.co/datasets/stanford-star/relbench.",
+  "alternateName": [
+    "stanford-star/relbench"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Stanford Tabular and Relational (STAR) Project",
+    "url": "https://huggingface.co/stanford-star"
+  },
+  "keywords": [
+    "cc-by-sa-4.0",
+    "< 1K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "relbench",
+    "relational-deep-learning"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/stanford-star/relbench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

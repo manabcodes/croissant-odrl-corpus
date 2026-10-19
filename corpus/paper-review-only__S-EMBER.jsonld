@@ -1,0 +1,700 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/paper-review-only/S-EMBER/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-grounding",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "grounding/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mcq",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mcq/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "grounding_splits/split_name"
+      },
+      "@id": "grounding_splits",
+      "name": "grounding_splits",
+      "description": "Splits for the grounding config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "grounding_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "grounding_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "grounding",
+      "description": "paper-review-only/S-EMBER - 'grounding' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "grounding/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "grounding_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/video_category_broad",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "video_category_broad"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/video_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "video_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/question_time",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "question_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/question_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "question_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/memory_recency",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "memory_recency"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/answer_start_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "answer_start_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/answer_end_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "answer_end_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/answer_range",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-grounding"
+            },
+            "extract": {
+              "column": "answer_range"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "grounding/answers",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "grounding/answers/answer_rater_group",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-grounding"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "answer_rater_group"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "grounding/answers/answer_text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-grounding"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "answer_text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "grounding/answers/end_ts",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-grounding"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "end_ts"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "grounding/answers/start_ts",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-grounding"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "start_ts"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mcq_splits/split_name"
+      },
+      "@id": "mcq_splits",
+      "name": "mcq_splits",
+      "description": "Splits for the mcq config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mcq_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mcq",
+      "description": "paper-review-only/S-EMBER - 'mcq' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mcq/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mcq_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/video_category_broad",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "video_category_broad"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/video_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "video_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/question_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "question_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/question_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "question_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/options",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "options"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/correct_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "correct_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/correct_letter",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "correct_letter"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/correct_option_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "correct_option_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/ground_truths",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "ground_truths"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/answer_start_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "answer_start_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq/answer_end_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq"
+            },
+            "extract": {
+              "column": "answer_end_time"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "S-EMBER",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tS-EMBER\n\t\n\nS-EMBER is a benchmark for streaming episodic memory over long egocentric\n(wearable-camera) video. Given a video and a natural-language question about\nsomething that happened earlier in the recording, a model must recall the\nrelevant moment and answer.\n\nThis repository is an anonymized mirror provided for peer review. It\ncontains the complete benchmark. Author, institution, and provenance\ninformation has been intentionally omitted for double-blind review.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/paper-review-only/S-EMBER.",
+  "alternateName": [
+    "paper-review-only/S-EMBER",
+    "S-EMBER"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Nobody Me",
+    "url": "https://huggingface.co/paper-review-only"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "video-text-to-text",
+    "English",
+    "cc-by-nc-4.0",
+    "10K - 100K",
+    "json",
+    "Tabular",
+    "Text",
+    "Video",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "egocentric",
+    "video",
+    "episodic-memory",
+    "benchmark"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/paper-review-only/S-EMBER",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

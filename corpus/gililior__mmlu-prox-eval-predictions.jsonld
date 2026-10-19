@@ -1,0 +1,797 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/gililior/mmlu-prox-eval-predictions/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "predictions"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "gililior/mmlu-prox-eval-predictions - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(predictions)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/doc_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "doc_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/doc",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/question_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "question_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/question",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "question"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_0"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_1",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_1"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_2",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_2"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_3",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_3"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_4",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_4"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_5",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_5"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_6",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_6"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_7",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_7"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_8",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_8"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/option_9",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "option_9"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/answer",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "answer"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/answer_index",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "answer_index"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/cot_content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "cot_content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/category",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "category"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/src",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "src"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/doc/question_id_src",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "doc"
+                },
+                "transform": {
+                  "jsonPath": "question_id_src"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/target",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "target"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/arguments",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/arguments/gen_args_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/arguments/gen_args_0/arg_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "arguments"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "gen_args_0"
+                      },
+                      {
+                        "jsonPath": "arg_0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/arguments/gen_args_0/arg_1",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/arguments/gen_args_0/arg_1/until",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "arguments"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "gen_args_0"
+                          },
+                          {
+                            "jsonPath": "arg_1"
+                          },
+                          {
+                            "jsonPath": "until"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/arguments/gen_args_0/arg_1/do_sample",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "arguments"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "gen_args_0"
+                          },
+                          {
+                            "jsonPath": "arg_1"
+                          },
+                          {
+                            "jsonPath": "do_sample"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/arguments/gen_args_0/arg_1/temperature",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "arguments"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "gen_args_0"
+                          },
+                          {
+                            "jsonPath": "arg_1"
+                          },
+                          {
+                            "jsonPath": "temperature"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/arguments/gen_args_0/arg_1/max_gen_toks",
+                      "dataType": "cr:Int64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "arguments"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "gen_args_0"
+                          },
+                          {
+                            "jsonPath": "arg_1"
+                          },
+                          {
+                            "jsonPath": "max_gen_toks"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/resps",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "resps"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1,-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/filtered_resps",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "filtered_resps"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/filter",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "filter"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/metrics",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "metrics"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/doc_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "doc_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/target_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "target_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/exact_match",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "exact_match"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "mmlu-prox-eval-predictions",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tMMLU-ProX Multilingual Model Predictions\n\t\n\nRaw per-sample model predictions on MMLU-ProX\nacross 29 languages and 25 open-weight LLMs, produced with\nlm-evaluation-harness.\nThis dataset releases the full prediction logs (not just aggregate scores) so that\nitem-level responses can be re-analysed \u2014 e.g. for Item Response Theory (IRT) modelling\nof multilingual benchmarks, error analysis, or per-item difficulty estimation.\n\n\t\n\t\t\n\t\n\t\n\t\tRepository structure\n\t\n\nmmlu_prox_<lang>/\n\u2514\u2500\u2500\u2026 See the full description on the dataset page: https://huggingface.co/datasets/gililior/mmlu-prox-eval-predictions.",
+  "alternateName": [
+    "gililior/mmlu-prox-eval-predictions",
+    "MMLU-ProX Multilingual Model Predictions"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Gili Lior",
+    "url": "https://huggingface.co/gililior"
+  },
+  "keywords": [
+    "question-answering",
+    "multiple-choice",
+    "Afrikaans",
+    "Arabic",
+    "Bengali",
+    "Czech",
+    "German",
+    "English",
+    "Spanish",
+    "French",
+    "Hindi",
+    "Hungarian",
+    "Indonesian",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Marathi",
+    "Nepali",
+    "Portuguese",
+    "Russian",
+    "Serbian",
+    "Swahili",
+    "Telugu",
+    "Thai",
+    "Ukrainian",
+    "Urdu",
+    "Vietnamese",
+    "Wolof",
+    "Yoruba",
+    "Chinese",
+    "Zulu",
+    "cc-by-4.0",
+    "1M - 10M",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "mmlu-prox",
+    "evaluation",
+    "lm-eval-harness",
+    "multilingual",
+    "model-predictions",
+    "irt"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/gililior/mmlu-prox-eval-predictions",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

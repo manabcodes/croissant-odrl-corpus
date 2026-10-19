@@ -1,0 +1,357 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tripolskypetr/trading-entries/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ideas",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ideas/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ideas_splits/split_name"
+      },
+      "@id": "ideas_splits",
+      "name": "ideas_splits",
+      "description": "Splits for the ideas config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ideas_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ideas_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ideas",
+      "description": "tripolskypetr/trading-entries - 'ideas' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ideas/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ideas_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/ts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "ts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/fullName",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "fullName"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/direction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "direction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/authorIsPro",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "authorIsPro"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/isScript",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "isScript"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ideas/firstSeen",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ideas"
+            },
+            "extract": {
+              "column": "firstSeen"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "trading-entries",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTradingView Analyst Grading via Risk-Management Grid Sweep\n\t\n\nThis dataset answers a single question: does an analyst's call differ from the\nmarket spread \u2014 and if so, at what cost. The cost here is the investor's risk\nmanagement: how deep a stop they will tolerate, how many days their money stays\nfrozen, and at what percentage they lock in profit.\nThe basis is TradingView Ideas posts on crypto carrying a LONG / SHORT\ndirection. Every post is swept across 21,280 points of a\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tripolskypetr/trading-entries.",
+  "alternateName": [
+    "tripolskypetr/trading-entries",
+    "TradingView Analyst Grading via Risk-Management Grid Sweep (2021\u20132026)"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Petr Tripolsky",
+    "url": "https://huggingface.co/tripolskypetr"
+  },
+  "keywords": [
+    "time-series-forecasting",
+    "tabular-classification",
+    "tabular-regression",
+    "English",
+    "Russian",
+    "mit",
+    "10K - 100K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "finance",
+    "time-series",
+    "crypto",
+    "bitcoin",
+    "trading-signals",
+    "social-signals",
+    "tradingview",
+    "backtest",
+    "grid-search",
+    "risk-management",
+    "parameter-sweep",
+    "analyst-evaluation",
+    "signal-quality",
+    "drawdown",
+    "sharpe-ratio",
+    "look-ahead-bias"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/tripolskypetr/trading-entries",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

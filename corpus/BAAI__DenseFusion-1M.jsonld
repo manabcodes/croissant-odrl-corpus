@@ -1,0 +1,389 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/BAAI/DenseFusion-1M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-DenseFusion-1M",
+      "name": "parquet-files-for-config-DenseFusion-1M",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "DenseFusion-1M/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-DenseFusion-4V-100K",
+      "name": "parquet-files-for-config-DenseFusion-4V-100K",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "DenseFusion-4V-100K/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "DenseFusion-1M_splits/split_name"
+      },
+      "@id": "DenseFusion-1M_splits",
+      "name": "DenseFusion-1M_splits",
+      "description": "Splits for the DenseFusion-1M config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "DenseFusion-1M_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "DenseFusion-1M",
+      "name": "DenseFusion-1M",
+      "description": "BAAI/DenseFusion-1M - 'DenseFusion-1M' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M/split",
+          "name": "DenseFusion-1M/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-1M"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "DenseFusion\\-1M/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "DenseFusion-1M_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M/image_id",
+          "name": "DenseFusion-1M/image_id",
+          "description": "Column 'image_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-1M"
+            },
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M/caption",
+          "name": "DenseFusion-1M/caption",
+          "description": "Column 'caption' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-1M"
+            },
+            "extract": {
+              "column": "caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M/url",
+          "name": "DenseFusion-1M/url",
+          "description": "Column 'url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-1M"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-1M/image_path",
+          "name": "DenseFusion-1M/image_path",
+          "description": "Column 'image_path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-1M"
+            },
+            "extract": {
+              "column": "image_path"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "DenseFusion-4V-100K_splits/split_name"
+      },
+      "@id": "DenseFusion-4V-100K_splits",
+      "name": "DenseFusion-4V-100K_splits",
+      "description": "Splits for the DenseFusion-4V-100K config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "DenseFusion-4V-100K_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "DenseFusion-4V-100K",
+      "name": "DenseFusion-4V-100K",
+      "description": "BAAI/DenseFusion-1M - 'DenseFusion-4V-100K' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K/split",
+          "name": "DenseFusion-4V-100K/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-4V-100K"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "DenseFusion\\-4V\\-100K/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "DenseFusion-4V-100K_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K/image_id",
+          "name": "DenseFusion-4V-100K/image_id",
+          "description": "Column 'image_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-4V-100K"
+            },
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K/caption",
+          "name": "DenseFusion-4V-100K/caption",
+          "description": "Column 'caption' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-4V-100K"
+            },
+            "extract": {
+              "column": "caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K/url",
+          "name": "DenseFusion-4V-100K/url",
+          "description": "Column 'url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-4V-100K"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "DenseFusion-4V-100K/image_path",
+          "name": "DenseFusion-4V-100K/image_path",
+          "description": "Column 'image_path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-DenseFusion-4V-100K"
+            },
+            "extract": {
+              "column": "image_path"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "DenseFusion-1M",
+  "description": "\n[Paper] https://arxiv.org/abs/2407.08303\n[GitHub] https://github.com/baaivision/DenseFusion\n\n\n\t\n\t\t\n\t\tIntroduction\n\t\n\n\nAn image is worth a thousand words\". Comprehensive image descriptions are essential for multi-modal perception, while images contains various visual elements of different granularities that are challenging to harness.\nWe propose Perceptural Fusion to integrate the diverse visual perception experts for capturing visual elements and adopt a MLLM as a centric pivot for\u2026 See the full description on the dataset page: https://huggingface.co/datasets/BAAI/DenseFusion-1M.",
+  "alternateName": [
+    "BAAI/DenseFusion-1M",
+    "DenseFusion-1M for comprehensive image descriptions"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Beijing Academy of Artificial Intelligence",
+    "url": "https://huggingface.co/BAAI"
+  },
+  "keywords": [
+    "question-answering",
+    "visual-question-answering",
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "json",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2407.08303",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "GPT-4V",
+    "MLLM"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/BAAI/DenseFusion-1M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

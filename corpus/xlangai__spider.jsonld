@@ -1,0 +1,310 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/xlangai/spider/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-spider",
+      "name": "parquet-files-for-config-spider",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "spider/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "spider_splits/split_name"
+      },
+      "@id": "spider_splits",
+      "name": "spider_splits",
+      "description": "Splits for the spider config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spider_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "spider_splits/split_name": "train"
+        },
+        {
+          "spider_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "spider",
+      "name": "spider",
+      "description": "xlangai/spider - 'spider' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spider/split",
+          "name": "spider/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "spider/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "spider_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/db_id",
+          "name": "spider/db_id",
+          "description": "Column 'db_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "db_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/query",
+          "name": "spider/query",
+          "description": "Column 'query' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/question",
+          "name": "spider/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/query_toks",
+          "name": "spider/query_toks",
+          "description": "Column 'query_toks' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "query_toks"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/query_toks_no_value",
+          "name": "spider/query_toks_no_value",
+          "description": "Column 'query_toks_no_value' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "query_toks_no_value"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spider/question_toks",
+          "name": "spider/question_toks",
+          "description": "Column 'question_toks' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spider"
+            },
+            "extract": {
+              "column": "question_toks"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "spider",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Spider\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nSpider is a large-scale complex and cross-domain semantic parsing and text-to-SQL dataset annotated by 11 Yale students.\nThe goal of the Spider challenge is to develop natural language interfaces to cross-domain databases.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\nThe leaderboard can be seen at https://yale-lily.github.io/spider\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nThe text in the dataset is in English.\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\n\n\t\n\t\t\n\t\tData\u2026 See the full description on the dataset page: https://huggingface.co/datasets/xlangai/spider.",
+  "alternateName": [
+    "xlangai/spider",
+    "Spider"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "XLang NLP Lab",
+    "url": "https://huggingface.co/xlangai"
+  },
+  "keywords": [
+    "expert-generated",
+    "expert-generated",
+    "machine-generated",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-4.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:1809.08887",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "text-to-sql"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "sameAs": "https://yale-lily.github.io/spider",
+  "url": "https://huggingface.co/datasets/xlangai/spider",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

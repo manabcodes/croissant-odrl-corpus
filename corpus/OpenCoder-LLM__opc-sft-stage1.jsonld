@@ -1,0 +1,463 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/OpenCoder-LLM/opc-sft-stage1/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-filtered_infinity_instruct",
+      "name": "parquet-files-for-config-filtered_infinity_instruct",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "filtered_infinity_instruct/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-largescale_diverse_instruct",
+      "name": "parquet-files-for-config-largescale_diverse_instruct",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "largescale_diverse_instruct/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-realuser_instruct",
+      "name": "parquet-files-for-config-realuser_instruct",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "realuser_instruct/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "filtered_infinity_instruct_splits/split_name"
+      },
+      "@id": "filtered_infinity_instruct_splits",
+      "name": "filtered_infinity_instruct_splits",
+      "description": "Splits for the filtered_infinity_instruct config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "filtered_infinity_instruct_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "filtered_infinity_instruct_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "filtered_infinity_instruct",
+      "name": "filtered_infinity_instruct",
+      "description": "OpenCoder-LLM/opc-sft-stage1 - 'filtered_infinity_instruct' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "filtered_infinity_instruct/split",
+          "name": "filtered_infinity_instruct/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-filtered_infinity_instruct"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "filtered_infinity_instruct/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "filtered_infinity_instruct_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "filtered_infinity_instruct/instruction",
+          "name": "filtered_infinity_instruct/instruction",
+          "description": "Column 'instruction' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-filtered_infinity_instruct"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "filtered_infinity_instruct/output",
+          "name": "filtered_infinity_instruct/output",
+          "description": "Column 'output' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-filtered_infinity_instruct"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "filtered_infinity_instruct/tag",
+          "name": "filtered_infinity_instruct/tag",
+          "description": "Column 'tag' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-filtered_infinity_instruct"
+            },
+            "extract": {
+              "column": "tag"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "largescale_diverse_instruct_splits/split_name"
+      },
+      "@id": "largescale_diverse_instruct_splits",
+      "name": "largescale_diverse_instruct_splits",
+      "description": "Splits for the largescale_diverse_instruct config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "largescale_diverse_instruct_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "largescale_diverse_instruct_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "largescale_diverse_instruct",
+      "name": "largescale_diverse_instruct",
+      "description": "OpenCoder-LLM/opc-sft-stage1 - 'largescale_diverse_instruct' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "largescale_diverse_instruct/split",
+          "name": "largescale_diverse_instruct/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-largescale_diverse_instruct"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "largescale_diverse_instruct/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "largescale_diverse_instruct_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "largescale_diverse_instruct/instruction",
+          "name": "largescale_diverse_instruct/instruction",
+          "description": "Column 'instruction' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-largescale_diverse_instruct"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "largescale_diverse_instruct/output",
+          "name": "largescale_diverse_instruct/output",
+          "description": "Column 'output' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-largescale_diverse_instruct"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "largescale_diverse_instruct/tag",
+          "name": "largescale_diverse_instruct/tag",
+          "description": "Column 'tag' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-largescale_diverse_instruct"
+            },
+            "extract": {
+              "column": "tag"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "realuser_instruct_splits/split_name"
+      },
+      "@id": "realuser_instruct_splits",
+      "name": "realuser_instruct_splits",
+      "description": "Splits for the realuser_instruct config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "realuser_instruct_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "realuser_instruct_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "realuser_instruct",
+      "name": "realuser_instruct",
+      "description": "OpenCoder-LLM/opc-sft-stage1 - 'realuser_instruct' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "realuser_instruct/split",
+          "name": "realuser_instruct/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-realuser_instruct"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "realuser_instruct/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "realuser_instruct_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "realuser_instruct/instruction",
+          "name": "realuser_instruct/instruction",
+          "description": "Column 'instruction' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-realuser_instruct"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "realuser_instruct/output",
+          "name": "realuser_instruct/output",
+          "description": "Column 'output' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-realuser_instruct"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "realuser_instruct/tag",
+          "name": "realuser_instruct/tag",
+          "description": "Column 'tag' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-realuser_instruct"
+            },
+            "extract": {
+              "column": "tag"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "opc-sft-stage1",
+  "description": "\n\n\t\n\t\t\n\t\tOpenCoder Dataset\n\t\n\nThe OpenCoder dataset is composed of the following datasets:\n\nopc-sft-stage1: the sft data used for opencoder sft-stage1 <-- you are here\nopc-sft-stage2: the sft data used for opencoder sft-stage2\nopc-annealing-corpus: the synthetic data & algorithmic corpus used for opencoder annealing\nopc-fineweb-code-corpus: the code-related page recalled from fineweb\nopc-fineweb-math-corpus: the math-related page recalled from finewebrefineCode-code-corpus-meta: the meta-data\u2026 See the full description on the dataset page: https://huggingface.co/datasets/OpenCoder-LLM/opc-sft-stage1.",
+  "alternateName": [
+    "OpenCoder-LLM/opc-sft-stage1"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenCoder",
+    "url": "https://huggingface.co/OpenCoder-LLM"
+  },
+  "keywords": [
+    "mit",
+    "1M - 10M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2411.04905",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/OpenCoder-LLM/opc-sft-stage1",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

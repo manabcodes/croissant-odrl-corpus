@@ -1,0 +1,674 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/AWeirdDev/all-recipes-xs/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "AWeirdDev/all-recipes-xs - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/name",
+          "name": "default/name",
+          "description": "Column 'name' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/review",
+          "name": "default/review",
+          "description": "Column 'review' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "review"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rating",
+          "name": "default/rating",
+          "description": "Column 'rating' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/meta",
+          "name": "default/meta",
+          "description": "Column 'meta' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/active_time",
+              "name": "default/meta/active_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "active_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/additional_time",
+              "name": "default/meta/additional_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "additional_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/bake_time",
+              "name": "default/meta/bake_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "bake_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/cook_time",
+              "name": "default/meta/cook_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "cook_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/cool_time",
+              "name": "default/meta/cool_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "cool_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/fry_time",
+              "name": "default/meta/fry_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "fry_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/prep_time",
+              "name": "default/meta/prep_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "prep_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/rest_time",
+              "name": "default/meta/rest_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "rest_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/servings",
+              "name": "default/meta/servings",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "servings"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/soak_time",
+              "name": "default/meta/soak_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "soak_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/total_time",
+              "name": "default/meta/total_time",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "total_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta/yield",
+              "name": "default/meta/yield",
+              "description": "Column 'meta' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "yield"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ingredients",
+          "name": "default/ingredients",
+          "description": "Column 'ingredients' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/ingredients/name",
+              "name": "default/ingredients/name",
+              "description": "Column 'ingredients' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ingredients"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ingredients/quanity",
+              "name": "default/ingredients/quanity",
+              "description": "Column 'ingredients' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ingredients"
+                },
+                "transform": {
+                  "jsonPath": "quanity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ingredients/unit",
+              "name": "default/ingredients/unit",
+              "description": "Column 'ingredients' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ingredients"
+                },
+                "transform": {
+                  "jsonPath": "unit"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/steps",
+          "name": "default/steps",
+          "description": "Column 'steps' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "steps"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cooks_note",
+          "name": "default/cooks_note",
+          "description": "Column 'cooks_note' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cooks_note"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/editors_note",
+          "name": "default/editors_note",
+          "description": "Column 'editors_note' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "editors_note"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/nutrition_facts",
+          "name": "default/nutrition_facts",
+          "description": "Column 'nutrition_facts' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/nutrition_facts/Calories",
+              "name": "default/nutrition_facts/Calories",
+              "description": "Column 'nutrition_facts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nutrition_facts"
+                },
+                "transform": {
+                  "jsonPath": "Calories"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nutrition_facts/Carbs",
+              "name": "default/nutrition_facts/Carbs",
+              "description": "Column 'nutrition_facts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nutrition_facts"
+                },
+                "transform": {
+                  "jsonPath": "Carbs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nutrition_facts/Fat",
+              "name": "default/nutrition_facts/Fat",
+              "description": "Column 'nutrition_facts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nutrition_facts"
+                },
+                "transform": {
+                  "jsonPath": "Fat"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nutrition_facts/Protein",
+              "name": "default/nutrition_facts/Protein",
+              "description": "Column 'nutrition_facts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nutrition_facts"
+                },
+                "transform": {
+                  "jsonPath": "Protein"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/url",
+          "name": "default/url",
+          "description": "Column 'url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "all-recipes-xs",
+  "description": "\n\t\n\t\t\n\t\tall-recipes-xs (500)\n\t\n\nAll Recipes dataset (extra small).\nfrom datasets import load_dataset\n\n# Load the dataset\ndataset = load_dataset(\"AWeirdDev/all-recipes-xs\")\n\nAlternatively, load with pickle from _frozen.pkl:\nimport pickle\nimport requests\n\nr = requests.get(\"https://huggingface.co/datasets/AWeirdDev/all-recipes-xs/resolve/main/_frozen.pkl\")\ndataset = pickle.loads(r.content)\n\n\n\t\n\t\n\t\n\t\tFeatures\n\t\n\nNote: Empty values are presented as \"unknown\" instead of None (normally, unless\u2026 See the full description on the dataset page: https://huggingface.co/datasets/AWeirdDev/all-recipes-xs.",
+  "alternateName": [
+    "AWeirdDev/all-recipes-xs",
+    "All Recipes (xs)"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "AWeirdDev",
+    "url": "https://huggingface.co/AWeirdDev"
+  },
+  "keywords": [
+    "text-classification",
+    "text-generation",
+    "English",
+    "mit",
+    "< 1K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "food",
+    "recipe"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/AWeirdDev/all-recipes-xs",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

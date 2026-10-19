@@ -1,0 +1,530 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/vkehfdl1/banana-vidorev3-fullpipe/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "vkehfdl1/banana-vidorev3-fullpipe - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/positive_pages",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "positive_pages"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/hard_negative_pages",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "hard_negative_pages"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/sample_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "sample_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/original_image",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "original_image"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/document_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "document_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/answer",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/num_positive_pages",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "num_positive_pages"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/num_hard_negative_pages",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "num_hard_negative_pages"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/hard_negative_variants",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/hard_negative_variants/variant_id",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "hard_negative_variants"
+                      },
+                      {
+                        "jsonPath": "variant_id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/hard_negative_variants/alt_concept",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "hard_negative_variants"
+                      },
+                      {
+                        "jsonPath": "alt_concept"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/hard_negative_variants/rationale",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "hard_negative_variants"
+                      },
+                      {
+                        "jsonPath": "rationale"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/hard_negative_variants/target_positive_page",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "hard_negative_variants"
+                      },
+                      {
+                        "jsonPath": "target_positive_page"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/seed_image",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "seed_image"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/source_dataset",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "source_dataset"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/domain",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "domain"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/negative_method",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "negative_method"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/leakage_guard",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "leakage_guard"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/split",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "split"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "banana-vidorev3-fullpipe",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tBanana ViDoRe v3 Fullpipe\n\t\n\nNano Banana Pro full-pipeline synthetic training data for ViDoRe v3 finance and industrial domains.\nThis repository contains 4670 training records and 40190 unique referenced images across\ndomain-separated ColFlor/ColQwen training splits. Images are included in the repository and paths in each JSONL are\nrelative to that domain directory.\nGenerated at: 2026-06-29T09:39:01.644860+00:00\n\n\t\n\t\t\n\t\n\t\n\t\tLayout\n\t\n\nfinance/train.jsonl\nfinance/metadata.json\u2026 See the full description on the dataset page: https://huggingface.co/datasets/vkehfdl1/banana-vidorev3-fullpipe.",
+  "alternateName": [
+    "vkehfdl1/banana-vidorev3-fullpipe",
+    "Banana ViDoRe v3 Fullpipe"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jeffrey Kim",
+    "url": "https://huggingface.co/vkehfdl1"
+  },
+  "keywords": [
+    "visual-document-retrieval",
+    "document-question-answering",
+    "English",
+    "apache-2.0",
+    "1K - 10K",
+    "Image",
+    "Text",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "vidore",
+    "nano-banana-pro",
+    "banana-fullpipe",
+    "hard-negatives",
+    "colqwen",
+    "colflor"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/vkehfdl1/banana-vidorev3-fullpipe",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

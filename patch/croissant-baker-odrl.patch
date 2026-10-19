@@ -1,0 +1,733 @@
+diff --git a/odrl-example.yaml b/odrl-example.yaml
+new file mode 100644
+index 0000000..c22f641
+--- /dev/null
++++ b/odrl-example.yaml
+@@ -0,0 +1,76 @@
++# ODRL usage policy for a Croissant dataset
++#
++# This file covers Croissant 1.1's "Fine-Grained Control with ODRL" section
++# (docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html), which recommends
++# W3C ODRL (https://www.w3.org/TR/odrl-model/) for expressing dataset usage
++# permissions, prohibitions, and duties as machine-actionable metadata under
++# schema.org's `usageInfo` property.
++#
++# Usage:
++#   When generating a new Croissant file:
++#     croissant-baker --input ./my-dataset --creator "Name" --odrl-config odrl.yaml
++#
++#   When enriching an existing Croissant file (e.g. one downloaded from
++#   Hugging Face, Kaggle, or OpenML that doesn't have a policy yet):
++#     croissant-baker odrl-apply dataset-croissant.jsonld --odrl-config odrl.yaml
++#
++# All fields are optional. Remove or leave blank any section that does not apply.
++#
++# OUTPUT STRUCTURE
++# ----------------
++# Everything below becomes a single `usageInfo` node on the dataset, typed
++# ["CreativeWork", "odrl:Offer"], containing odrl:permission / odrl:prohibition
++# / odrl:duty rules — the exact shape the spec's own examples use.
++# ----------------------------------------------------------------------------
++
++# Human-readable label for the policy as a whole.
++name: PhysioNet Credentialed Health Data License — research use only
++
++# ── Permissions ─────────────────────────────────────────────────────────────
++#
++# action    — an ODRL action term (use, distribute, reproduce, commercialize,
++#             derive, ...), or a CURIE from another vocabulary, e.g. a DUO
++#             action term (duo:0000006 = "Health or Medical or Biomedical Use").
++# target    — optional @id of a FileObject/FileSet/RecordSet this rule
++#             applies to. Omit for a dataset-wide rule.
++# constraints — optional list of {left_operand, operator, right_operand}.
++#             left_operand/operator are ODRL terms unless they already contain
++#             a colon (then used as-is, e.g. a DUO/MONDO CURIE).
++#             right_operand is a plain value ("research") or a CURIE
++#             reference ("duo:0000018") if it contains a colon.
++
++permissions:
++  - action: use
++    constraints:
++      - left_operand: purpose
++        operator: eq
++        right_operand: research
++
++  # A DUO-flavoured permission, mirroring the spec's own health-data example:
++  # allow "Health or Medical or Biomedical Use" (duo:0000006), but restricted
++  # to non-commercial use (duo:0000018) via the DUO modifier vocabulary.
++  # Requires the `duo` prefix, which is auto-declared in @context by
++  # inject_odrl() since it's a built-in known prefix.
++  - action: duo:0000006
++    constraints:
++      - left_operand: duo:0000018
++        operator: eq
++        right_operand: duo:0000018
++
++# ── Prohibitions ────────────────────────────────────────────────────────────
++
++prohibitions:
++  - action: commercialize
++  - action: distribute
++
++# ── Duties ──────────────────────────────────────────────────────────────────
++#
++# NOTE: as of this writing, third-party ODRL reasoners (e.g. SolidLabResearch's
++# ODRL-Evaluator) generally do not yet evaluate Duty as an independently
++# checkable rule — duty satisfaction is typically expected to already be
++# reflected as a fact elsewhere, not derived by the reasoner. Duties here are
++# still worth encoding for machine-readability and documentation purposes,
++# just don't expect an evaluator to auto-verify them yet.
++
++duties:
++  - action: odrl:attribution
+diff --git a/src/croissant_baker/__main__.py b/src/croissant_baker/__main__.py
+index 501ae8f..3e3688a 100644
+--- a/src/croissant_baker/__main__.py
++++ b/src/croissant_baker/__main__.py
+@@ -607,6 +607,13 @@ def main(
+         exists=True,
+         dir_okay=False,
+     ),
++    odrl_config: Optional[Path] = typer.Option(
++        None,
++        "--odrl-config",
++        help="Path to an ODRL policy YAML file (see odrl-example.yaml for the template)",
++        exists=True,
++        dir_okay=False,
++    ),
+     include: Optional[List[str]] = typer.Option(
+         None,
+         "--include",
+@@ -836,6 +843,13 @@ def main(
+             rai = load_rai_config(rai_config)
+             metadata_dict = inject_rai(metadata_dict, rai)
+ 
++        # Inject an ODRL usage policy when a config file is provided
++        if odrl_config:
++            from croissant_baker.odrl import inject_odrl, load_odrl_config
++
++            odrl = load_odrl_config(odrl_config)
++            metadata_dict = inject_odrl(metadata_dict, odrl)
++
+         _ensure_rai_conforms_to(
+             metadata_dict, force=bool(rai_config or native_rai_fields)
+         )
+@@ -888,7 +902,54 @@ def main(
+         raise typer.Exit(code=1)
+ 
+ 
+-@app.command(name="rai-apply")
++@app.command(name="odrl-apply")
++def odrl_apply(
++    file_path: str = typer.Argument(..., help="Croissant metadata file to update"),
++    odrl_config: Path = typer.Option(
++        ...,
++        "--odrl-config",
++        help="ODRL policy config YAML file",
++        exists=True,
++        dir_okay=False,
++    ),
++    output: Optional[str] = typer.Option(
++        None,
++        "--output",
++        "-o",
++        help="Output path (defaults to overwriting the input file)",
++    ),
++    validate: bool = typer.Option(
++        True, "--validate/--no-validate", help="Validate after applying the ODRL policy"
++    ),
++) -> None:
++    """Apply an ODRL usage policy from a config YAML to an existing Croissant file."""
++    from croissant_baker.odrl import inject_odrl, load_odrl_config
++
++    input_path = Path(file_path)
++    if not input_path.is_file():
++        typer.echo(f"Error: '{file_path}' is not a file", err=True)
++        raise typer.Exit(code=1)
++
++    try:
++        with open(input_path, encoding="utf-8") as fh:
++            metadata_dict = json.load(fh)
++
++        odrl = load_odrl_config(odrl_config)
++        metadata_dict = inject_odrl(metadata_dict, odrl)
++
++        dest = str(Path(output) if output else input_path)
++        _save_dict(metadata_dict, dest, validate=validate)
++
++        typer.echo(f"ODRL policy applied and saved to: {dest}")
++        if not validate:
++            typer.echo(f"Tip: Run `croissant-baker validate {dest}` to validate later")
++
++    except ValueError as e:
++        typer.echo(f"Error: {e}", err=True)
++        raise typer.Exit(code=1)
++    except Exception as e:
++        typer.echo(f"Unexpected error: {e}", err=True)
++        raise typer.Exit(code=1)
+ def rai_apply(
+     file_path: str = typer.Argument(..., help="Croissant metadata file to update"),
+     rai_config: Path = typer.Option(
+diff --git a/src/croissant_baker/odrl/__init__.py b/src/croissant_baker/odrl/__init__.py
+new file mode 100644
+index 0000000..c339049
+--- /dev/null
++++ b/src/croissant_baker/odrl/__init__.py
+@@ -0,0 +1,7 @@
++"""ODRL usage policy support for Croissant Baker."""
++
++from croissant_baker.odrl.injector import inject_odrl
++from croissant_baker.odrl.loader import load_odrl_config
++from croissant_baker.odrl.schema import ODRLConfig
++
++__all__ = ["load_odrl_config", "inject_odrl", "ODRLConfig"]
+diff --git a/src/croissant_baker/odrl/injector.py b/src/croissant_baker/odrl/injector.py
+new file mode 100644
+index 0000000..f1ad615
+--- /dev/null
++++ b/src/croissant_baker/odrl/injector.py
+@@ -0,0 +1,201 @@
++"""Inject an ODRL usage policy into a Croissant JSON-LD metadata dict.
++
++Follows the shape Croissant 1.1 actually specifies
++(docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html,
++"Fine-Grained Control with ODRL"): a `usageInfo` node typed
++`["CreativeWork", "odrl:Offer"]`, holding `odrl:permission` /
++`odrl:prohibition` / `odrl:duty` rules.
++
++NOTE: an earlier, unpublished draft of the ODRL-Croissant integration this
++was built alongside used a bespoke `odrl:hasPolicy` property by analogy
++with the RAI extension. That shape is NOT what the spec defines — always
++use `usageInfo`, which is what this module produces.
++"""
++
++from __future__ import annotations
++
++from croissant_baker.odrl.schema import ODRLConfig, ODRLConstraint, ODRLRule
++
++_ODRL_NS = "http://www.w3.org/ns/odrl/2/"
++
++# Prefixes we know how to auto-declare when referenced in action/operand
++# values, matching the vocabularies Croissant's own spec examples combine
++# ODRL with for health data. Any other prefix used in a config (e.g. a
++# site-specific vocabulary) must already be present in the dataset's own
++# @context — inject_odrl() warns rather than fails if it isn't, since a
++# missing prefix produces a dangling CURIE but shouldn't block generation.
++_KNOWN_PREFIXES = {
++    "duo": "http://purl.obolibrary.org/obo/DUO_",
++    "mondo": "http://purl.obolibrary.org/obo/MONDO_",
++    "cc": "http://creativecommons.org/ns#",
++}
++
++_RULE_TYPES = {
++    "permissions": "odrl:Permission",
++    "prohibitions": "odrl:Prohibition",
++    "duties": "odrl:Duty",
++}
++_RULE_PROPERTIES = {
++    "permissions": "odrl:permission",
++    "prohibitions": "odrl:prohibition",
++    "duties": "odrl:duty",
++}
++
++
++def inject_odrl(metadata: dict, config: ODRLConfig) -> dict:
++    """
++    Inject an ODRL usage policy into a Croissant metadata dict.
++
++    Mutates and returns the dict. If `usageInfo` already holds a value
++    (e.g. from --usage-info), the ODRL Offer is combined into a list
++    alongside it rather than overwriting it.
++    """
++    if not (config.permissions or config.prohibitions or config.duties):
++        return metadata
++
++    _ensure_odrl_context(metadata, config)
++
++    offer: dict = {"@type": ["CreativeWork", "odrl:Offer"]}
++    if config.name:
++        offer["name"] = config.name
++
++    for field_name, prop in _RULE_PROPERTIES.items():
++        rules = getattr(config, field_name)
++        if not rules:
++            continue
++        built = [_build_rule(r, _RULE_TYPES[field_name]) for r in rules]
++        offer[prop] = built[0] if len(built) == 1 else built
++
++    existing = metadata.get("usageInfo")
++    if existing is None:
++        metadata["usageInfo"] = offer
++    elif isinstance(existing, list):
++        metadata["usageInfo"] = [*existing, offer]
++    else:
++        metadata["usageInfo"] = [existing, offer]
++
++    return metadata
++
++
++def _build_rule(rule: ODRLRule, rule_type: str) -> dict:
++    node: dict = {
++        "@type": rule_type,
++        "odrl:action": _as_ref(rule.action),
++    }
++    if rule.target:
++        node["odrl:target"] = {"@id": rule.target}
++    if rule.constraints:
++        built = [_build_constraint(c) for c in rule.constraints]
++        node["odrl:constraint"] = built[0] if len(built) == 1 else built
++    return node
++
++
++def _build_constraint(c: ODRLConstraint) -> dict:
++    return {
++        "@type": "odrl:Constraint",
++        "odrl:leftOperand": _as_ref(c.left_operand),
++        "odrl:operator": _as_ref(c.operator),
++        "odrl:rightOperand": _as_value(c.right_operand),
++    }
++
++
++def _is_curie_or_iri(value: str) -> bool:
++    return "://" in value or (":" in value and " " not in value)
++
++
++def _as_ref(value: str) -> dict:
++    """odrl:action/leftOperand/operator values are always references.
++
++    A bare word like "use" becomes an odrl: CURIE; anything already
++    containing a colon (a CURIE like "duo:0000006" or a full IRI) is
++    passed through as-is.
++    """
++    ref = value if _is_curie_or_iri(value) else f"odrl:{value}"
++    return {"@id": ref}
++
++
++def _as_value(value: str) -> object:
++    """odrl:rightOperand may be a plain literal ("research") or a
++    reference to a term in another vocabulary ("duo:0000018")."""
++    if _is_curie_or_iri(value):
++        return {"@id": value}
++    return value
++
++
++def _collect_prefixes(config: ODRLConfig) -> set[str]:
++    prefixes: set[str] = set()
++    for field_name in ("permissions", "prohibitions", "duties"):
++        for rule in getattr(config, field_name):
++            for candidate in (rule.action, *(c.left_operand for c in rule.constraints), *(c.right_operand for c in rule.constraints)):
++                if _is_curie_or_iri(candidate) and "://" not in candidate:
++                    prefixes.add(candidate.split(":", 1)[0])
++    return prefixes
++
++
++def _ensure_odrl_context(metadata: dict, config: ODRLConfig) -> None:
++    """Make sure `odrl:` (and any other prefixes the config references) are
++    declared in @context, regardless of which of the four shapes @context
++    legitimately takes in JSON-LD:
++      - missing entirely
++      - a single object   {"schema": "...", ...}
++      - a remote reference "https://.../context.jsonld"   (a URL string)
++      - an array mixing either of the above, e.g. ["https://...", {...}]
++
++    Confirmed against a real 500-dataset Hugging Face run that the string
++    form is common enough to matter — 28/211 successfully "generated"
++    files had usageInfo referencing odrl: with no odrl: prefix declared
++    anywhere, because the old version of this function silently did
++    nothing for non-dict contexts. That produced files that looked
++    successful but were actually invalid JSON-LD.
++    """
++    ctx = metadata.get("@context")
++
++    needed: dict[str, str] = {"odrl": _ODRL_NS}
++    for prefix in _collect_prefixes(config):
++        if prefix == "odrl":
++            continue
++        if prefix in _KNOWN_PREFIXES:
++            needed[prefix] = _KNOWN_PREFIXES[prefix]
++        else:
++            print(
++                f"Warning: ODRL config references prefix '{prefix}:' which is not "
++                f"declared in @context and is not a built-in known prefix "
++                f"({', '.join(_KNOWN_PREFIXES)}). Add it to your dataset's context "
++                f"manually or the generated CURIE will not resolve."
++            )
++
++    if ctx is None:
++        metadata["@context"] = dict(needed)
++        return
++
++    if isinstance(ctx, dict):
++        for k, v in needed.items():
++            ctx.setdefault(k, v)
++        return
++
++    if isinstance(ctx, list):
++        already = set()
++        for entry in ctx:
++            if isinstance(entry, dict):
++                already.update(entry.keys())
++        missing = {k: v for k, v in needed.items() if k not in already}
++        if missing:
++            ctx.append(missing)
++        return
++
++    if isinstance(ctx, str):
++        # Remote context reference. JSON-LD lets @context be an array
++        # mixing a URL and inline term definitions — wrap rather than
++        # overwrite, so the document's original (possibly load-bearing)
++        # remote context is preserved alongside our additions.
++        metadata["@context"] = [ctx, dict(needed)]
++        return
++
++    # Unrecognized shape (shouldn't happen for valid JSON-LD) — warn
++    # instead of silently doing nothing, which is what caused this bug
++    # to go unnoticed in the first place.
++    print(
++        f"Warning: @context has an unexpected type ({type(ctx).__name__}); "
++        f"could not ensure odrl: prefix is declared. Generated usageInfo may "
++        f"not resolve as valid JSON-LD."
++    )
+diff --git a/src/croissant_baker/odrl/loader.py b/src/croissant_baker/odrl/loader.py
+new file mode 100644
+index 0000000..a43e92f
+--- /dev/null
++++ b/src/croissant_baker/odrl/loader.py
+@@ -0,0 +1,55 @@
++"""Load an ODRL policy YAML file into an ODRLConfig dataclass."""
++
++from __future__ import annotations
++
++from pathlib import Path
++from typing import Optional
++
++import yaml
++
++from croissant_baker.odrl.schema import ODRLConfig, ODRLConstraint, ODRLRule
++
++
++def _str(value) -> Optional[str]:
++    if value is None:
++        return None
++    s = str(value).strip()
++    return s if s else None
++
++
++def _load_rules(raw_list: list) -> list[ODRLRule]:
++    rules = []
++    for r in raw_list or []:
++        action = _str(r.get("action"))
++        if not action:
++            continue
++        constraints = [
++            ODRLConstraint(
++                left_operand=str(c.get("left_operand", "")),
++                operator=str(c.get("operator", "eq")),
++                right_operand=str(c.get("right_operand", "")),
++            )
++            for c in (r.get("constraints") or [])
++            if c.get("left_operand") and c.get("right_operand") is not None
++        ]
++        rules.append(
++            ODRLRule(
++                action=action,
++                target=_str(r.get("target")),
++                constraints=constraints,
++            )
++        )
++    return rules
++
++
++def load_odrl_config(path: Path) -> ODRLConfig:
++    """Load an ODRL YAML config file and return an ODRLConfig instance."""
++    with open(path, encoding="utf-8") as fh:
++        raw = yaml.safe_load(fh) or {}
++
++    return ODRLConfig(
++        name=_str(raw.get("name")),
++        permissions=_load_rules(raw.get("permissions") or []),
++        prohibitions=_load_rules(raw.get("prohibitions") or []),
++        duties=_load_rules(raw.get("duties") or []),
++    )
+diff --git a/src/croissant_baker/odrl/schema.py b/src/croissant_baker/odrl/schema.py
+new file mode 100644
+index 0000000..7d278c9
+--- /dev/null
++++ b/src/croissant_baker/odrl/schema.py
+@@ -0,0 +1,36 @@
++"""ODRL policy schema — dataclass models for Croissant 1.1's usageInfo/odrl:Offer.
++
++Mirrors the structure Croissant's spec recommends
++(docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html,
++"Fine-Grained Control with ODRL"): a usageInfo node typed
++["CreativeWork", "odrl:Offer"], holding odrl:permission / odrl:prohibition
++/ odrl:duty rules, each with an action, an optional target, and optional
++constraints.
++"""
++
++from __future__ import annotations
++
++from dataclasses import dataclass, field
++from typing import Optional
++
++
++@dataclass
++class ODRLConstraint:
++    left_operand: str  # e.g. "purpose", "dateTime", or a full CURIE like "mondo:0005070"
++    operator: str  # e.g. "eq", "lt", "gt"
++    right_operand: str  # a plain value ("research") or a CURIE/IRI ("duo:0000018")
++
++
++@dataclass
++class ODRLRule:
++    action: str  # e.g. "use", "distribute", "commercialize", or a DUO action CURIE
++    target: Optional[str] = None  # @id of a FileObject/FileSet/RecordSet; omit for dataset-wide
++    constraints: list[ODRLConstraint] = field(default_factory=list)
++
++
++@dataclass
++class ODRLConfig:
++    name: Optional[str] = None
++    permissions: list[ODRLRule] = field(default_factory=list)
++    prohibitions: list[ODRLRule] = field(default_factory=list)
++    duties: list[ODRLRule] = field(default_factory=list)
+diff --git a/tests/test_odrl.py b/tests/test_odrl.py
+new file mode 100644
+index 0000000..be7158b
+--- /dev/null
++++ b/tests/test_odrl.py
+@@ -0,0 +1,234 @@
++"""Tests for the ODRL usage-policy extension."""
++
++import json
++from pathlib import Path
++
++import pytest
++from typer.testing import CliRunner
++
++from croissant_baker.__main__ import app
++from croissant_baker.odrl import inject_odrl, load_odrl_config
++from croissant_baker.odrl.schema import ODRLConfig, ODRLConstraint, ODRLRule
++
++runner = CliRunner()
++
++_DATA = Path(__file__).parent / "data"
++ODRL_YAML = Path(__file__).parent.parent / "odrl-example.yaml"
++MIMICIV_PATH = (
++    _DATA / "input" / "mimiciv_demo" / "physionet.org" / "files" / "mimic-iv-demo" / "2.2"
++)
++
++
++@pytest.fixture
++def mimiciv_demo_path() -> Path:
++    if not MIMICIV_PATH.exists():
++        pytest.skip(f"MIMIC-IV demo dataset not found at {MIMICIV_PATH}")
++    return MIMICIV_PATH
++
++
++# ── Unit tests: loader ───────────────────────────────────────────────────────
++
++
++def test_load_odrl_config_parses_example_yaml() -> None:
++    config = load_odrl_config(ODRL_YAML)
++    assert config.name
++    assert len(config.permissions) == 2
++    assert len(config.prohibitions) == 2
++    assert len(config.duties) == 1
++    assert config.permissions[0].action == "use"
++    assert config.permissions[0].constraints[0].left_operand == "purpose"
++    assert config.permissions[0].constraints[0].right_operand == "research"
++
++
++# ── Unit tests: injector ─────────────────────────────────────────────────────
++
++
++def _base_metadata() -> dict:
++    return {"@context": {"@vocab": "https://schema.org/"}, "@type": "sc:Dataset", "name": "Test"}
++
++
++def test_inject_odrl_produces_spec_shape() -> None:
++    config = ODRLConfig(
++        name="Test policy",
++        permissions=[
++            ODRLRule(
++                action="use",
++                target="image-files",
++                constraints=[ODRLConstraint(left_operand="purpose", operator="eq", right_operand="research")],
++            )
++        ],
++        prohibitions=[ODRLRule(action="commercialize")],
++    )
++    metadata = inject_odrl(_base_metadata(), config)
++
++    assert metadata["@context"]["odrl"] == "http://www.w3.org/ns/odrl/2/"
++
++    usage_info = metadata["usageInfo"]
++    assert usage_info["@type"] == ["CreativeWork", "odrl:Offer"]
++
++    permission = usage_info["odrl:permission"]
++    assert permission["@type"] == "odrl:Permission"
++    assert permission["odrl:action"] == {"@id": "odrl:use"}
++    assert permission["odrl:target"] == {"@id": "image-files"}
++    constraint = permission["odrl:constraint"]
++    assert constraint["odrl:leftOperand"] == {"@id": "odrl:purpose"}
++    assert constraint["odrl:operator"] == {"@id": "odrl:eq"}
++    assert constraint["odrl:rightOperand"] == "research"  # plain literal, not a ref
++
++    prohibition = usage_info["odrl:prohibition"]
++    assert prohibition["@type"] == "odrl:Prohibition"
++    assert prohibition["odrl:action"] == {"@id": "odrl:commercialize"}
++
++
++def test_inject_odrl_resolves_curie_operands_as_refs() -> None:
++    config = ODRLConfig(
++        permissions=[
++            ODRLRule(
++                action="duo:0000006",
++                constraints=[ODRLConstraint(left_operand="duo:0000018", operator="eq", right_operand="duo:0000018")],
++            )
++        ]
++    )
++    metadata = inject_odrl(_base_metadata(), config)
++
++    # Known prefix (duo) gets auto-declared in @context.
++    assert metadata["@context"]["duo"] == "http://purl.obolibrary.org/obo/DUO_"
++
++    permission = metadata["usageInfo"]["odrl:permission"]
++    assert permission["odrl:action"] == {"@id": "duo:0000006"}
++    constraint = permission["odrl:constraint"]
++    assert constraint["odrl:leftOperand"] == {"@id": "duo:0000018"}
++    # A CURIE right_operand is a reference, not a plain string.
++    assert constraint["odrl:rightOperand"] == {"@id": "duo:0000018"}
++
++
++def test_inject_odrl_warns_on_unknown_prefix(capsys) -> None:
++    config = ODRLConfig(permissions=[ODRLRule(action="acme:doSomething")])
++    inject_odrl(_base_metadata(), config)
++    captured = capsys.readouterr()
++    assert "acme" in captured.out
++    assert "Warning" in captured.out
++
++
++def test_inject_odrl_combines_with_existing_usage_info() -> None:
++    metadata = _base_metadata()
++    metadata["usageInfo"] = "https://example.org/duo/0000042"
++    config = ODRLConfig(permissions=[ODRLRule(action="use")])
++    metadata = inject_odrl(metadata, config)
++    assert isinstance(metadata["usageInfo"], list)
++    assert metadata["usageInfo"][0] == "https://example.org/duo/0000042"
++    assert metadata["usageInfo"][1]["@type"] == ["CreativeWork", "odrl:Offer"]
++
++
++def test_inject_odrl_noop_when_config_empty() -> None:
++    metadata = _base_metadata()
++    result = inject_odrl(metadata, ODRLConfig())
++    assert "usageInfo" not in result
++
++
++# ── Regression: @context can legitimately be a string or array, not just
++# a dict — a real 500-dataset Hugging Face run found 28/211 "successful"
++# files were actually invalid JSON-LD because of this. ──────────────────
++
++
++def test_inject_odrl_handles_string_context() -> None:
++    metadata = {"@context": "https://example.org/remote-context.jsonld", "@type": "sc:Dataset", "name": "Test"}
++    config = ODRLConfig(permissions=[ODRLRule(action="use")])
++    result = inject_odrl(metadata, config)
++    assert result["@context"] == ["https://example.org/remote-context.jsonld", {"odrl": "http://www.w3.org/ns/odrl/2/"}]
++    assert result["usageInfo"]["odrl:permission"]["odrl:action"] == {"@id": "odrl:use"}
++
++
++def test_inject_odrl_handles_array_context() -> None:
++    metadata = {
++        "@context": ["https://example.org/remote-context.jsonld", {"schema": "https://schema.org/"}],
++        "@type": "sc:Dataset",
++        "name": "Test",
++    }
++    config = ODRLConfig(permissions=[ODRLRule(action="use")])
++    result = inject_odrl(metadata, config)
++    # odrl: gets appended as a new entry rather than overwriting the existing dict entry
++    assert {"odrl": "http://www.w3.org/ns/odrl/2/"} in result["@context"]
++    assert {"schema": "https://schema.org/"} in result["@context"]
++
++
++def test_inject_odrl_handles_missing_context() -> None:
++    metadata = {"@type": "sc:Dataset", "name": "Test"}
++    config = ODRLConfig(permissions=[ODRLRule(action="use")])
++    result = inject_odrl(metadata, config)
++    assert result["@context"] == {"odrl": "http://www.w3.org/ns/odrl/2/"}
++
++
++# ── Integration test: real CLI + real MIMIC-IV demo data ────────────────────
++
++
++def test_odrl_generation_against_real_mimiciv_demo(
++    mimiciv_demo_path: Path, tmp_path: Path
++) -> None:
++    output = tmp_path / "output.jsonld"
++    result = runner.invoke(
++        app,
++        [
++            "-i",
++            str(mimiciv_demo_path),
++            "-o",
++            str(output),
++            "--creator",
++            "Alistair Johnson,aewj@mit.edu",
++            "--name",
++            "MIMIC-IV Demo Dataset",
++            "--description",
++            "Demo subset of MIMIC-IV",
++            "--url",
++            "https://physionet.org/content/mimic-iv-demo/2.2/",
++            "--license",
++            "https://opendatacommons.org/licenses/odbl/1-0/",
++            "--odrl-config",
++            str(ODRL_YAML),
++        ],
++    )
++    assert result.exit_code == 0, result.output
++
++    metadata = json.loads(output.read_text())
++    assert metadata["conformsTo"] == "http://mlcommons.org/croissant/1.1"
++    assert "odrl:permission" in metadata["usageInfo"]
++    assert "odrl:prohibition" in metadata["usageInfo"]
++    assert metadata["@context"]["odrl"] == "http://www.w3.org/ns/odrl/2/"
++
++
++def test_odrl_apply_to_existing_file(mimiciv_demo_path: Path, tmp_path: Path) -> None:
++    # First generate a plain file with no policy.
++    plain = tmp_path / "plain.jsonld"
++    gen = runner.invoke(
++        app,
++        [
++            "-i",
++            str(mimiciv_demo_path),
++            "-o",
++            str(plain),
++            "--creator",
++            "Alistair Johnson,aewj@mit.edu",
++            "--name",
++            "MIMIC-IV Demo Dataset",
++            "--description",
++            "Demo subset of MIMIC-IV",
++            "--url",
++            "https://physionet.org/content/mimic-iv-demo/2.2/",
++            "--license",
++            "https://opendatacommons.org/licenses/odbl/1-0/",
++        ],
++    )
++    assert gen.exit_code == 0, gen.output
++    assert "usageInfo" not in json.loads(plain.read_text())
++
++    # Then apply the ODRL policy after the fact, as you'd do to a file
++    # downloaded from a repository that doesn't have one yet.
++    enriched = tmp_path / "enriched.jsonld"
++    applied = runner.invoke(
++        app,
++        ["odrl-apply", str(plain), "--odrl-config", str(ODRL_YAML), "-o", str(enriched)],
++    )
++    assert applied.exit_code == 0, applied.output
++
++    metadata = json.loads(enriched.read_text())
++    assert "odrl:permission" in metadata["usageInfo"]

@@ -1,0 +1,881 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/google-research-datasets/go_emotions/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-simplified",
+      "name": "parquet-files-for-config-simplified",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "simplified/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-raw",
+      "name": "parquet-files-for-config-raw",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "raw/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "simplified_splits/split_name"
+      },
+      "@id": "simplified_splits",
+      "name": "simplified_splits",
+      "description": "Splits for the simplified config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "simplified_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "simplified_splits/split_name": "train"
+        },
+        {
+          "simplified_splits/split_name": "validation"
+        },
+        {
+          "simplified_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "simplified",
+      "name": "simplified",
+      "description": "google-research-datasets/go_emotions - 'simplified' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "simplified/split",
+          "name": "simplified/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-simplified"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "simplified/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "simplified_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "simplified/text",
+          "name": "simplified/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-simplified"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "simplified/labels",
+          "name": "simplified/labels",
+          "description": "ClassLabel column 'labels' from the Hugging Face parquet file.\nLabels:\nadmiration (0), amusement (1), anger (2), annoyance (3), approval (4), caring (5), confusion (6), curiosity (7), desire (8), disappointment (9), disapproval (10), disgust (11), embarrassment (12), excitement (13), fear (14), gratitude (15), grief (16), joy (17), love (18), nervousness (19), optimism (20), pride (21), realization (22), relief (23), remorse (24), sadness (25), surprise (26), neutral (27)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-simplified"
+            },
+            "extract": {
+              "column": "labels"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "simplified/id",
+          "name": "simplified/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-simplified"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "raw_splits/split_name"
+      },
+      "@id": "raw_splits",
+      "name": "raw_splits",
+      "description": "Splits for the raw config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "raw_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "raw",
+      "name": "raw",
+      "description": "google-research-datasets/go_emotions - 'raw' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw/split",
+          "name": "raw/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "raw/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "raw_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/text",
+          "name": "raw/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/id",
+          "name": "raw/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/author",
+          "name": "raw/author",
+          "description": "Column 'author' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/subreddit",
+          "name": "raw/subreddit",
+          "description": "Column 'subreddit' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "subreddit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/link_id",
+          "name": "raw/link_id",
+          "description": "Column 'link_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "link_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/parent_id",
+          "name": "raw/parent_id",
+          "description": "Column 'parent_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "parent_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/created_utc",
+          "name": "raw/created_utc",
+          "description": "Column 'created_utc' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "created_utc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/rater_id",
+          "name": "raw/rater_id",
+          "description": "Column 'rater_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "rater_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/example_very_unclear",
+          "name": "raw/example_very_unclear",
+          "description": "Column 'example_very_unclear' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "example_very_unclear"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/admiration",
+          "name": "raw/admiration",
+          "description": "Column 'admiration' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "admiration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/amusement",
+          "name": "raw/amusement",
+          "description": "Column 'amusement' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "amusement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/anger",
+          "name": "raw/anger",
+          "description": "Column 'anger' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "anger"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/annoyance",
+          "name": "raw/annoyance",
+          "description": "Column 'annoyance' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "annoyance"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/approval",
+          "name": "raw/approval",
+          "description": "Column 'approval' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "approval"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/caring",
+          "name": "raw/caring",
+          "description": "Column 'caring' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "caring"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/confusion",
+          "name": "raw/confusion",
+          "description": "Column 'confusion' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "confusion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/curiosity",
+          "name": "raw/curiosity",
+          "description": "Column 'curiosity' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "curiosity"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/desire",
+          "name": "raw/desire",
+          "description": "Column 'desire' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "desire"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/disappointment",
+          "name": "raw/disappointment",
+          "description": "Column 'disappointment' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "disappointment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/disapproval",
+          "name": "raw/disapproval",
+          "description": "Column 'disapproval' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "disapproval"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/disgust",
+          "name": "raw/disgust",
+          "description": "Column 'disgust' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "disgust"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/embarrassment",
+          "name": "raw/embarrassment",
+          "description": "Column 'embarrassment' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "embarrassment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/excitement",
+          "name": "raw/excitement",
+          "description": "Column 'excitement' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "excitement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/fear",
+          "name": "raw/fear",
+          "description": "Column 'fear' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "fear"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/gratitude",
+          "name": "raw/gratitude",
+          "description": "Column 'gratitude' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "gratitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/grief",
+          "name": "raw/grief",
+          "description": "Column 'grief' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "grief"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/joy",
+          "name": "raw/joy",
+          "description": "Column 'joy' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "joy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/love",
+          "name": "raw/love",
+          "description": "Column 'love' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "love"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/nervousness",
+          "name": "raw/nervousness",
+          "description": "Column 'nervousness' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "nervousness"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/optimism",
+          "name": "raw/optimism",
+          "description": "Column 'optimism' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "optimism"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/pride",
+          "name": "raw/pride",
+          "description": "Column 'pride' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "pride"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/realization",
+          "name": "raw/realization",
+          "description": "Column 'realization' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "realization"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/relief",
+          "name": "raw/relief",
+          "description": "Column 'relief' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "relief"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/remorse",
+          "name": "raw/remorse",
+          "description": "Column 'remorse' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "remorse"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/sadness",
+          "name": "raw/sadness",
+          "description": "Column 'sadness' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "sadness"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/surprise",
+          "name": "raw/surprise",
+          "description": "Column 'surprise' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "surprise"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/neutral",
+          "name": "raw/neutral",
+          "description": "Column 'neutral' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "neutral"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "go_emotions",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for GoEmotions\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe GoEmotions dataset contains 58k carefully curated Reddit comments labeled for 27 emotion categories or Neutral.\nThe raw data is included as well as the smaller, simplified version of the dataset with predefined train/val/test\nsplits.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\nThis dataset is intended for multi-class, multi-label emotion classification.\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nThe data is in English.\n\n\t\n\t\t\n\t\tDataset Structure\u2026 See the full description on the dataset page: https://huggingface.co/datasets/google-research-datasets/go_emotions.",
+  "alternateName": [
+    "google-research-datasets/go_emotions",
+    "GoEmotions"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Google Research Datasets",
+    "url": "https://huggingface.co/google-research-datasets"
+  },
+  "keywords": [
+    "text-classification",
+    "multi-class-classification",
+    "multi-label-classification",
+    "crowdsourced",
+    "found",
+    "monolingual",
+    "original",
+    "English",
+    "apache-2.0",
+    "100K - 1M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2005.00547",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "emotion"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "sameAs": "https://github.com/google-research/google-research/tree/master/goemotions",
+  "url": "https://huggingface.co/datasets/google-research-datasets/go_emotions",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

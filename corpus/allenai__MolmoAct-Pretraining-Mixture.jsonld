@@ -1,0 +1,876 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/MolmoAct-Pretraining-Mixture/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-auxiliary_depth",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "auxiliary_depth/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-auxiliary_trace",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "auxiliary_trace/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-bc_z",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "bc_z/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-bridge_dataset",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "bridge_dataset/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-fractal20220817_data",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "fractal20220817_data/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-lvis",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "lvis/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "auxiliary_depth_splits/split_name"
+      },
+      "@id": "auxiliary_depth_splits",
+      "name": "auxiliary_depth_splits",
+      "description": "Splits for the auxiliary_depth config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_depth_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "auxiliary_depth_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "auxiliary_depth",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'auxiliary_depth' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_depth/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-auxiliary_depth"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "auxiliary_depth/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "auxiliary_depth_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_depth/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-auxiliary_depth"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_depth/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "auxiliary_depth/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-auxiliary_depth"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "auxiliary_depth/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-auxiliary_depth"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "auxiliary_trace_splits/split_name"
+      },
+      "@id": "auxiliary_trace_splits",
+      "name": "auxiliary_trace_splits",
+      "description": "Splits for the auxiliary_trace config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_trace_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "auxiliary_trace_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "auxiliary_trace",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'auxiliary_trace' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_trace/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-auxiliary_trace"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "auxiliary_trace/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "auxiliary_trace_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_trace/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-auxiliary_trace"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "auxiliary_trace/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "auxiliary_trace/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-auxiliary_trace"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "auxiliary_trace/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-auxiliary_trace"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "bc_z_splits/split_name"
+      },
+      "@id": "bc_z_splits",
+      "name": "bc_z_splits",
+      "description": "Splits for the bc_z config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bc_z_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "bc_z_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bc_z",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'bc_z' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bc_z/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bc_z"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "bc_z/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "bc_z_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bc_z/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bc_z"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bc_z/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "bc_z/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-bc_z"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "bc_z/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-bc_z"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bc_z/annotation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bc_z"
+            },
+            "extract": {
+              "column": "annotation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "bridge_dataset_splits/split_name"
+      },
+      "@id": "bridge_dataset_splits",
+      "name": "bridge_dataset_splits",
+      "description": "Splits for the bridge_dataset config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bridge_dataset_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "bridge_dataset_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bridge_dataset",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'bridge_dataset' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bridge_dataset/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bridge_dataset"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "bridge_dataset/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "bridge_dataset_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bridge_dataset/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bridge_dataset"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bridge_dataset/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "bridge_dataset/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-bridge_dataset"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "bridge_dataset/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-bridge_dataset"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bridge_dataset/annotation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bridge_dataset"
+            },
+            "extract": {
+              "column": "annotation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "fractal20220817_data_splits/split_name"
+      },
+      "@id": "fractal20220817_data_splits",
+      "name": "fractal20220817_data_splits",
+      "description": "Splits for the fractal20220817_data config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "fractal20220817_data_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "fractal20220817_data_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "fractal20220817_data",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'fractal20220817_data' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "fractal20220817_data/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fractal20220817_data"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "fractal20220817_data/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "fractal20220817_data_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fractal20220817_data/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fractal20220817_data"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fractal20220817_data/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "fractal20220817_data/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fractal20220817_data"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fractal20220817_data/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fractal20220817_data"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fractal20220817_data/annotation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fractal20220817_data"
+            },
+            "extract": {
+              "column": "annotation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "lvis_splits/split_name"
+      },
+      "@id": "lvis_splits",
+      "name": "lvis_splits",
+      "description": "Splits for the lvis config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "lvis_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "lvis_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "lvis",
+      "description": "allenai/MolmoAct-Pretraining-Mixture - 'lvis' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "lvis/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lvis"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "lvis/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "lvis_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lvis/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lvis"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lvis/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "lvis/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-lvis"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "lvis/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-lvis"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "MolmoAct-Pretraining-Mixture",
+  "description": "\n\t\n\t\t\n\t\tMolmoAct - Pretraining Mixture\n\t\n\nData Mixture used for MolmoAct Pretraining. Contains a subset of OXE formulated as Action Reasoning Data along with auxiliary robot data and link to Multimodal Web data.\nMolmoAct is a fully open-source action reasoning model for robotic manipulation developed by the Allen Institute for AI. MolmoAct is trained on a subset of OXE and MolmoAct Dataset, a dataset with 10k high-quality trajectories of a single-arm Franka robot performing 93 unique\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/MolmoAct-Pretraining-Mixture.",
+  "alternateName": [
+    "allenai/MolmoAct-Pretraining-Mixture"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "robotics",
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2508.07917",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/allenai/MolmoAct-Pretraining-Mixture",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

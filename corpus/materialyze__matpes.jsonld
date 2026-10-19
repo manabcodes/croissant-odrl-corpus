@@ -1,0 +1,1845 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/materialyze/matpes/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pbe-atoms",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pbe-atoms/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-r2scan-atoms",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "r2scan-atoms/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pbe-atoms_splits/split_name"
+      },
+      "@id": "pbe-atoms_splits",
+      "name": "pbe-atoms_splits",
+      "description": "Splits for the pbe-atoms config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pbe-atoms_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pbe-atoms",
+      "description": "materialyze/matpes - 'pbe-atoms' subset\n\nAdditional information:\n- 8 skipped columns: composition, composition_reduced, matpes_id, formation_energy_per_atom, cohesive_energy_per_atom, bader_charges, bader_magmoms, provenance",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pbe\\-atoms/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pbe-atoms_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/builder_meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/builder_meta/emmet_version",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "emmet_version"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/builder_meta/pymatgen_version",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "pymatgen_version"
+                }
+              }
+            },
+            null,
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/builder_meta/build_date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "build_date"
+                }
+              }
+            },
+            null
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/nsites",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "nsites"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/elements",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "elements"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/nelements",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "nelements"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/formula_pretty",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "formula_pretty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/formula_anonymous",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "formula_anonymous"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/chemsys",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "chemsys"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/volume",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "volume"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/density",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "density"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/density_atomic",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "density_atomic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/symmetry",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/crystal_system",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "crystal_system"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/symbol",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "symbol"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/number",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "number"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/point_group",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "point_group"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/symprec",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "symprec"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/angle_tolerance",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "angle_tolerance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/symmetry/version",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "version"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/structure",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/structure/_module",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "['@module']"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/structure/_class",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "['@class']"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/structure/charge",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pbe-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "charge"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/structure/lattice",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/matrix",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "matrix"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1,-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/pbc",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "pbc"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/a",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/b",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/c",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/alpha",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "alpha"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/beta",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "beta"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/gamma",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "gamma"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/lattice/volume",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "volume"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "pbe-atoms/structure/sites",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/sites/species",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "pbe-atoms/structure/sites/species/element",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-pbe-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "species"
+                          },
+                          {
+                            "jsonPath": "element"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "pbe-atoms/structure/sites/species/occu",
+                      "dataType": "cr:Int64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-pbe-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "species"
+                          },
+                          {
+                            "jsonPath": "occu"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/sites/abc",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "abc"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/sites/properties_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "pbe-atoms/structure/sites/properties_0/magmom",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-pbe-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "properties"
+                          },
+                          {
+                            "jsonPath": "magmom"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/sites/label",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "label"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pbe-atoms/structure/sites/xyz",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pbe-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "xyz"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/energy",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "energy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/forces",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "forces"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1,-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/stress",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "stress"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/bandgap",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "bandgap"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/functional",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "functional"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pbe-atoms/abs_forces",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pbe-atoms"
+            },
+            "extract": {
+              "column": "abs_forces"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "r2scan-atoms_splits/split_name"
+      },
+      "@id": "r2scan-atoms_splits",
+      "name": "r2scan-atoms_splits",
+      "description": "Splits for the r2scan-atoms config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "r2scan-atoms_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "r2scan-atoms",
+      "description": "materialyze/matpes - 'r2scan-atoms' subset\n\nAdditional information:\n- 8 skipped columns: composition, composition_reduced, matpes_id, formation_energy_per_atom, cohesive_energy_per_atom, bader_charges, bader_magmoms, provenance",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "r2scan\\-atoms/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "r2scan-atoms_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/builder_meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/builder_meta/emmet_version_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "emmet_version"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/builder_meta/pymatgen_version_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "pymatgen_version"
+                }
+              }
+            },
+            null,
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/builder_meta/build_date_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "builder_meta"
+                },
+                "transform": {
+                  "jsonPath": "build_date"
+                }
+              }
+            },
+            null
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/nsites",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "nsites"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/elements",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "elements"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/nelements",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "nelements"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/formula_pretty",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "formula_pretty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/formula_anonymous",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "formula_anonymous"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/chemsys",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "chemsys"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/volume",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "volume"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/density",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "density"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/density_atomic",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "density_atomic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/symmetry",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/crystal_system_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "crystal_system"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/symbol_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "symbol"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/number_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "number"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/point_group_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "point_group"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/symprec_0",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "symprec"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/angle_tolerance_0",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "angle_tolerance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/symmetry/version_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "symmetry"
+                },
+                "transform": {
+                  "jsonPath": "version"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/structure",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/structure/_module_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "['@module']"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/structure/_class_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "['@class']"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/structure/charge_0",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-r2scan-atoms"
+                },
+                "extract": {
+                  "column": "structure"
+                },
+                "transform": {
+                  "jsonPath": "charge"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/structure/lattice_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/matrix_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "matrix"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1,-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/pbc_0",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "pbc"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/a_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/b_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/c_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "c"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/alpha_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "alpha"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/beta_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "beta"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/gamma_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "gamma"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/lattice_0/volume_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "lattice"
+                      },
+                      {
+                        "jsonPath": "volume"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "r2scan-atoms/structure/sites_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/sites_0/species_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "r2scan-atoms/structure/sites_0/species_0/element_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-r2scan-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "species"
+                          },
+                          {
+                            "jsonPath": "element"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "r2scan-atoms/structure/sites_0/species_0/occu_0",
+                      "dataType": "cr:Int64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-r2scan-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "species"
+                          },
+                          {
+                            "jsonPath": "occu"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/sites_0/abc_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "abc"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/sites_0/properties_0_0_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "r2scan-atoms/structure/sites_0/properties_0_0_0/magmom_0",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-r2scan-atoms"
+                        },
+                        "extract": {
+                          "column": "structure"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sites"
+                          },
+                          {
+                            "jsonPath": "properties"
+                          },
+                          {
+                            "jsonPath": "magmom"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/sites_0/label_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "label"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "r2scan-atoms/structure/sites_0/xyz_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-r2scan-atoms"
+                    },
+                    "extract": {
+                      "column": "structure"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sites"
+                      },
+                      {
+                        "jsonPath": "xyz"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/energy",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "energy"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/forces",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "forces"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1,-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/stress",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "stress"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/bandgap",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "bandgap"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/functional",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "functional"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "r2scan-atoms/abs_forces",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-r2scan-atoms"
+            },
+            "extract": {
+              "column": "abs_forces"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "matpes",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nPotential energy surface datasets with near-complete coverage of the periodic table are used to train foundation\npotentials (FPs), i.e., machine learning interatomic potentials (MLIPs) with near-complete coverage of the periodic\ntable.  MatPES is an initiative by the Materialyze Lab and the Materials Project to address\ncritical deficiencies in such PES datasets for materials.\n\nAccuracy. MatPES is computed using static DFT calculations with stringent converegence\u2026 See the full description on the dataset page: https://huggingface.co/datasets/materialyze/matpes.",
+  "alternateName": [
+    "materialyze/matpes"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "materialyze",
+    "url": "https://huggingface.co/materialyze"
+  },
+  "keywords": [
+    "graph-ml",
+    "English",
+    "bsd-3-clause",
+    "< 1K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2306.06482",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "chemistry",
+    "materials"
+  ],
+  "license": "https://choosealicense.com/licenses/bsd-3-clause/",
+  "sameAs": "http://matpes.ai",
+  "url": "https://huggingface.co/datasets/materialyze/matpes",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "BSD 3-Clause License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

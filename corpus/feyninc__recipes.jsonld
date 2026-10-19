@@ -1,0 +1,1422 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/feyninc/recipes/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-recipes",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "recipes/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-schemas",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "schemas/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "recipes_splits/split_name"
+      },
+      "@id": "recipes_splits",
+      "name": "recipes_splits",
+      "description": "Splits for the recipes config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recipes_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "recipes_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recipes",
+      "description": "feyninc/recipes - 'recipes' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recipes"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "recipes/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "recipes_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recipes"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recipes"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recipes"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recipes"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "recipes/metadata/version",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recipes"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "version"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recipes/metadata/author",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recipes"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "author"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recipes/recipe",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "recipes/recipe/delimiters",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recipes"
+                },
+                "extract": {
+                  "column": "recipe"
+                },
+                "transform": {
+                  "jsonPath": "delimiters"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recipes/recipe/include_delim",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recipes"
+                },
+                "extract": {
+                  "column": "recipe"
+                },
+                "transform": {
+                  "jsonPath": "include_delim"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recipes/recipe/recursive_rules",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "recipes/recipe/recursive_rules/levels",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "recipes/recipe/recursive_rules/levels/delimiters_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-recipes"
+                        },
+                        "extract": {
+                          "column": "recipe"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "recursive_rules"
+                          },
+                          {
+                            "jsonPath": "levels"
+                          },
+                          {
+                            "jsonPath": "delimiters"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "recipes/recipe/recursive_rules/levels/whitespace",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-recipes"
+                        },
+                        "extract": {
+                          "column": "recipe"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "recursive_rules"
+                          },
+                          {
+                            "jsonPath": "levels"
+                          },
+                          {
+                            "jsonPath": "whitespace"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "recipes/recipe/recursive_rules/levels/include_delim_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-recipes"
+                        },
+                        "extract": {
+                          "column": "recipe"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "recursive_rules"
+                          },
+                          {
+                            "jsonPath": "levels"
+                          },
+                          {
+                            "jsonPath": "include_delim"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "isArray": true,
+                  "arrayShape": "-1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "schemas_splits/split_name"
+      },
+      "@id": "schemas_splits",
+      "name": "schemas_splits",
+      "description": "Splits for the schemas config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "schemas_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "schemas_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "schemas",
+      "description": "feyninc/recipes - 'schemas' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-schemas"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "schemas/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "schemas_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/_schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-schemas"
+            },
+            "extract": {
+              "column": "$schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-schemas"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-schemas"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/required",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-schemas"
+            },
+            "extract": {
+              "column": "required"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "schemas/properties",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/name",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/name/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "name"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/name/description",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "name"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/schema",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/schema/type_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "schema"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/schema/description_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "schema"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/description_0_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/description_0_0/type_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "description"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/description_0_0/description_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "description"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/language",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/language/type_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "language"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/language/description_0_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "language"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/metadata",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/metadata/type_0_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/metadata/description_0_0_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "schemas/properties/recipe",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/recipe/type_0_0_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "recipe"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/recipe/description_0_0_0_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-schemas"
+                    },
+                    "extract": {
+                      "column": "properties"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "recipe"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "schemas/properties/recipe/properties",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "schemas/properties/recipe/properties/delimiters_0_0",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/delimiters_0_0/description_0_0_0_0_0_0_0",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "delimiters"
+                              },
+                              {
+                                "jsonPath": "description"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/delimiters_0_0/oneOf",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "schemas/properties/recipe/properties/delimiters_0_0/oneOf/type_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-schemas"
+                                },
+                                "extract": {
+                                  "column": "properties"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "recipe"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "delimiters"
+                                  },
+                                  {
+                                    "jsonPath": "oneOf"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "schemas/properties/recipe/properties/delimiters_0_0/oneOf/items",
+                              "subField": [
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "schemas/properties/recipe/properties/delimiters_0_0/oneOf/items/type_0_0_0_0_0_0_0",
+                                  "dataType": "sc:Text",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-schemas"
+                                    },
+                                    "extract": {
+                                      "column": "properties"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "recipe"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "delimiters"
+                                      },
+                                      {
+                                        "jsonPath": "oneOf"
+                                      },
+                                      {
+                                        "jsonPath": "items"
+                                      },
+                                      {
+                                        "jsonPath": "type"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "isArray": true,
+                          "arrayShape": "-1"
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "schemas/properties/recipe/properties/include_delim_0_0",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/include_delim_0_0/type_0_0_0_0_0_0_0_0",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "include_delim"
+                              },
+                              {
+                                "jsonPath": "type"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/include_delim_0_0/enum",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "include_delim"
+                              },
+                              {
+                                "jsonPath": "enum"
+                              }
+                            ]
+                          },
+                          "isArray": true,
+                          "arrayShape": "-1"
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/include_delim_0_0/description_0_0_0_0_0_0_0_0",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "include_delim"
+                              },
+                              {
+                                "jsonPath": "description"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "schemas/properties/recipe/properties/recursive_rules_0",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/type_0_0_0_0_0_0_0_0_0",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "recursive_rules"
+                              },
+                              {
+                                "jsonPath": "type"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/description_0_0_0_0_0_0_0_0_0",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-schemas"
+                            },
+                            "extract": {
+                              "column": "properties"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "recipe"
+                              },
+                              {
+                                "jsonPath": "properties"
+                              },
+                              {
+                                "jsonPath": "recursive_rules"
+                              },
+                              {
+                                "jsonPath": "description"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0",
+                              "subField": [
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/type_0_0_0_0_0_0_0_0_0_0",
+                                  "dataType": "sc:Text",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-schemas"
+                                    },
+                                    "extract": {
+                                      "column": "properties"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "recipe"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "recursive_rules"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "levels"
+                                      },
+                                      {
+                                        "jsonPath": "type"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0",
+                                  "subField": [
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/type_0_0_0_0_0_0_0_0_0_0_0",
+                                      "dataType": "sc:Text",
+                                      "source": {
+                                        "fileSet": {
+                                          "@id": "parquet-files-for-config-schemas"
+                                        },
+                                        "extract": {
+                                          "column": "properties"
+                                        },
+                                        "transform": [
+                                          {
+                                            "jsonPath": "recipe"
+                                          },
+                                          {
+                                            "jsonPath": "properties"
+                                          },
+                                          {
+                                            "jsonPath": "recursive_rules"
+                                          },
+                                          {
+                                            "jsonPath": "properties"
+                                          },
+                                          {
+                                            "jsonPath": "levels"
+                                          },
+                                          {
+                                            "jsonPath": "items"
+                                          },
+                                          {
+                                            "jsonPath": "type"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0",
+                                      "subField": [
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/delimiters_0_0_0",
+                                          "subField": [
+                                            {
+                                              "@type": "cr:Field",
+                                              "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/delimiters_0_0_0/oneOf_0",
+                                              "subField": [
+                                                {
+                                                  "@type": "cr:Field",
+                                                  "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/delimiters_0_0_0/oneOf_0/type_0_0_0_0_0_0_0_0_0_0_0_0",
+                                                  "dataType": "sc:Text",
+                                                  "source": {
+                                                    "fileSet": {
+                                                      "@id": "parquet-files-for-config-schemas"
+                                                    },
+                                                    "extract": {
+                                                      "column": "properties"
+                                                    },
+                                                    "transform": [
+                                                      {
+                                                        "jsonPath": "recipe"
+                                                      },
+                                                      {
+                                                        "jsonPath": "properties"
+                                                      },
+                                                      {
+                                                        "jsonPath": "recursive_rules"
+                                                      },
+                                                      {
+                                                        "jsonPath": "properties"
+                                                      },
+                                                      {
+                                                        "jsonPath": "levels"
+                                                      },
+                                                      {
+                                                        "jsonPath": "items"
+                                                      },
+                                                      {
+                                                        "jsonPath": "properties"
+                                                      },
+                                                      {
+                                                        "jsonPath": "delimiters"
+                                                      },
+                                                      {
+                                                        "jsonPath": "oneOf"
+                                                      },
+                                                      {
+                                                        "jsonPath": "type"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "@type": "cr:Field",
+                                                  "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/delimiters_0_0_0/oneOf_0/items_0_0",
+                                                  "subField": [
+                                                    {
+                                                      "@type": "cr:Field",
+                                                      "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/delimiters_0_0_0/oneOf_0/items_0_0/type_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                                      "dataType": "sc:Text",
+                                                      "source": {
+                                                        "fileSet": {
+                                                          "@id": "parquet-files-for-config-schemas"
+                                                        },
+                                                        "extract": {
+                                                          "column": "properties"
+                                                        },
+                                                        "transform": [
+                                                          {
+                                                            "jsonPath": "recipe"
+                                                          },
+                                                          {
+                                                            "jsonPath": "properties"
+                                                          },
+                                                          {
+                                                            "jsonPath": "recursive_rules"
+                                                          },
+                                                          {
+                                                            "jsonPath": "properties"
+                                                          },
+                                                          {
+                                                            "jsonPath": "levels"
+                                                          },
+                                                          {
+                                                            "jsonPath": "items"
+                                                          },
+                                                          {
+                                                            "jsonPath": "properties"
+                                                          },
+                                                          {
+                                                            "jsonPath": "delimiters"
+                                                          },
+                                                          {
+                                                            "jsonPath": "oneOf"
+                                                          },
+                                                          {
+                                                            "jsonPath": "items"
+                                                          },
+                                                          {
+                                                            "jsonPath": "type"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              ],
+                                              "isArray": true,
+                                              "arrayShape": "-1"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/whitespace_0",
+                                          "subField": [
+                                            {
+                                              "@type": "cr:Field",
+                                              "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/whitespace_0/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                              "dataType": "sc:Text",
+                                              "source": {
+                                                "fileSet": {
+                                                  "@id": "parquet-files-for-config-schemas"
+                                                },
+                                                "extract": {
+                                                  "column": "properties"
+                                                },
+                                                "transform": [
+                                                  {
+                                                    "jsonPath": "recipe"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "recursive_rules"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "levels"
+                                                  },
+                                                  {
+                                                    "jsonPath": "items"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "whitespace"
+                                                  },
+                                                  {
+                                                    "jsonPath": "type"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/include_delim_0_0_0",
+                                          "subField": [
+                                            {
+                                              "@type": "cr:Field",
+                                              "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/include_delim_0_0_0/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                              "dataType": "sc:Text",
+                                              "source": {
+                                                "fileSet": {
+                                                  "@id": "parquet-files-for-config-schemas"
+                                                },
+                                                "extract": {
+                                                  "column": "properties"
+                                                },
+                                                "transform": [
+                                                  {
+                                                    "jsonPath": "recipe"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "recursive_rules"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "levels"
+                                                  },
+                                                  {
+                                                    "jsonPath": "items"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "include_delim"
+                                                  },
+                                                  {
+                                                    "jsonPath": "type"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "@type": "cr:Field",
+                                              "@id": "schemas/properties/recipe/properties/recursive_rules_0/properties_0/levels_0/items_0/properties_0_0/include_delim_0_0_0/enum_0",
+                                              "dataType": "sc:Text",
+                                              "source": {
+                                                "fileSet": {
+                                                  "@id": "parquet-files-for-config-schemas"
+                                                },
+                                                "extract": {
+                                                  "column": "properties"
+                                                },
+                                                "transform": [
+                                                  {
+                                                    "jsonPath": "recipe"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "recursive_rules"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "levels"
+                                                  },
+                                                  {
+                                                    "jsonPath": "items"
+                                                  },
+                                                  {
+                                                    "jsonPath": "properties"
+                                                  },
+                                                  {
+                                                    "jsonPath": "include_delim"
+                                                  },
+                                                  {
+                                                    "jsonPath": "enum"
+                                                  }
+                                                ]
+                                              },
+                                              "isArray": true,
+                                              "arrayShape": "-1"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "recipes",
+  "description": "\n\n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83e\udd9b Chonkie Recipes \ud83c\udf73\n\t\n\n\nChonkie loves to cook up a storm in the kitchen\n\n\n\nThis repository contains all the recipes that you can use with Chonkie to manage various documents, languages, and more.\n\n\t\n\t\t\n\t\n\t\n\t\tUsage\n\t\n\nTo use the recipes, you need to install chonkie with the hub feature, with the following command:\npip install \"chonkie[hub]\"\n\nThis would enable Hubie which is used internally to get the recipes from this repository. So, you can do things like use the from_recipe\u2026 See the full description on the dataset page: https://huggingface.co/datasets/feyninc/recipes.",
+  "alternateName": [
+    "feyninc/recipes"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Feyn",
+    "url": "https://huggingface.co/feyninc"
+  },
+  "keywords": [
+    "apache-2.0",
+    "< 1K",
+    "Text",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/feyninc/recipes",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

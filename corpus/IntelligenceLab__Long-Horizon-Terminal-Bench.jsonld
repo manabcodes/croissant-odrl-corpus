@@ -1,0 +1,385 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/IntelligenceLab/Long-Horizon-Terminal-Bench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tasks",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tasks/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tasks_splits/split_name"
+      },
+      "@id": "tasks_splits",
+      "name": "tasks_splits",
+      "description": "Splits for the tasks config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tasks_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tasks",
+      "description": "IntelligenceLab/Long-Horizon-Terminal-Bench - 'tasks' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tasks/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tasks_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/difficulty",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/keywords",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "keywords"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/docker_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "docker_image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/allow_internet",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "allow_internet"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/cpus",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "cpus"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/memory_mb",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "memory_mb"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/gpus",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "gpus"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/agent_timeout_min",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "agent_timeout_min"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/expert_time_estimate_min",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "expert_time_estimate_min"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Long-Horizon-Terminal-Bench",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tLong-Horizon Terminal-Bench (LHTB)\n\t\n\nLHTB is a 46-task benchmark for measuring how well LLM agents sustain useful\nwork in a containerized terminal over hundreds of steps. Unlike short-horizon\ncoding benchmarks where an agent writes one artifact and stops, LHTB drops the agent\ninto a stateful environment and grades it with hidden, rebuild-from-artifact\nverifiers \u2014 self-reported progress does not count.\n\n\ud83d\udcdd Blog: https://zli12321.github.io/LHTB/\n\ud83c\udfc6 Leaderboard:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/IntelligenceLab/Long-Horizon-Terminal-Bench.",
+  "alternateName": [
+    "IntelligenceLab/Long-Horizon-Terminal-Bench",
+    "Long-Horizon Terminal-Bench (LHTB)"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Agent Intelligence-Lab \ud83e\udd9e",
+    "url": "https://huggingface.co/IntelligenceLab"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "apache-2.0",
+    "< 1K",
+    "json",
+    "Document",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2607.08964",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "agents",
+    "llm-agents",
+    "terminal",
+    "long-horizon",
+    "benchmark",
+    "agentic"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/IntelligenceLab/Long-Horizon-Terminal-Bench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

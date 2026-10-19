@@ -1,0 +1,4057 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-alpaca-7b",
+      "name": "parquet-files-for-config-alpaca-7b",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "alpaca-7b/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-alpaca2-7b",
+      "name": "parquet-files-for-config-alpaca2-7b",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "alpaca2-7b/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-alpaca3-8b",
+      "name": "parquet-files-for-config-alpaca3-8b",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "alpaca3-8b/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "PKU-Alignment/PKU-SafeRLHF - 'default' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt",
+          "name": "default/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_0",
+          "name": "default/response_0",
+          "description": "Column 'response_0' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_1",
+          "name": "default/response_1",
+          "description": "Column 'response_1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt_source",
+          "name": "default/prompt_source",
+          "description": "Column 'prompt_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_0_source",
+          "name": "default/response_0_source",
+          "description": "Column 'response_0_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_0_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_1_source",
+          "name": "default/response_1_source",
+          "description": "Column 'response_1_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_1_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_response_0_safe",
+          "name": "default/is_response_0_safe",
+          "description": "Column 'is_response_0_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_response_0_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_response_1_safe",
+          "name": "default/is_response_1_safe",
+          "description": "Column 'is_response_1_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_response_1_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_0_harm_category",
+          "name": "default/response_0_harm_category",
+          "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Endangering National Security",
+              "name": "default/response_0_harm_category/Endangering National Security",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Insulting Behavior",
+              "name": "default/response_0_harm_category/Insulting Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Discriminatory Behavior",
+              "name": "default/response_0_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Endangering Public Health",
+              "name": "default/response_0_harm_category/Endangering Public Health",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Copyright Issues",
+              "name": "default/response_0_harm_category/Copyright Issues",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Violence",
+              "name": "default/response_0_harm_category/Violence",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Drugs",
+              "name": "default/response_0_harm_category/Drugs",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Privacy Violation",
+              "name": "default/response_0_harm_category/Privacy Violation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Economic Crime",
+              "name": "default/response_0_harm_category/Economic Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Mental Manipulation",
+              "name": "default/response_0_harm_category/Mental Manipulation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Human Trafficking",
+              "name": "default/response_0_harm_category/Human Trafficking",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Physical Harm",
+              "name": "default/response_0_harm_category/Physical Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Sexual Content",
+              "name": "default/response_0_harm_category/Sexual Content",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Cybercrime",
+              "name": "default/response_0_harm_category/Cybercrime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Disrupting Public Order",
+              "name": "default/response_0_harm_category/Disrupting Public Order",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Environmental Damage",
+              "name": "default/response_0_harm_category/Environmental Damage",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Psychological Harm",
+              "name": "default/response_0_harm_category/Psychological Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/White-Collar Crime",
+              "name": "default/response_0_harm_category/White-Collar Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_0_harm_category/Animal Abuse",
+              "name": "default/response_0_harm_category/Animal Abuse",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_1_harm_category",
+          "name": "default/response_1_harm_category",
+          "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Endangering National Security",
+              "name": "default/response_1_harm_category/Endangering National Security",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Insulting Behavior",
+              "name": "default/response_1_harm_category/Insulting Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Discriminatory Behavior",
+              "name": "default/response_1_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Endangering Public Health",
+              "name": "default/response_1_harm_category/Endangering Public Health",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Copyright Issues",
+              "name": "default/response_1_harm_category/Copyright Issues",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Violence",
+              "name": "default/response_1_harm_category/Violence",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Drugs",
+              "name": "default/response_1_harm_category/Drugs",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Privacy Violation",
+              "name": "default/response_1_harm_category/Privacy Violation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Economic Crime",
+              "name": "default/response_1_harm_category/Economic Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Mental Manipulation",
+              "name": "default/response_1_harm_category/Mental Manipulation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Human Trafficking",
+              "name": "default/response_1_harm_category/Human Trafficking",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Physical Harm",
+              "name": "default/response_1_harm_category/Physical Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Sexual Content",
+              "name": "default/response_1_harm_category/Sexual Content",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Cybercrime",
+              "name": "default/response_1_harm_category/Cybercrime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Disrupting Public Order",
+              "name": "default/response_1_harm_category/Disrupting Public Order",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Environmental Damage",
+              "name": "default/response_1_harm_category/Environmental Damage",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Psychological Harm",
+              "name": "default/response_1_harm_category/Psychological Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/White-Collar Crime",
+              "name": "default/response_1_harm_category/White-Collar Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/response_1_harm_category/Animal Abuse",
+              "name": "default/response_1_harm_category/Animal Abuse",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_0_severity_level",
+          "name": "default/response_0_severity_level",
+          "description": "Column 'response_0_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_0_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_1_severity_level",
+          "name": "default/response_1_severity_level",
+          "description": "Column 'response_1_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_1_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/better_response_id",
+          "name": "default/better_response_id",
+          "description": "Column 'better_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "better_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/safer_response_id",
+          "name": "default/safer_response_id",
+          "description": "Column 'safer_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "safer_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_0_sha256",
+          "name": "default/response_0_sha256",
+          "description": "Column 'response_0_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_0_sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response_1_sha256",
+          "name": "default/response_1_sha256",
+          "description": "Column 'response_1_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response_1_sha256"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "alpaca-7b_splits/split_name"
+      },
+      "@id": "alpaca-7b_splits",
+      "name": "alpaca-7b_splits",
+      "description": "Splits for the alpaca-7b config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "alpaca-7b_splits/split_name": "train"
+        },
+        {
+          "alpaca-7b_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "alpaca-7b",
+      "name": "alpaca-7b",
+      "description": "PKU-Alignment/PKU-SafeRLHF - 'alpaca-7b' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/split",
+          "name": "alpaca-7b/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "alpaca\\-7b/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "alpaca-7b_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/prompt",
+          "name": "alpaca-7b/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_0",
+          "name": "alpaca-7b/response_0",
+          "description": "Column 'response_0' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_1",
+          "name": "alpaca-7b/response_1",
+          "description": "Column 'response_1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/prompt_source",
+          "name": "alpaca-7b/prompt_source",
+          "description": "Column 'prompt_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "prompt_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_0_source",
+          "name": "alpaca-7b/response_0_source",
+          "description": "Column 'response_0_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_0_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_1_source",
+          "name": "alpaca-7b/response_1_source",
+          "description": "Column 'response_1_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_1_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/is_response_0_safe",
+          "name": "alpaca-7b/is_response_0_safe",
+          "description": "Column 'is_response_0_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "is_response_0_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/is_response_1_safe",
+          "name": "alpaca-7b/is_response_1_safe",
+          "description": "Column 'is_response_1_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "is_response_1_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_0_harm_category",
+          "name": "alpaca-7b/response_0_harm_category",
+          "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Endangering National Security",
+              "name": "alpaca-7b/response_0_harm_category/Endangering National Security",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Insulting Behavior",
+              "name": "alpaca-7b/response_0_harm_category/Insulting Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Discriminatory Behavior",
+              "name": "alpaca-7b/response_0_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Endangering Public Health",
+              "name": "alpaca-7b/response_0_harm_category/Endangering Public Health",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Copyright Issues",
+              "name": "alpaca-7b/response_0_harm_category/Copyright Issues",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Violence",
+              "name": "alpaca-7b/response_0_harm_category/Violence",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Drugs",
+              "name": "alpaca-7b/response_0_harm_category/Drugs",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Privacy Violation",
+              "name": "alpaca-7b/response_0_harm_category/Privacy Violation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Economic Crime",
+              "name": "alpaca-7b/response_0_harm_category/Economic Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Mental Manipulation",
+              "name": "alpaca-7b/response_0_harm_category/Mental Manipulation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Human Trafficking",
+              "name": "alpaca-7b/response_0_harm_category/Human Trafficking",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Physical Harm",
+              "name": "alpaca-7b/response_0_harm_category/Physical Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Sexual Content",
+              "name": "alpaca-7b/response_0_harm_category/Sexual Content",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Cybercrime",
+              "name": "alpaca-7b/response_0_harm_category/Cybercrime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Disrupting Public Order",
+              "name": "alpaca-7b/response_0_harm_category/Disrupting Public Order",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Environmental Damage",
+              "name": "alpaca-7b/response_0_harm_category/Environmental Damage",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Psychological Harm",
+              "name": "alpaca-7b/response_0_harm_category/Psychological Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/White-Collar Crime",
+              "name": "alpaca-7b/response_0_harm_category/White-Collar Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_0_harm_category/Animal Abuse",
+              "name": "alpaca-7b/response_0_harm_category/Animal Abuse",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_1_harm_category",
+          "name": "alpaca-7b/response_1_harm_category",
+          "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Endangering National Security",
+              "name": "alpaca-7b/response_1_harm_category/Endangering National Security",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Insulting Behavior",
+              "name": "alpaca-7b/response_1_harm_category/Insulting Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Discriminatory Behavior",
+              "name": "alpaca-7b/response_1_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Endangering Public Health",
+              "name": "alpaca-7b/response_1_harm_category/Endangering Public Health",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Copyright Issues",
+              "name": "alpaca-7b/response_1_harm_category/Copyright Issues",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Violence",
+              "name": "alpaca-7b/response_1_harm_category/Violence",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Drugs",
+              "name": "alpaca-7b/response_1_harm_category/Drugs",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Privacy Violation",
+              "name": "alpaca-7b/response_1_harm_category/Privacy Violation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Economic Crime",
+              "name": "alpaca-7b/response_1_harm_category/Economic Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Mental Manipulation",
+              "name": "alpaca-7b/response_1_harm_category/Mental Manipulation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Human Trafficking",
+              "name": "alpaca-7b/response_1_harm_category/Human Trafficking",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Physical Harm",
+              "name": "alpaca-7b/response_1_harm_category/Physical Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Sexual Content",
+              "name": "alpaca-7b/response_1_harm_category/Sexual Content",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Cybercrime",
+              "name": "alpaca-7b/response_1_harm_category/Cybercrime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Disrupting Public Order",
+              "name": "alpaca-7b/response_1_harm_category/Disrupting Public Order",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Environmental Damage",
+              "name": "alpaca-7b/response_1_harm_category/Environmental Damage",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Psychological Harm",
+              "name": "alpaca-7b/response_1_harm_category/Psychological Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/White-Collar Crime",
+              "name": "alpaca-7b/response_1_harm_category/White-Collar Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca-7b/response_1_harm_category/Animal Abuse",
+              "name": "alpaca-7b/response_1_harm_category/Animal Abuse",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_0_severity_level",
+          "name": "alpaca-7b/response_0_severity_level",
+          "description": "Column 'response_0_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_0_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_1_severity_level",
+          "name": "alpaca-7b/response_1_severity_level",
+          "description": "Column 'response_1_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_1_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/better_response_id",
+          "name": "alpaca-7b/better_response_id",
+          "description": "Column 'better_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "better_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/safer_response_id",
+          "name": "alpaca-7b/safer_response_id",
+          "description": "Column 'safer_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "safer_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_0_sha256",
+          "name": "alpaca-7b/response_0_sha256",
+          "description": "Column 'response_0_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_0_sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca-7b/response_1_sha256",
+          "name": "alpaca-7b/response_1_sha256",
+          "description": "Column 'response_1_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca-7b"
+            },
+            "extract": {
+              "column": "response_1_sha256"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "alpaca2-7b_splits/split_name"
+      },
+      "@id": "alpaca2-7b_splits",
+      "name": "alpaca2-7b_splits",
+      "description": "Splits for the alpaca2-7b config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "alpaca2-7b_splits/split_name": "train"
+        },
+        {
+          "alpaca2-7b_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "alpaca2-7b",
+      "name": "alpaca2-7b",
+      "description": "PKU-Alignment/PKU-SafeRLHF - 'alpaca2-7b' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/split",
+          "name": "alpaca2-7b/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "alpaca2\\-7b/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "alpaca2-7b_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/prompt",
+          "name": "alpaca2-7b/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_0",
+          "name": "alpaca2-7b/response_0",
+          "description": "Column 'response_0' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_1",
+          "name": "alpaca2-7b/response_1",
+          "description": "Column 'response_1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/prompt_source",
+          "name": "alpaca2-7b/prompt_source",
+          "description": "Column 'prompt_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "prompt_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_0_source",
+          "name": "alpaca2-7b/response_0_source",
+          "description": "Column 'response_0_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_0_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_1_source",
+          "name": "alpaca2-7b/response_1_source",
+          "description": "Column 'response_1_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_1_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/is_response_0_safe",
+          "name": "alpaca2-7b/is_response_0_safe",
+          "description": "Column 'is_response_0_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "is_response_0_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/is_response_1_safe",
+          "name": "alpaca2-7b/is_response_1_safe",
+          "description": "Column 'is_response_1_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "is_response_1_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_0_harm_category",
+          "name": "alpaca2-7b/response_0_harm_category",
+          "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Endangering National Security",
+              "name": "alpaca2-7b/response_0_harm_category/Endangering National Security",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Insulting Behavior",
+              "name": "alpaca2-7b/response_0_harm_category/Insulting Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Discriminatory Behavior",
+              "name": "alpaca2-7b/response_0_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Endangering Public Health",
+              "name": "alpaca2-7b/response_0_harm_category/Endangering Public Health",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Copyright Issues",
+              "name": "alpaca2-7b/response_0_harm_category/Copyright Issues",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Violence",
+              "name": "alpaca2-7b/response_0_harm_category/Violence",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Drugs",
+              "name": "alpaca2-7b/response_0_harm_category/Drugs",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Privacy Violation",
+              "name": "alpaca2-7b/response_0_harm_category/Privacy Violation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Economic Crime",
+              "name": "alpaca2-7b/response_0_harm_category/Economic Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Mental Manipulation",
+              "name": "alpaca2-7b/response_0_harm_category/Mental Manipulation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Human Trafficking",
+              "name": "alpaca2-7b/response_0_harm_category/Human Trafficking",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Physical Harm",
+              "name": "alpaca2-7b/response_0_harm_category/Physical Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Sexual Content",
+              "name": "alpaca2-7b/response_0_harm_category/Sexual Content",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Cybercrime",
+              "name": "alpaca2-7b/response_0_harm_category/Cybercrime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Disrupting Public Order",
+              "name": "alpaca2-7b/response_0_harm_category/Disrupting Public Order",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Environmental Damage",
+              "name": "alpaca2-7b/response_0_harm_category/Environmental Damage",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Psychological Harm",
+              "name": "alpaca2-7b/response_0_harm_category/Psychological Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/White-Collar Crime",
+              "name": "alpaca2-7b/response_0_harm_category/White-Collar Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_0_harm_category/Animal Abuse",
+              "name": "alpaca2-7b/response_0_harm_category/Animal Abuse",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_1_harm_category",
+          "name": "alpaca2-7b/response_1_harm_category",
+          "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Endangering National Security",
+              "name": "alpaca2-7b/response_1_harm_category/Endangering National Security",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Insulting Behavior",
+              "name": "alpaca2-7b/response_1_harm_category/Insulting Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Discriminatory Behavior",
+              "name": "alpaca2-7b/response_1_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Endangering Public Health",
+              "name": "alpaca2-7b/response_1_harm_category/Endangering Public Health",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Copyright Issues",
+              "name": "alpaca2-7b/response_1_harm_category/Copyright Issues",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Violence",
+              "name": "alpaca2-7b/response_1_harm_category/Violence",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Drugs",
+              "name": "alpaca2-7b/response_1_harm_category/Drugs",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Privacy Violation",
+              "name": "alpaca2-7b/response_1_harm_category/Privacy Violation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Economic Crime",
+              "name": "alpaca2-7b/response_1_harm_category/Economic Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Mental Manipulation",
+              "name": "alpaca2-7b/response_1_harm_category/Mental Manipulation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Human Trafficking",
+              "name": "alpaca2-7b/response_1_harm_category/Human Trafficking",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Physical Harm",
+              "name": "alpaca2-7b/response_1_harm_category/Physical Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Sexual Content",
+              "name": "alpaca2-7b/response_1_harm_category/Sexual Content",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Cybercrime",
+              "name": "alpaca2-7b/response_1_harm_category/Cybercrime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Disrupting Public Order",
+              "name": "alpaca2-7b/response_1_harm_category/Disrupting Public Order",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Environmental Damage",
+              "name": "alpaca2-7b/response_1_harm_category/Environmental Damage",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Psychological Harm",
+              "name": "alpaca2-7b/response_1_harm_category/Psychological Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/White-Collar Crime",
+              "name": "alpaca2-7b/response_1_harm_category/White-Collar Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca2-7b/response_1_harm_category/Animal Abuse",
+              "name": "alpaca2-7b/response_1_harm_category/Animal Abuse",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca2-7b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_0_severity_level",
+          "name": "alpaca2-7b/response_0_severity_level",
+          "description": "Column 'response_0_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_0_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_1_severity_level",
+          "name": "alpaca2-7b/response_1_severity_level",
+          "description": "Column 'response_1_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_1_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/better_response_id",
+          "name": "alpaca2-7b/better_response_id",
+          "description": "Column 'better_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "better_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/safer_response_id",
+          "name": "alpaca2-7b/safer_response_id",
+          "description": "Column 'safer_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "safer_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_0_sha256",
+          "name": "alpaca2-7b/response_0_sha256",
+          "description": "Column 'response_0_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_0_sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca2-7b/response_1_sha256",
+          "name": "alpaca2-7b/response_1_sha256",
+          "description": "Column 'response_1_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca2-7b"
+            },
+            "extract": {
+              "column": "response_1_sha256"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "alpaca3-8b_splits/split_name"
+      },
+      "@id": "alpaca3-8b_splits",
+      "name": "alpaca3-8b_splits",
+      "description": "Splits for the alpaca3-8b config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "alpaca3-8b_splits/split_name": "train"
+        },
+        {
+          "alpaca3-8b_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "alpaca3-8b",
+      "name": "alpaca3-8b",
+      "description": "PKU-Alignment/PKU-SafeRLHF - 'alpaca3-8b' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/split",
+          "name": "alpaca3-8b/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "alpaca3\\-8b/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "alpaca3-8b_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/prompt",
+          "name": "alpaca3-8b/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_0",
+          "name": "alpaca3-8b/response_0",
+          "description": "Column 'response_0' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_1",
+          "name": "alpaca3-8b/response_1",
+          "description": "Column 'response_1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/prompt_source",
+          "name": "alpaca3-8b/prompt_source",
+          "description": "Column 'prompt_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "prompt_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_0_source",
+          "name": "alpaca3-8b/response_0_source",
+          "description": "Column 'response_0_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_0_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_1_source",
+          "name": "alpaca3-8b/response_1_source",
+          "description": "Column 'response_1_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_1_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/is_response_0_safe",
+          "name": "alpaca3-8b/is_response_0_safe",
+          "description": "Column 'is_response_0_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "is_response_0_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/is_response_1_safe",
+          "name": "alpaca3-8b/is_response_1_safe",
+          "description": "Column 'is_response_1_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "is_response_1_safe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_0_harm_category",
+          "name": "alpaca3-8b/response_0_harm_category",
+          "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Endangering National Security",
+              "name": "alpaca3-8b/response_0_harm_category/Endangering National Security",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Insulting Behavior",
+              "name": "alpaca3-8b/response_0_harm_category/Insulting Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Discriminatory Behavior",
+              "name": "alpaca3-8b/response_0_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Endangering Public Health",
+              "name": "alpaca3-8b/response_0_harm_category/Endangering Public Health",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Copyright Issues",
+              "name": "alpaca3-8b/response_0_harm_category/Copyright Issues",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Violence",
+              "name": "alpaca3-8b/response_0_harm_category/Violence",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Drugs",
+              "name": "alpaca3-8b/response_0_harm_category/Drugs",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Privacy Violation",
+              "name": "alpaca3-8b/response_0_harm_category/Privacy Violation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Economic Crime",
+              "name": "alpaca3-8b/response_0_harm_category/Economic Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Mental Manipulation",
+              "name": "alpaca3-8b/response_0_harm_category/Mental Manipulation",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Human Trafficking",
+              "name": "alpaca3-8b/response_0_harm_category/Human Trafficking",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Physical Harm",
+              "name": "alpaca3-8b/response_0_harm_category/Physical Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Sexual Content",
+              "name": "alpaca3-8b/response_0_harm_category/Sexual Content",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Cybercrime",
+              "name": "alpaca3-8b/response_0_harm_category/Cybercrime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Disrupting Public Order",
+              "name": "alpaca3-8b/response_0_harm_category/Disrupting Public Order",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Environmental Damage",
+              "name": "alpaca3-8b/response_0_harm_category/Environmental Damage",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Psychological Harm",
+              "name": "alpaca3-8b/response_0_harm_category/Psychological Harm",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/White-Collar Crime",
+              "name": "alpaca3-8b/response_0_harm_category/White-Collar Crime",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_0_harm_category/Animal Abuse",
+              "name": "alpaca3-8b/response_0_harm_category/Animal Abuse",
+              "description": "Column 'response_0_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_0_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_1_harm_category",
+          "name": "alpaca3-8b/response_1_harm_category",
+          "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Endangering National Security",
+              "name": "alpaca3-8b/response_1_harm_category/Endangering National Security",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering National Security"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Insulting Behavior",
+              "name": "alpaca3-8b/response_1_harm_category/Insulting Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Insulting Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Discriminatory Behavior",
+              "name": "alpaca3-8b/response_1_harm_category/Discriminatory Behavior",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Discriminatory Behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Endangering Public Health",
+              "name": "alpaca3-8b/response_1_harm_category/Endangering Public Health",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Endangering Public Health"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Copyright Issues",
+              "name": "alpaca3-8b/response_1_harm_category/Copyright Issues",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Copyright Issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Violence",
+              "name": "alpaca3-8b/response_1_harm_category/Violence",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Violence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Drugs",
+              "name": "alpaca3-8b/response_1_harm_category/Drugs",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Drugs"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Privacy Violation",
+              "name": "alpaca3-8b/response_1_harm_category/Privacy Violation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Privacy Violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Economic Crime",
+              "name": "alpaca3-8b/response_1_harm_category/Economic Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Economic Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Mental Manipulation",
+              "name": "alpaca3-8b/response_1_harm_category/Mental Manipulation",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Mental Manipulation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Human Trafficking",
+              "name": "alpaca3-8b/response_1_harm_category/Human Trafficking",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Human Trafficking"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Physical Harm",
+              "name": "alpaca3-8b/response_1_harm_category/Physical Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Physical Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Sexual Content",
+              "name": "alpaca3-8b/response_1_harm_category/Sexual Content",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Sexual Content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Cybercrime",
+              "name": "alpaca3-8b/response_1_harm_category/Cybercrime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Cybercrime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Disrupting Public Order",
+              "name": "alpaca3-8b/response_1_harm_category/Disrupting Public Order",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Disrupting Public Order"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Environmental Damage",
+              "name": "alpaca3-8b/response_1_harm_category/Environmental Damage",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Environmental Damage"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Psychological Harm",
+              "name": "alpaca3-8b/response_1_harm_category/Psychological Harm",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Psychological Harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/White-Collar Crime",
+              "name": "alpaca3-8b/response_1_harm_category/White-Collar Crime",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "White-Collar Crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "alpaca3-8b/response_1_harm_category/Animal Abuse",
+              "name": "alpaca3-8b/response_1_harm_category/Animal Abuse",
+              "description": "Column 'response_1_harm_category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-alpaca3-8b"
+                },
+                "extract": {
+                  "column": "response_1_harm_category"
+                },
+                "transform": {
+                  "jsonPath": "Animal Abuse"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_0_severity_level",
+          "name": "alpaca3-8b/response_0_severity_level",
+          "description": "Column 'response_0_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_0_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_1_severity_level",
+          "name": "alpaca3-8b/response_1_severity_level",
+          "description": "Column 'response_1_severity_level' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_1_severity_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/better_response_id",
+          "name": "alpaca3-8b/better_response_id",
+          "description": "Column 'better_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "better_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/safer_response_id",
+          "name": "alpaca3-8b/safer_response_id",
+          "description": "Column 'safer_response_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "safer_response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_0_sha256",
+          "name": "alpaca3-8b/response_0_sha256",
+          "description": "Column 'response_0_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_0_sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "alpaca3-8b/response_1_sha256",
+          "name": "alpaca3-8b/response_1_sha256",
+          "description": "Column 'response_1_sha256' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-alpaca3-8b"
+            },
+            "extract": {
+              "column": "response_1_sha256"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "PKU-SafeRLHF",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for PKU-SafeRLHF\n\t\n\nWarning: this dataset contains data that may be offensive or harmful. The data are intended for research purposes, especially research that can make models less harmful. The views expressed in the data do not reflect the views of PKU-Alignment Team or any of its members. \n[\ud83c\udfe0 Homepage] [\ud83e\udd17 Single Dimension Preference Dataset] [\ud83e\udd17 Q-A Dataset] [\ud83e\udd17 Prompt Dataset]\n\n\t\n\t\n\t\n\t\tCitation\n\t\n\nIf PKU-SafeRLHF has contributed to your work, please consider citing\u2026 See the full description on the dataset page: https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF.",
+  "alternateName": [
+    "PKU-Alignment/PKU-SafeRLHF"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "PKU-Alignment",
+    "url": "https://huggingface.co/PKU-Alignment"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "cc-by-nc-4.0",
+    "100K - 1M",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2406.15513",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "safe",
+    "safety",
+    "ai-safety",
+    "llm",
+    "lm",
+    "human-feedback",
+    "rlhf",
+    "safe-rlhf"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/PKU-Alignment/PKU-SafeRLHF",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

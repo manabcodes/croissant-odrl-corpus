@@ -1,0 +1,925 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ai-sage/TimeGround-1M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tl",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tl/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-recordings",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "recordings/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sum",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sum/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-td",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "td/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tl_splits/split_name"
+      },
+      "@id": "tl_splits",
+      "name": "tl_splits",
+      "description": "Splits for the tl config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tl_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tl_splits/split_name": "train"
+        },
+        {
+          "tl_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tl",
+      "description": "ai-sage/TimeGround-1M - 'tl' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tl/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tl/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tl_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/audio_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "audio_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/bucket",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "bucket"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/duration_sec",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tl/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tl"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "recordings_splits/split_name"
+      },
+      "@id": "recordings_splits",
+      "name": "recordings_splits",
+      "description": "Splits for the recordings config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordings_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "recordings_splits/split_name": "train"
+        },
+        {
+          "recordings_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "recordings",
+      "description": "ai-sage/TimeGround-1M - 'recordings' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "recordings/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "recordings_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/bucket",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "bucket"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/duration_sec",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/silence_ratio",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-recordings"
+            },
+            "extract": {
+              "column": "silence_ratio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/tl",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/tl/task_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "tl"
+                },
+                "transform": {
+                  "jsonPath": "task_id"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/tl/question",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "tl"
+                },
+                "transform": {
+                  "jsonPath": "question"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/tl/answer",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "tl"
+                },
+                "transform": {
+                  "jsonPath": "answer"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/td",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/td/task_id_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "td"
+                },
+                "transform": {
+                  "jsonPath": "task_id"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/td/question_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "td"
+                },
+                "transform": {
+                  "jsonPath": "question"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/td/answer_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "td"
+                },
+                "transform": {
+                  "jsonPath": "answer"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "recordings/sum",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/sum/task_id_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "sum"
+                },
+                "transform": {
+                  "jsonPath": "task_id"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "recordings/sum/summary",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-recordings"
+                },
+                "extract": {
+                  "column": "sum"
+                },
+                "transform": {
+                  "jsonPath": "summary"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sum_splits/split_name"
+      },
+      "@id": "sum_splits",
+      "name": "sum_splits",
+      "description": "Splits for the sum config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sum_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sum_splits/split_name": "train"
+        },
+        {
+          "sum_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sum",
+      "description": "ai-sage/TimeGround-1M - 'sum' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sum/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sum/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sum_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/audio_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "audio_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/bucket",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "bucket"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/duration_sec",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sum/summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sum"
+            },
+            "extract": {
+              "column": "summary"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "td_splits/split_name"
+      },
+      "@id": "td_splits",
+      "name": "td_splits",
+      "description": "Splits for the td config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "td_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "td_splits/split_name": "train"
+        },
+        {
+          "td_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "td",
+      "description": "ai-sage/TimeGround-1M - 'td' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "td/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "td/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "td_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/audio_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "audio_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/bucket",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "bucket"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/duration_sec",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "td/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-td"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TimeGround-1M",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTimeGround-1M\n\t\n\nSynthetic English audio dataset for time-aware speech understanding, covering temporal localization, temporal description, and timed summaries.\n\n\t\n\t\t\n\t\n\t\n\t\tData Filtering\n\t\n\nWe use 14k hours of audio from YODAS2 English shards, selected from a 24k-hour source pool after language- and silence-ratio filtering. Synthetic annotations were generated for three time-grounded tasks, then filtered through LLM-based verification, deterministic validity checks, and\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ai-sage/TimeGround-1M.",
+  "alternateName": [
+    "ai-sage/TimeGround-1M",
+    "TimeGround-1M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ai-sage",
+    "url": "https://huggingface.co/ai-sage"
+  },
+  "keywords": [
+    "question-answering",
+    "summarization",
+    "English",
+    "cc-by-3.0",
+    "100K - 1M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2607.10387",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/ai-sage/TimeGround-1M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,805 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/jonathanli/echr/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-anon",
+      "name": "parquet-files-for-config-anon",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "anon/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-non-anon",
+      "name": "parquet-files-for-config-non-anon",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "non-anon/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "anon_splits/split_name"
+      },
+      "@id": "anon_splits",
+      "name": "anon_splits",
+      "description": "Splits for the anon config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "anon_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "anon_splits/split_name": "train"
+        },
+        {
+          "anon_splits/split_name": "test"
+        },
+        {
+          "anon_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "anon",
+      "name": "anon",
+      "description": "jonathanli/echr - 'anon' subset\n\nAdditional information:\n- 3 splits: train, test, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "anon/split",
+          "name": "anon/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "anon/(?:partial-)?(train|test|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "anon_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/itemid",
+          "name": "anon/itemid",
+          "description": "Column 'itemid' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "itemid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/languageisocode",
+          "name": "anon/languageisocode",
+          "description": "Column 'languageisocode' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "languageisocode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/respondent",
+          "name": "anon/respondent",
+          "description": "Column 'respondent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "respondent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/branch",
+          "name": "anon/branch",
+          "description": "Column 'branch' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "branch"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/date",
+          "name": "anon/date",
+          "description": "Column 'date' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/docname",
+          "name": "anon/docname",
+          "description": "Column 'docname' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "docname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/importance",
+          "name": "anon/importance",
+          "description": "Column 'importance' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "importance"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/conclusion",
+          "name": "anon/conclusion",
+          "description": "Column 'conclusion' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "conclusion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/judges",
+          "name": "anon/judges",
+          "description": "Column 'judges' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "judges"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/text",
+          "name": "anon/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "text"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/violated_articles",
+          "name": "anon/violated_articles",
+          "description": "Column 'violated_articles' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "violated_articles"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/violated_paragraphs",
+          "name": "anon/violated_paragraphs",
+          "description": "Column 'violated_paragraphs' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "violated_paragraphs"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/violated_bulletpoints",
+          "name": "anon/violated_bulletpoints",
+          "description": "Column 'violated_bulletpoints' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "violated_bulletpoints"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/non_violated_articles",
+          "name": "anon/non_violated_articles",
+          "description": "Column 'non_violated_articles' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "non_violated_articles"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/non_violated_paragraphs",
+          "name": "anon/non_violated_paragraphs",
+          "description": "Column 'non_violated_paragraphs' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "non_violated_paragraphs"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/non_violated_bulletpoints",
+          "name": "anon/non_violated_bulletpoints",
+          "description": "Column 'non_violated_bulletpoints' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "non_violated_bulletpoints"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "anon/violated",
+          "name": "anon/violated",
+          "description": "Column 'violated' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-anon"
+            },
+            "extract": {
+              "column": "violated"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "non-anon_splits/split_name"
+      },
+      "@id": "non-anon_splits",
+      "name": "non-anon_splits",
+      "description": "Splits for the non-anon config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "non-anon_splits/split_name": "train"
+        },
+        {
+          "non-anon_splits/split_name": "test"
+        },
+        {
+          "non-anon_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "non-anon",
+      "name": "non-anon",
+      "description": "jonathanli/echr - 'non-anon' subset\n\nAdditional information:\n- 3 splits: train, test, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/split",
+          "name": "non-anon/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "non\\-anon/(?:partial-)?(train|test|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "non-anon_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/itemid",
+          "name": "non-anon/itemid",
+          "description": "Column 'itemid' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "itemid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/languageisocode",
+          "name": "non-anon/languageisocode",
+          "description": "Column 'languageisocode' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "languageisocode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/respondent",
+          "name": "non-anon/respondent",
+          "description": "Column 'respondent' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "respondent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/branch",
+          "name": "non-anon/branch",
+          "description": "Column 'branch' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "branch"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/date",
+          "name": "non-anon/date",
+          "description": "Column 'date' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/docname",
+          "name": "non-anon/docname",
+          "description": "Column 'docname' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "docname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/importance",
+          "name": "non-anon/importance",
+          "description": "Column 'importance' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "importance"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/conclusion",
+          "name": "non-anon/conclusion",
+          "description": "Column 'conclusion' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "conclusion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/judges",
+          "name": "non-anon/judges",
+          "description": "Column 'judges' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "judges"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/text",
+          "name": "non-anon/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "text"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/violated_articles",
+          "name": "non-anon/violated_articles",
+          "description": "Column 'violated_articles' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "violated_articles"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/violated_paragraphs",
+          "name": "non-anon/violated_paragraphs",
+          "description": "Column 'violated_paragraphs' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "violated_paragraphs"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/violated_bulletpoints",
+          "name": "non-anon/violated_bulletpoints",
+          "description": "Column 'violated_bulletpoints' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "violated_bulletpoints"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/non_violated_articles",
+          "name": "non-anon/non_violated_articles",
+          "description": "Column 'non_violated_articles' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "non_violated_articles"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/non_violated_paragraphs",
+          "name": "non-anon/non_violated_paragraphs",
+          "description": "Column 'non_violated_paragraphs' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "non_violated_paragraphs"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/non_violated_bulletpoints",
+          "name": "non-anon/non_violated_bulletpoints",
+          "description": "Column 'non_violated_bulletpoints' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "non_violated_bulletpoints"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "non-anon/violated",
+          "name": "non-anon/violated",
+          "description": "Column 'violated' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-non-anon"
+            },
+            "extract": {
+              "column": "violated"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "echr",
+  "description": "The ECHR Cases dataset is designed for experimentation of neural judgment prediction, as in the original 2019 ACL paper \"Neural Legal Judgment Prediction in English\".",
+  "alternateName": [
+    "jonathanli/echr"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jonathan Li",
+    "url": "https://huggingface.co/jonathanli"
+  },
+  "keywords": [
+    "cc-by-nc-sa-4.0",
+    "10K - 100K",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:1906.02059",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/jonathanli/echr",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

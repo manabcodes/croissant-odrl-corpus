@@ -1,0 +1,1364 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/google-research-datasets/natural_questions/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dev",
+      "name": "parquet-files-for-config-dev",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dev/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "google-research-datasets/natural_questions - 'default' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "name": "default/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/document",
+          "name": "default/document",
+          "description": "Column 'document' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/document/html",
+              "name": "default/document/html",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "html"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/document/title",
+              "name": "default/document/title",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/document/tokens",
+              "name": "default/document/tokens",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/document/tokens/end_byte",
+                  "name": "default/document/tokens/end_byte",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/document/tokens/is_html",
+                  "name": "default/document/tokens/is_html",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "is_html"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/document/tokens/start_byte",
+                  "name": "default/document/tokens/start_byte",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/document/tokens/token",
+                  "name": "default/document/tokens/token",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "token"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/document/url",
+              "name": "default/document/url",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question",
+          "name": "default/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/question/text",
+              "name": "default/question/text",
+              "description": "Column 'question' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "question"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/question/tokens",
+              "name": "default/question/tokens",
+              "description": "Column 'question' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "question"
+                }
+              },
+              "repeated": true
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/long_answer_candidates",
+          "name": "default/long_answer_candidates",
+          "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/long_answer_candidates/end_byte",
+              "name": "default/long_answer_candidates/end_byte",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "end_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/long_answer_candidates/end_token",
+              "name": "default/long_answer_candidates/end_token",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "end_token"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/long_answer_candidates/start_byte",
+              "name": "default/long_answer_candidates/start_byte",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "start_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/long_answer_candidates/start_token",
+              "name": "default/long_answer_candidates/start_token",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "start_token"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/long_answer_candidates/top_level",
+              "name": "default/long_answer_candidates/top_level",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "top_level"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/annotations",
+          "name": "default/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/id",
+              "name": "default/annotations/id",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/long_answer",
+              "name": "default/annotations/long_answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/long_answer/candidate_index",
+                  "name": "default/annotations/long_answer/candidate_index",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "candidate_index"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/long_answer/end_byte",
+                  "name": "default/annotations/long_answer/end_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/long_answer/end_token",
+                  "name": "default/annotations/long_answer/end_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/long_answer/start_byte",
+                  "name": "default/annotations/long_answer/start_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/long_answer/start_token",
+                  "name": "default/annotations/long_answer/start_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_token"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/short_answers",
+              "name": "default/annotations/short_answers",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/short_answers/end_byte",
+                  "name": "default/annotations/short_answers/end_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/short_answers/end_token",
+                  "name": "default/annotations/short_answers/end_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/short_answers/start_byte",
+                  "name": "default/annotations/short_answers/start_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/short_answers/start_token",
+                  "name": "default/annotations/short_answers/start_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/short_answers/text",
+                  "name": "default/annotations/short_answers/text",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "text"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/yes_no_answer",
+              "name": "default/annotations/yes_no_answer",
+              "description": "ClassLabel column 'annotations' from the Hugging Face parquet file.\nLabels:\nNO (0), YES (1)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "yes_no_answer"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dev_splits/split_name"
+      },
+      "@id": "dev_splits",
+      "name": "dev_splits",
+      "description": "Splits for the dev config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dev_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dev",
+      "name": "dev",
+      "description": "google-research-datasets/natural_questions - 'dev' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev/split",
+          "name": "dev/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dev/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dev_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/id",
+          "name": "dev/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/document",
+          "name": "dev/document",
+          "description": "Column 'document' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "dev/document/title",
+              "name": "dev/document/title",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/document/url",
+              "name": "dev/document/url",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/document/html",
+              "name": "dev/document/html",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "document"
+                },
+                "transform": {
+                  "jsonPath": "html"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/document/tokens",
+              "name": "dev/document/tokens",
+              "description": "Column 'document' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/document/tokens/token",
+                  "name": "dev/document/tokens/token",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/document/tokens/is_html",
+                  "name": "dev/document/tokens/is_html",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "is_html"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/document/tokens/start_byte",
+                  "name": "dev/document/tokens/start_byte",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/document/tokens/end_byte",
+                  "name": "dev/document/tokens/end_byte",
+                  "description": "Column 'document' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "document"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/question",
+          "name": "dev/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "dev/question/text",
+              "name": "dev/question/text",
+              "description": "Column 'question' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "question"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/question/tokens",
+              "name": "dev/question/tokens",
+              "description": "Column 'question' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "question"
+                }
+              },
+              "repeated": true
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/long_answer_candidates",
+          "name": "dev/long_answer_candidates",
+          "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "dev/long_answer_candidates/start_token",
+              "name": "dev/long_answer_candidates/start_token",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "start_token"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/long_answer_candidates/end_token",
+              "name": "dev/long_answer_candidates/end_token",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "end_token"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/long_answer_candidates/start_byte",
+              "name": "dev/long_answer_candidates/start_byte",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "start_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/long_answer_candidates/end_byte",
+              "name": "dev/long_answer_candidates/end_byte",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "end_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/long_answer_candidates/top_level",
+              "name": "dev/long_answer_candidates/top_level",
+              "description": "Column 'long_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "long_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "top_level"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/annotations",
+          "name": "dev/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "dev/annotations/id",
+              "name": "dev/annotations/id",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/annotations/long_answer",
+              "name": "dev/annotations/long_answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/long_answer/start_token",
+                  "name": "dev/annotations/long_answer/start_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/long_answer/end_token",
+                  "name": "dev/annotations/long_answer/end_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/long_answer/start_byte",
+                  "name": "dev/annotations/long_answer/start_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/long_answer/end_byte",
+                  "name": "dev/annotations/long_answer/end_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/long_answer/candidate_index",
+                  "name": "dev/annotations/long_answer/candidate_index",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "candidate_index"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/annotations/short_answers",
+              "name": "dev/annotations/short_answers",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/short_answers/start_token",
+                  "name": "dev/annotations/short_answers/start_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/short_answers/end_token",
+                  "name": "dev/annotations/short_answers/end_token",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_token"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/short_answers/start_byte",
+                  "name": "dev/annotations/short_answers/start_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "start_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/short_answers/end_byte",
+                  "name": "dev/annotations/short_answers/end_byte",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "end_byte"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "dev/annotations/short_answers/text",
+                  "name": "dev/annotations/short_answers/text",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-dev"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "text"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dev/annotations/yes_no_answer",
+              "name": "dev/annotations/yes_no_answer",
+              "description": "ClassLabel column 'annotations' from the Hugging Face parquet file.\nLabels:\nNO (0), YES (1)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dev"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "yes_no_answer"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "natural_questions",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Natural Questions\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe NQ corpus contains questions from real users, and it requires QA systems to\nread and comprehend an entire Wikipedia article that may or may not contain the\nanswer to the question. The inclusion of real user questions, and the\nrequirement that solutions should read an entire page to find the answer, cause\nNQ to be a more realistic and challenging task than prior QA datasets.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\u2026 See the full description on the dataset page: https://huggingface.co/datasets/google-research-datasets/natural_questions.",
+  "alternateName": [
+    "google-research-datasets/natural_questions",
+    "Natural Questions"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Google Research Datasets",
+    "url": "https://huggingface.co/google-research-datasets"
+  },
+  "keywords": [
+    "question-answering",
+    "open-domain-qa",
+    "no-annotation",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-3.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-3.0/",
+  "sameAs": "https://ai.google.com/research/NaturalQuestions/dataset",
+  "url": "https://huggingface.co/datasets/google-research-datasets/natural_questions",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

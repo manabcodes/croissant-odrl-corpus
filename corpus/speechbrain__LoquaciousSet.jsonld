@@ -1,0 +1,720 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/speechbrain/LoquaciousSet/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-clean",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-large",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "large/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-medium",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "medium/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-small",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "small/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "clean_splits/split_name"
+      },
+      "@id": "clean_splits",
+      "name": "clean_splits",
+      "description": "Splits for the clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "clean_splits/split_name": "train"
+        },
+        {
+          "clean_splits/split_name": "dev"
+        },
+        {
+          "clean_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "clean",
+      "description": "speechbrain/LoquaciousSet - 'clean' subset\n\nAdditional information:\n- 3 splits: train, dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "clean/(?:partial-)?(train|dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/wav",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "wav"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/spk_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "spk_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "large_splits/split_name"
+      },
+      "@id": "large_splits",
+      "name": "large_splits",
+      "description": "Splits for the large config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "large_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "large_splits/split_name": "train"
+        },
+        {
+          "large_splits/split_name": "dev"
+        },
+        {
+          "large_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "large",
+      "description": "speechbrain/LoquaciousSet - 'large' subset\n\nAdditional information:\n- 3 splits: train, dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "large/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "large/(?:partial-)?(train|dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "large_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/wav",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "wav"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/spk_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "spk_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "medium_splits/split_name"
+      },
+      "@id": "medium_splits",
+      "name": "medium_splits",
+      "description": "Splits for the medium config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "medium_splits/split_name": "train"
+        },
+        {
+          "medium_splits/split_name": "dev"
+        },
+        {
+          "medium_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "medium",
+      "description": "speechbrain/LoquaciousSet - 'medium' subset\n\nAdditional information:\n- 3 splits: train, dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "medium/(?:partial-)?(train|dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "medium_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/wav",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "wav"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/spk_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "spk_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "small_splits/split_name"
+      },
+      "@id": "small_splits",
+      "name": "small_splits",
+      "description": "Splits for the small config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "small_splits/split_name": "train"
+        },
+        {
+          "small_splits/split_name": "dev"
+        },
+        {
+          "small_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "small",
+      "description": "speechbrain/LoquaciousSet - 'small' subset\n\nAdditional information:\n- 3 splits: train, dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "small/(?:partial-)?(train|dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "small_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/wav",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "wav"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/spk_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "spk_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "LoquaciousSet",
+  "description": "\n\t\n\t\t\n\t\tLargeScaleASR: 25,000 hours of transcribed and heterogeneous English speech recognition data for research and commercial use.\n\t\n\nThe full details are available in the paper.\nMade of 6 subsets:\n\nlarge contains 25,000 hours of read / spontaneous and clean / noisy transcribed speech.\nmedium contains 2,500 hours of read / spontaneous and clean / noisy transcribed speech.\nsmall contains 250 hours of read / spontaneous and clean / noisy transcribed speech.\nclean contains 13,000 hours of read\u2026 See the full description on the dataset page: https://huggingface.co/datasets/speechbrain/LoquaciousSet.",
+  "alternateName": [
+    "speechbrain/LoquaciousSet",
+    "LargeScaleASR"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "SpeechBrain",
+    "url": "https://huggingface.co/speechbrain"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "crowdsourced",
+    "machine-generated",
+    "crowdsourced",
+    "machine-generated",
+    "monolingual",
+    "English",
+    "cc-by-3.0",
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2505.21578",
+    "arxiv:2101.00390",
+    "arxiv:2406.00899",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "robust-speech-recognition",
+    "noisy-speech-recognition",
+    "speech-recognition"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/speechbrain/LoquaciousSet",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

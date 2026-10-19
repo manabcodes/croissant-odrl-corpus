@@ -1,0 +1,1041 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/VLR-CVC/ComicsPAP/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-caption_relevance",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "caption_relevance/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-char_coherence",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "char_coherence/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sequence_filling",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sequence_filling/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-text_closure",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "text_closure/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-visual_closure",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "visual_closure/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "caption_relevance_splits/split_name"
+      },
+      "@id": "caption_relevance_splits",
+      "name": "caption_relevance_splits",
+      "description": "Splits for the caption_relevance config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "caption_relevance_splits/split_name": "val"
+        },
+        {
+          "caption_relevance_splits/split_name": "test"
+        },
+        {
+          "caption_relevance_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "caption_relevance",
+      "description": "VLR-CVC/ComicsPAP - 'caption_relevance' subset (first 5GB)\n\nAdditional information:\n- 3 splits: val, test, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "caption_relevance/(?:partial-)?(val|test|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "caption_relevance_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/sample_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "sample_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/context",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "context"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/options",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "options"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/solution_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "solution_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "caption_relevance/previous_panel_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-caption_relevance"
+            },
+            "extract": {
+              "column": "previous_panel_caption"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "char_coherence_splits/split_name"
+      },
+      "@id": "char_coherence_splits",
+      "name": "char_coherence_splits",
+      "description": "Splits for the char_coherence config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "char_coherence_splits/split_name": "val"
+        },
+        {
+          "char_coherence_splits/split_name": "test"
+        },
+        {
+          "char_coherence_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "char_coherence",
+      "description": "VLR-CVC/ComicsPAP - 'char_coherence' subset (first 5GB)\n\nAdditional information:\n- 3 splits: val, test, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "char_coherence/(?:partial-)?(val|test|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "char_coherence_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/sample_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "sample_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/context",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "context"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/options",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "options"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/solution_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "solution_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "char_coherence/previous_panel_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-char_coherence"
+            },
+            "extract": {
+              "column": "previous_panel_caption"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sequence_filling_splits/split_name"
+      },
+      "@id": "sequence_filling_splits",
+      "name": "sequence_filling_splits",
+      "description": "Splits for the sequence_filling config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sequence_filling_splits/split_name": "val"
+        },
+        {
+          "sequence_filling_splits/split_name": "test"
+        },
+        {
+          "sequence_filling_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sequence_filling",
+      "description": "VLR-CVC/ComicsPAP - 'sequence_filling' subset (first 5GB)\n\nAdditional information:\n- 3 splits: val, test, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sequence_filling/(?:partial-)?(val|test|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sequence_filling_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/sample_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "sample_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/context",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "context"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/options",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "options"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/solution_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "solution_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sequence_filling/previous_panel_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sequence_filling"
+            },
+            "extract": {
+              "column": "previous_panel_caption"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "text_closure_splits/split_name"
+      },
+      "@id": "text_closure_splits",
+      "name": "text_closure_splits",
+      "description": "Splits for the text_closure config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "text_closure_splits/split_name": "val"
+        },
+        {
+          "text_closure_splits/split_name": "test"
+        },
+        {
+          "text_closure_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text_closure",
+      "description": "VLR-CVC/ComicsPAP - 'text_closure' subset (first 5GB)\n\nAdditional information:\n- 3 splits: val, test, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "text_closure/(?:partial-)?(val|test|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "text_closure_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/sample_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "sample_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/context",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "context"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/options",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "options"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/solution_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "solution_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_closure/previous_panel_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_closure"
+            },
+            "extract": {
+              "column": "previous_panel_caption"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "visual_closure_splits/split_name"
+      },
+      "@id": "visual_closure_splits",
+      "name": "visual_closure_splits",
+      "description": "Splits for the visual_closure config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "visual_closure_splits/split_name": "val"
+        },
+        {
+          "visual_closure_splits/split_name": "test"
+        },
+        {
+          "visual_closure_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "visual_closure",
+      "description": "VLR-CVC/ComicsPAP - 'visual_closure' subset (first 5GB)\n\nAdditional information:\n- 3 splits: val, test, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "visual_closure/(?:partial-)?(val|test|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "visual_closure_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/sample_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "sample_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/context",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "context"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/options",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "options"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/solution_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "solution_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_closure/previous_panel_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_closure"
+            },
+            "extract": {
+              "column": "previous_panel_caption"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "ComicsPAP",
+  "description": "\n\t\n\t\t\n\t\tComics: Pick-A-Panel\n\t\n\nUpdated val and test on 25/02/2025\nThis is the dataset for the ICDAR 2025 Competition on Comics Understanding in the Era of Foundational Models. \nPlease, check out our \ud83d\ude80 arxiv paper \ud83d\ude80 for more information \ud83d\ude0a \nThe competition is hosted in the Robust Reading Competition website and the leaderboard is available here.\nThe dataset contains five subtask or skills:\n\n\nSequence Filling\n\nGiven a sequence of comic panels, a missing panel, and a set of option panels, the\u2026 See the full description on the dataset page: https://huggingface.co/datasets/VLR-CVC/ComicsPAP.",
+  "alternateName": [
+    "VLR-CVC/ComicsPAP",
+    "Comics: Pick-A-Panel"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Vision, Language and Reading",
+    "url": "https://huggingface.co/VLR-CVC"
+  },
+  "keywords": [
+    "English",
+    "cc-by-sa-4.0",
+    "10K - 100K",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2503.08561",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "comics"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/VLR-CVC/ComicsPAP",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

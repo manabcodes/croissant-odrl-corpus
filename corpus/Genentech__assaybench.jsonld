@@ -1,0 +1,1299 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Genentech/assaybench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-LaTest",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "LaTest/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-biogrid",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "biogrid/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "LaTest_splits/split_name"
+      },
+      "@id": "LaTest_splits",
+      "name": "LaTest_splits",
+      "description": "Splits for the LaTest config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "LaTest_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "LaTest",
+      "description": "Genentech/assaybench - 'LaTest' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "LaTest/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "LaTest_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/relevance_genes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "relevance_genes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/relevance_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "relevance_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/combined_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "combined_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/raw_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "raw_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/hit",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "hit"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cell_line",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cell_line"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cell_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cell_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/phenotype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "phenotype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/screen_rationale",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "screen_rationale"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/library_methodology",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "library_methodology"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/screen_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "screen_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/library_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "library_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/experimental_setup",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "experimental_setup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/condition_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "condition_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/condition_dosage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "condition_dosage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/duration",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/condition_clause",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "condition_clause"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/significance_criteria",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "significance_criteria"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/ranking_rationale",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "ranking_rationale"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/screen_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "screen_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/authorfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "authorfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/authorfold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "authorfold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/authorfold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "authorfold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cell_linefold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cell_linefold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cell_linefold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cell_linefold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cell_linefold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cell_linefold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/phenotypefold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "phenotypefold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/phenotypefold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "phenotypefold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/phenotypefold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "phenotypefold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/yearfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "yearfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/yearfold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "yearfold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/yearfold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "yearfold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/year_match_val_testfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "year_match_val_testfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/cleaned_phenotype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "cleaned_phenotype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "LaTest/source_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-LaTest"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "biogrid_splits/split_name"
+      },
+      "@id": "biogrid_splits",
+      "name": "biogrid_splits",
+      "description": "Splits for the biogrid config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "biogrid_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "biogrid",
+      "description": "Genentech/assaybench - 'biogrid' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "biogrid/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "biogrid_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/relevance_genes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "relevance_genes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/relevance_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "relevance_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/combined_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "combined_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/raw_scores",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "raw_scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/hit",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "hit"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cell_line",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cell_line"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cell_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cell_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/phenotype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "phenotype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/screen_rationale",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "screen_rationale"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/library_methodology",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "library_methodology"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/screen_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "screen_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/library_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "library_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/experimental_setup",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "experimental_setup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/condition_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "condition_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/condition_dosage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "condition_dosage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/duration",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/condition_clause",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "condition_clause"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/significance_criteria",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "significance_criteria"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/ranking_rationale",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "ranking_rationale"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/screen_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "screen_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/authorfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "authorfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/authorfold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "authorfold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/authorfold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "authorfold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cell_linefold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cell_linefold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cell_linefold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cell_linefold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cell_linefold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cell_linefold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/phenotypefold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "phenotypefold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/phenotypefold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "phenotypefold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/phenotypefold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "phenotypefold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/yearfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "yearfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/year_match_val_testfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "year_match_val_testfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/randomfold0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "randomfold0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/randomfold1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "randomfold1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/randomfold2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "randomfold2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/cleaned_phenotype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "cleaned_phenotype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "biogrid/source_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-biogrid"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "assaybench",
+  "description": "\n\t\n\t\t\n\t\tAssayBench: An Assay-Level Virtual Cell Benchmark\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nAssayBench is a benchmark for evaluating computational models on phenotypic CRISPR screen prediction \u2014 a core capability of the \"virtual cell\" paradigm. It contains 1,901 curated CRISPR screen entries derived from 1,565 unique screens in BioGRID ORCS (version 2025), spanning five major classes of cellular phenotypes. Given a textual description of a CRISPR screen experiment, the task is to predict a ranked\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Genentech/assaybench.",
+  "alternateName": [
+    "Genentech/assaybench"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Genentech",
+    "url": "https://huggingface.co/Genentech"
+  },
+  "keywords": [
+    "English",
+    "mit",
+    "1K - 10K",
+    "parquet",
+    "optimized-parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/Genentech/assaybench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tokyotech-llm/swallow-math-v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-swallow-math-v2-qa",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "swallow-math-v2-qa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-swallow-math-v2-textbook",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "swallow-math-v2-textbook/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "swallow-math-v2-qa_splits/split_name"
+      },
+      "@id": "swallow-math-v2-qa_splits",
+      "name": "swallow-math-v2-qa_splits",
+      "description": "Splits for the swallow-math-v2-qa config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-qa_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "swallow-math-v2-qa_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "swallow-math-v2-qa",
+      "description": "tokyotech-llm/swallow-math-v2 - 'swallow-math-v2-qa' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-qa/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-swallow-math-v2-qa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "swallow\\-math\\-v2\\-qa/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "swallow-math-v2-qa_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-qa/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-swallow-math-v2-qa"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "swallow-math-v2-textbook_splits/split_name"
+      },
+      "@id": "swallow-math-v2-textbook_splits",
+      "name": "swallow-math-v2-textbook_splits",
+      "description": "Splits for the swallow-math-v2-textbook config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-textbook_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "swallow-math-v2-textbook_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "swallow-math-v2-textbook",
+      "description": "tokyotech-llm/swallow-math-v2 - 'swallow-math-v2-textbook' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-textbook/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-swallow-math-v2-textbook"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "swallow\\-math\\-v2\\-textbook/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "swallow-math-v2-textbook_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "swallow-math-v2-textbook/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-swallow-math-v2-textbook"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "swallow-math-v2",
+  "description": "\n\t\n\t\t\n\t\tSwallowMath-v2\n\t\n\n\n\n\n\t\n\t\t\n\t\tResources\n\t\n\n\n\ud83d\udcd1 arXiv: Read our paper for detailed methodology at arXiv:2505.02881.\n\ud83e\udd17 Sister Dataset: Discover SwallowCode2, our companion dataset for code generation.\n\n\n\t\n\t\t\n\t\t\ud83e\uddee What is it?\n\t\n\nSwallowMath-v2 is a large-scale mathematical dataset containing 32 billion tokens, developed as the successor to SwallowMath-v1.\nBuilding on the success of v1, this release aims to construct a larger-scale and more permissively licensed corpus to support open and\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tokyotech-llm/swallow-math-v2.",
+  "alternateName": [
+    "tokyotech-llm/swallow-math-v2",
+    "swallowmath2"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "tokyotech-llm",
+    "url": "https://huggingface.co/tokyotech-llm"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "apache-2.0",
+    "10M - 100M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2505.02881",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "math"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/tokyotech-llm/swallow-math-v2",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,570 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/AlignmentResearch/DolusChat/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "AlignmentResearch/DolusChat - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/context/setting",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "setting"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/context/sensitive_info",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "sensitive_info"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/context/non_sensitive_info",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "context"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/system_message",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "system_message"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/user_query",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/user_query/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "user_query"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/user_query/speaker_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "user_query"
+                },
+                "transform": {
+                  "jsonPath": "speaker_type"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/responses",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/responses/truthful",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "responses"
+                },
+                "transform": {
+                  "jsonPath": "truthful"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/responses/deceptive",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "responses"
+                },
+                "transform": {
+                  "jsonPath": "deceptive"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/deception_difficulty",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "deception_difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/lie_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "lie_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ground_truth_features",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Setting",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Setting"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Issue",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Issue"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Difficulty Factor seniority_of_user",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Difficulty Factor seniority_of_user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Difficulty Factor eventual_disclosure_period",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Difficulty Factor eventual_disclosure_period"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Difficulty Factor subjectivity_in_answer",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Difficulty Factor subjectivity_in_answer"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Difficulty Factor communication_medium",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Difficulty Factor communication_medium"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Difficulty Factor number_of_irrelevant_context_items",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Difficulty Factor number_of_irrelevant_context_items"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Deception Difficulty",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Deception Difficulty"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/AI Instantiation",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "AI Instantiation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Lie Type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Lie Type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/ground_truth_features/Lie Reason",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "ground_truth_features"
+                },
+                "transform": {
+                  "jsonPath": "Lie Reason"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "DolusChat",
+  "description": "AlignmentResearch/DolusChat dataset hosted on Hugging Face and contributed by the HF Datasets community",
+  "alternateName": [
+    "AlignmentResearch/DolusChat"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "FAR AI",
+    "url": "https://huggingface.co/AlignmentResearch"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/AlignmentResearch/DolusChat",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,1013 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/Nemotron-Terminal-Corpus/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dataset_adapters",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dataset_adapters/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-skill_based_easy",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "skill_based_easy/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-skill_based_medium",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "skill_based_medium/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-skill_based_mixed",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "skill_based_mixed/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dataset_adapters_splits/split_name"
+      },
+      "@id": "dataset_adapters_splits",
+      "name": "dataset_adapters_splits",
+      "description": "Splits for the dataset_adapters config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dataset_adapters_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dataset_adapters",
+      "description": "nvidia/Nemotron-Terminal-Corpus - 'dataset_adapters' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dataset_adapters/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dataset_adapters_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "dataset_adapters/conversations/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dataset_adapters"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "dataset_adapters/conversations/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-dataset_adapters"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/agent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "agent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/model_provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "model_provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/episode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "episode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/run_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "run_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/trial_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "trial_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/enable_thinking",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "enable_thinking"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dataset_adapters/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dataset_adapters"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "skill_based_easy_splits/split_name"
+      },
+      "@id": "skill_based_easy_splits",
+      "name": "skill_based_easy_splits",
+      "description": "Splits for the skill_based_easy config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "skill_based_easy_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "skill_based_easy",
+      "description": "nvidia/Nemotron-Terminal-Corpus - 'skill_based_easy' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "skill_based_easy/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "skill_based_easy_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_easy/conversations/content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_easy"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_easy/conversations/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_easy"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/agent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "agent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/model_provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "model_provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/episode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "episode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/run_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "run_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/trial_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "trial_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_easy/enable_thinking",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_easy"
+            },
+            "extract": {
+              "column": "enable_thinking"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "skill_based_medium_splits/split_name"
+      },
+      "@id": "skill_based_medium_splits",
+      "name": "skill_based_medium_splits",
+      "description": "Splits for the skill_based_medium config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "skill_based_medium_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "skill_based_medium",
+      "description": "nvidia/Nemotron-Terminal-Corpus - 'skill_based_medium' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "skill_based_medium/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "skill_based_medium_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_medium/conversations/content_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_medium"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_medium/conversations/role_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_medium"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/agent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "agent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/model_provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "model_provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/episode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "episode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/run_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "run_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/trial_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "trial_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_medium/enable_thinking",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_medium"
+            },
+            "extract": {
+              "column": "enable_thinking"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "skill_based_mixed_splits/split_name"
+      },
+      "@id": "skill_based_mixed_splits",
+      "name": "skill_based_mixed_splits",
+      "description": "Splits for the skill_based_mixed config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "skill_based_mixed_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "skill_based_mixed",
+      "description": "nvidia/Nemotron-Terminal-Corpus - 'skill_based_mixed' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "skill_based_mixed/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "skill_based_mixed_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_mixed/conversations/content_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_mixed"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "skill_based_mixed/conversations/role_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-skill_based_mixed"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/agent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "agent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/model_provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "model_provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/episode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "episode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/run_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "run_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/trial_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "trial_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "skill_based_mixed/enable_thinking",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-skill_based_mixed"
+            },
+            "extract": {
+              "column": "enable_thinking"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Nemotron-Terminal-Corpus",
+  "description": "\n\t\n\t\t\n\t\tTerminal-Corpus: Large-Scale SFT Dataset for Terminal Agents\n\t\n\nTerminal-Corpus is a large-scale Supervised Fine-Tuning (SFT) dataset designed to scale the terminal interaction capabilities of Large Language Models (LLMs). Developed by NVIDIA, this dataset was built using the Terminal-Task-Gen pipeline, which combines dataset adaptation with synthetic task generation across diverse domains.\n\n\t\n\t\t\n\t\t\ud83d\ude80 Key Results & Performance\n\t\n\nThe high-quality trajectories in Terminal-Corpus enable\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/Nemotron-Terminal-Corpus.",
+  "alternateName": [
+    "nvidia/Nemotron-Terminal-Corpus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "question-answering",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2602.21193",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/Nemotron-Terminal-Corpus",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

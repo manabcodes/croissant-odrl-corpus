@@ -1,0 +1,466 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MartinThoma/wili_2018/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-WiLI-2018_dataset",
+      "name": "parquet-files-for-config-WiLI-2018_dataset",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "WiLI-2018 dataset/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "WiLI-2018_dataset_splits/split_name"
+      },
+      "@id": "WiLI-2018_dataset_splits",
+      "name": "WiLI-2018_dataset_splits",
+      "description": "Splits for the WiLI-2018_dataset config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WiLI-2018_dataset_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "WiLI-2018_dataset_splits/split_name": "train"
+        },
+        {
+          "WiLI-2018_dataset_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "WiLI-2018_dataset",
+      "name": "WiLI-2018_dataset",
+      "description": "MartinThoma/wili_2018 - 'WiLI-2018 dataset' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "WiLI-2018_dataset/split",
+          "name": "WiLI-2018_dataset/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-WiLI-2018_dataset"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "WiLI\\-2018\\ dataset/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "WiLI-2018_dataset_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WiLI-2018_dataset/sentence",
+          "name": "WiLI-2018_dataset/sentence",
+          "description": "Column 'sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-WiLI-2018_dataset"
+            },
+            "extract": {
+              "column": "sentence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "WiLI-2018_dataset/label",
+          "name": "WiLI-2018_dataset/label",
+          "description": "ClassLabel column 'label' from the Hugging Face parquet file.\nLabels:\ncdo (0), glk (1), jam (2), lug (3), san (4), rue (5), wol (6), new (7), mwl (8), bre (9), ara (10), hye (11), xmf (12), ext (13), cor (14), yor (15), div (16), asm (17), lat (18), cym (19), hif (20), ace (21), kbd (22), tgk (23), rus (24), nso (25), mya (26), msa (27), ava (28), cbk (29), urd (30), deu (31), swa (32), pus (33), bxr (34), udm (35), csb (36), yid (37), vro (38), por (39), pdc (40), eng (41), tha (42), hat (43), lmo (44), pag (45), jav (46), chv (47), nan (48), sco (49), kat (50), bho (51), bos (52), kok (53), oss (54), mri (55), fry (56), cat (57), azb (58), kin (59), hin (60), sna (61), dan (62), egl (63), mkd (64), ron (65), bul (66), hrv (67), som (68), pam (69), nav (70), ksh (71), nci (72), khm (73), sgs (74), srn (75), bar (76), cos (77), ckb (78), pfl (79), arz (80), roa-tara (81), fra (82), mai (83), zh-yue (84), guj (85), fin (86), kir (87), vol (88), hau (89), afr (90), uig (91), lao (92), swe (93), slv (94), kor (95), szl (96), srp (97), dty (98), nrm (99), dsb (100), ind (101), wln (102), pnb (103), ukr (104), bpy (105), vie (106), tur (107), aym (108), lit (109), zea (110), pol (111), est (112), scn (113), vls (114), stq (115), gag (116), grn (117), kaz (118), ben (119), pcd (120), bjn (121), krc (122), amh (123), diq (124), ltz (125), ita (126), kab (127), bel (128), ang (129), mhr (130), che (131), koi (132), glv (133), ido (134), fao (135), bak (136), isl (137), bcl (138), tet (139), jpn (140), kur (141), map-bms (142), tyv (143), olo (144), arg (145), ori (146), lim (147), tel (148), lin (149), roh (150), sqi (151), xho (152), mlg (153), fas (154), hbs (155), tam (156), aze (157), lad (158), nob (159), sin (160), gla (161), nap (162), snd (163), ast (164), mal (165), mdf (166), tsn (167), nds (168), tgl (169), nno (170), sun (171), lzh (172), jbo (173), crh (174), pap (175), oci (176), hak (177), uzb (178), zho (179), hsb (180), sme (181), mlt (182), vep (183), lez (184), nld (185), nds-nl (186), mrj (187), spa (188), ceb (189), ina (190), heb (191), hun (192), que (193), kaa (194), mar (195), vec (196), frp (197), ell (198), sah (199), eus (200), ces (201), slk (202), chr (203), lij (204), nep (205), srd (206), ilo (207), be-tarask (208), bod (209), orm (210), war (211), glg (212), mon (213), gle (214), min (215), ibo (216), ile (217), epo (218), lav (219), lrc (220), als (221), mzn (222), rup (223), fur (224), tat (225), myv (226), pan (227), ton (228), kom (229), wuu (230), tcy (231), tuk (232), kan (233), ltg (234)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-WiLI-2018_dataset"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "wili_2018",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for wili_2018\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nWiLI-2018, the Wikipedia language identification benchmark dataset, contains 235000 paragraphs of 235 languages. The dataset is balanced and a train-test split is provided.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\n[Needs More Information]\n\n\t\n\t\t\n\t\tLanguages\n\t\n\n235 Different Languages\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\n\n\t\n\t\t\n\t\tData Instances\n\t\n\n{\n    'label': 207,\n    'sentence': 'Ti Turkia ket maysa a demokrata, sekular, unitario\u2026 See the full description on the dataset page: https://huggingface.co/datasets/MartinThoma/wili_2018.",
+  "alternateName": [
+    "MartinThoma/wili_2018",
+    "Wili2018"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Martin Thoma",
+    "url": "https://huggingface.co/MartinThoma"
+  },
+  "keywords": [
+    "text-classification",
+    "no-annotation",
+    "found",
+    "multilingual",
+    "original",
+    "Achinese",
+    "Afrikaans",
+    "Tosk Albanian",
+    "Amharic",
+    "Aragonese",
+    "Old English (ca. 450-1100)",
+    "Arabic",
+    "Egyptian Arabic",
+    "Assamese",
+    "Asturian",
+    "Avaric",
+    "Aymara",
+    "Azerbaijani",
+    "South Azerbaijani",
+    "Bashkir",
+    "Bavarian",
+    "Central Bikol",
+    "Belarusian",
+    "Bulgarian",
+    "Bhojpuri",
+    "Banjar",
+    "Bengali",
+    "Tibetan",
+    "Bishnupriya",
+    "Breton",
+    "Bosnian",
+    "Russia Buriat",
+    "Catalan",
+    "Chavacano",
+    "Min Dong Chinese",
+    "Chechen",
+    "Cebuano",
+    "Cherokee",
+    "Central Kurdish",
+    "Corsican",
+    "Crimean Tatar",
+    "Czech",
+    "Kashubian",
+    "Chuvash",
+    "Welsh",
+    "Danish",
+    "German",
+    "Dimli (individual language)",
+    "Lower Sorbian",
+    "Dotyali",
+    "Divehi",
+    "Emilian",
+    "Greek",
+    "English",
+    "Esperanto",
+    "Spanish",
+    "Estonian",
+    "Basque",
+    "Extremaduran",
+    "Persian",
+    "Finnish",
+    "Faroese",
+    "French",
+    "Arpitan",
+    "Friulian",
+    "Western Frisian",
+    "Irish",
+    "Gagauz",
+    "Scottish Gaelic",
+    "Galician",
+    "Gilaki",
+    "Guaran\u00ed",
+    "Gujarati",
+    "Manx",
+    "Hausa",
+    "Hakka Chinese",
+    "Hebrew",
+    "Hindi",
+    "Fiji Hindi",
+    "Croatian",
+    "Upper Sorbian",
+    "Haitian",
+    "Hungarian",
+    "Armenian",
+    "Interlingua",
+    "Indonesian",
+    "Interlingue",
+    "Igbo",
+    "Iloko",
+    "Ido",
+    "Icelandic",
+    "Italian",
+    "Japanese",
+    "Jamaican Creole English",
+    "Lojban",
+    "Javanese",
+    "Georgian",
+    "Kara-Kalpak",
+    "Kabyle",
+    "Kabardian",
+    "Kazakh",
+    "Khmer",
+    "Kannada",
+    "Korean",
+    "Komi-Permyak",
+    "Konkani (macrolanguage)",
+    "Karachay-Balkar",
+    "K\u00f6lsch",
+    "Kurdish",
+    "Komi",
+    "Cornish",
+    "Kyrgyz",
+    "Latin",
+    "Ladino",
+    "Luxembourgish",
+    "Lezghian",
+    "Ganda",
+    "Limburgish",
+    "Ligurian",
+    "Lombard",
+    "Lingala",
+    "Lao",
+    "Northern Luri",
+    "Lithuanian",
+    "Latgalian",
+    "Latvian",
+    "Literary Chinese",
+    "Maithili",
+    "map",
+    "Moksha",
+    "Malagasy",
+    "Eastern Mari",
+    "M\u0101ori",
+    "Minangkabau",
+    "Macedonian",
+    "Malayalam",
+    "Mongolian",
+    "Marathi",
+    "Western Mari",
+    "Malay",
+    "Maltese",
+    "Mirandese",
+    "Burmese",
+    "Erzya",
+    "Mazanderani",
+    "Min Nan Chinese",
+    "Neapolitan",
+    "Norwegian Bokm\u00e5l",
+    "Classical Nahuatl",
+    "Low German",
+    "Nepali",
+    "Newari",
+    "Dutch",
+    "Norwegian Nynorsk",
+    "Narom",
+    "Pedi",
+    "Navajo",
+    "Occitan",
+    "Livvi",
+    "Oromo",
+    "Oriya",
+    "Ossetian",
+    "Panjabi",
+    "Pangasinan",
+    "Pampanga",
+    "Papiamento",
+    "Picard",
+    "Pennsylvania German",
+    "Pfaelzisch",
+    "Polish",
+    "Western Panjabi",
+    "Pashto",
+    "Portuguese",
+    "Quechua",
+    "Romansh",
+    "Romanian",
+    "roa",
+    "Russian",
+    "Rusyn",
+    "Macedo-Romanian",
+    "Kinyarwanda",
+    "Sanskrit",
+    "Yakut",
+    "Sardinian",
+    "Sicilian",
+    "Scots",
+    "Sindhi",
+    "Samogitian",
+    "sh",
+    "Sinhala",
+    "Slovak",
+    "Slovenian",
+    "Northern Sami",
+    "Shona",
+    "Somali",
+    "Albanian",
+    "Serbian",
+    "Sranan Tongo",
+    "Saterfriesisch",
+    "Sundanese",
+    "Swedish",
+    "Swahili",
+    "Silesian",
+    "Tamil",
+    "Tulu",
+    "Telugu",
+    "Tetum",
+    "Tajik",
+    "Thai",
+    "Turkmen",
+    "Tagalog",
+    "Tswana",
+    "Tonga",
+    "Turkish",
+    "Tatar",
+    "Tuvinian",
+    "Udmurt",
+    "Uyghur",
+    "Ukrainian",
+    "Urdu",
+    "Uzbek",
+    "Venetian",
+    "Veps",
+    "Vietnamese",
+    "Vlaams",
+    "Volap\u00fck",
+    "V\u00f5ro",
+    "Walloon",
+    "Waray (Philippines)",
+    "Wolof",
+    "Wu Chinese",
+    "Xhosa",
+    "Mingrelian",
+    "Yiddish",
+    "Yoruba",
+    "Zeeuws",
+    "Chinese",
+    "odbl",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:1801.07779",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "language-identification"
+  ],
+  "license": "https://choosealicense.com/licenses/odbl/",
+  "sameAs": "https://zenodo.org/record/841984",
+  "url": "https://huggingface.co/datasets/MartinThoma/wili_2018",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Open Database License v1.0 (ODbL)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

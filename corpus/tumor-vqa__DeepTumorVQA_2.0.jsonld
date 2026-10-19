@@ -1,0 +1,577 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tumor-vqa/DeepTumorVQA_2.0/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-benchmark",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "benchmark/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-agent_sft",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "agent_sft/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "benchmark_splits/split_name"
+      },
+      "@id": "benchmark_splits",
+      "name": "benchmark_splits",
+      "description": "Splits for the benchmark config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "benchmark_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "benchmark",
+      "description": "tumor-vqa/DeepTumorVQA_2.0 - 'benchmark' subset\n\nAdditional information:\n- 2 skipped columns: sex, contrast",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "benchmark/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "benchmark_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/qid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/image_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/spacing",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "spacing"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/shape",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "shape"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/age",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/scanner",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "scanner"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/mc_question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "mc_question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/correct_option",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "correct_option"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/organ",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "organ"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/lesion",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "lesion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/question_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/question_subtype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "question_subtype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/requires_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "requires_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/slice_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "slice_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/video_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "video_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/whole_slice_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "whole_slice_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmark/whole_video_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-benchmark"
+            },
+            "extract": {
+              "column": "whole_video_path"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "agent_sft_splits/split_name"
+      },
+      "@id": "agent_sft_splits",
+      "name": "agent_sft_splits",
+      "description": "Splits for the agent_sft config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "agent_sft_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "agent_sft_splits/split_name": "train"
+        },
+        {
+          "agent_sft_splits/split_name": "holdout"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "agent_sft",
+      "description": "tumor-vqa/DeepTumorVQA_2.0 - 'agent_sft' subset\n\nAdditional information:\n- 2 splits: train, holdout\n- 1 skipped column: images",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "agent_sft/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agent_sft"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "agent_sft/(?:partial-)?(train|holdout)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "agent_sft_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agent_sft/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "agent_sft/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-agent_sft"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "agent_sft/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-agent_sft"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agent_sft/system",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agent_sft"
+            },
+            "extract": {
+              "column": "system"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agent_sft/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agent_sft"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "DeepTumorVQA_2.0",
+  "description": "\n\t\n\t\t\n\t\tDeepTumorVQA v2\n\t\n\n\n    \n\n\n3D abdominal-CT diagnostic Visual Question Answering benchmark with 42\nclinical subtypes and 438K total QA pairs (10K curated benchmark + 428K\ntraining pool). Includes pre-extracted 2D and video modalities, 20K agent\ntraining trajectories with tool-use traces, and a paper-locked leaderboard.\nResources\n\n\t\n\t\t\n\n\n\n\n\t\t\n\ud83d\udcc4 Paper (arXiv)\nhttps://arxiv.org/abs/2605.09679\n\n\n\ud83d\udcbb Code (GitHub)\nhttps://github.com/Schuture/DeepTumorVQA\n\n\n\ud83e\udd17 Dataset (this\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tumor-vqa/DeepTumorVQA_2.0.",
+  "alternateName": [
+    "tumor-vqa/DeepTumorVQA_2.0",
+    "DeepTumorVQA v2"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Tumor VQA Benchmark",
+    "url": "https://huggingface.co/tumor-vqa"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "image-classification",
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "Image",
+    "Text",
+    "Video",
+    "3D",
+    "arxiv:2605.09679",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "medical-imaging",
+    "ct-scan",
+    "abdominal-radiology",
+    "vqa",
+    "agent-evaluation",
+    "3d"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/tumor-vqa/DeepTumorVQA_2.0",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

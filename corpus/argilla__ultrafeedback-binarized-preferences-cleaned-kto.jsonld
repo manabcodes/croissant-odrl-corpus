@@ -1,0 +1,544 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/argilla/ultrafeedback-binarized-preferences-cleaned-kto/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "argilla/ultrafeedback-binarized-preferences-cleaned-kto - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt",
+          "name": "default/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/completion",
+          "name": "default/completion",
+          "description": "Column 'completion' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "completion"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/label",
+          "name": "default/label",
+          "description": "Column 'label' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/model",
+          "name": "default/model",
+          "description": "Column 'model' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/average_rating",
+          "name": "default/average_rating",
+          "description": "Column 'average_rating' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "average_rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/annotations",
+          "name": "default/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/helpfulness",
+              "name": "default/annotations/helpfulness",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/helpfulness/Rating",
+                  "name": "default/annotations/helpfulness/Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/helpfulness/Rationale",
+                  "name": "default/annotations/helpfulness/Rationale",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/helpfulness/Rationale For Rating",
+                  "name": "default/annotations/helpfulness/Rationale For Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale For Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/helpfulness/Type",
+                  "name": "default/annotations/helpfulness/Type",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    }
+                  },
+                  "repeated": true
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/honesty",
+              "name": "default/annotations/honesty",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/honesty/Rating",
+                  "name": "default/annotations/honesty/Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/honesty/Rationale",
+                  "name": "default/annotations/honesty/Rationale",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/instruction_following",
+              "name": "default/annotations/instruction_following",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/instruction_following/Rating",
+                  "name": "default/annotations/instruction_following/Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/instruction_following/Rationale",
+                  "name": "default/annotations/instruction_following/Rationale",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/annotations/truthfulness",
+              "name": "default/annotations/truthfulness",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/truthfulness/Rating",
+                  "name": "default/annotations/truthfulness/Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/truthfulness/Rationale",
+                  "name": "default/annotations/truthfulness/Rationale",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/truthfulness/Rationale For Rating",
+                  "name": "default/annotations/truthfulness/Rationale For Rating",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "Rationale For Rating"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/annotations/truthfulness/Type",
+                  "name": "default/annotations/truthfulness/Type",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    }
+                  },
+                  "repeated": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "name": "default/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ultrafeedback-binarized-preferences-cleaned-kto",
+  "description": "\n\t\n\t\t\n\t\tUltraFeedback - Binarized using the Average of Preference Ratings (Cleaned) KTO\n\t\n\n\nA KTO signal transformed version of the highly loved UltraFeedback Binarized Preferences Cleaned, the preferred dataset by Argilla to use from now on when fine-tuning on UltraFeedback\n\nThis dataset represents a new iteration on top of argilla/ultrafeedback-binarized-preferences,\nand is the recommended and preferred dataset by Argilla to use from now on when fine-tuning on UltraFeedback.\nRead more about\u2026 See the full description on the dataset page: https://huggingface.co/datasets/argilla/ultrafeedback-binarized-preferences-cleaned-kto.",
+  "alternateName": [
+    "argilla/ultrafeedback-binarized-preferences-cleaned-kto",
+    "UltraFeedback Binarized Preferences Cleaned KTO"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Argilla",
+    "url": "https://huggingface.co/argilla"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "mit",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2402.01306",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "kto",
+    "preference",
+    "ultrafeedback"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/argilla/ultrafeedback-binarized-preferences-cleaned-kto",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

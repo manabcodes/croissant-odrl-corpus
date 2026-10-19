@@ -1,0 +1,510 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/picbreeder-vlm/picbreeder-vlm-archive/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-images",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "images/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "images_splits/split_name"
+      },
+      "@id": "images_splits",
+      "name": "images_splits",
+      "description": "Splits for the images config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "images_splits/split_name": "default"
+        },
+        {
+          "images_splits/split_name": "mem_0"
+        },
+        {
+          "images_splits/split_name": "mem_2"
+        },
+        {
+          "images_splits/split_name": "mem_10"
+        },
+        {
+          "images_splits/split_name": "mem_20"
+        },
+        {
+          "images_splits/split_name": "noise_0_05"
+        },
+        {
+          "images_splits/split_name": "noise_0_25"
+        },
+        {
+          "images_splits/split_name": "noise_0_5"
+        },
+        {
+          "images_splits/split_name": "noise_0_75"
+        },
+        {
+          "images_splits/split_name": "noise_1_0"
+        },
+        {
+          "images_splits/split_name": "random"
+        },
+        {
+          "images_splits/split_name": "agents_10"
+        },
+        {
+          "images_splits/split_name": "agents_100"
+        },
+        {
+          "images_splits/split_name": "agents_1000"
+        },
+        {
+          "images_splits/split_name": "model_ablation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "description": "picbreeder-vlm/picbreeder-vlm-archive - 'images' subset\n\nAdditional information:\n- 15 splits: default, mem_0, mem_2, mem_10, mem_20, noise_0_05, noise_0_25, noise_0_5, noise_0_75, noise_1_0, random, agents_10, agents_100, agents_1000, model_ablation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "images/(?:partial-)?(default|mem_0|mem_2|mem_10|mem_20|noise_0_05|noise_0_25|noise_0_5|noise_0_75|noise_1_0|random|agents_10|agents_100|agents_1000|model_ablation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "images_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/image_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "image_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/run",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "run"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/arc",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "arc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/seed",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "seed"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/memory_cl",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "memory_cl"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/noise_eps",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "noise_eps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/n_personalities",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "n_personalities"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/canonical",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "canonical"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/generation",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "generation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/agent_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "agent_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/genome_key",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "genome_key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/parent_genome_key",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "parent_genome_key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/n_published_children",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "n_published_children"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/color_enabled",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "color_enabled"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/caption_qwen3_vl_8b",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "caption_qwen3_vl_8b"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/vlm_rating_mean",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "vlm_rating_mean"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/vlm_rating_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "vlm_rating_count"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "picbreeder-vlm-archive",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPicbreeder-VLM Archive\n\t\n\nEvery image evolved by the swarm of vision-language-model \"breeders\" in\nIn Search of the Ingredients of Open-Endedness: Replicating Picbreeder with Large Vision-Language Models\n(GECCO 2026), together with the CPPN genomes that produced them, the agents' reasoning transcripts, the\nlineage graphs, and the analysis artifacts behind the paper and blog.\nThe original Picbreeder (Secretan et al., 2008) let crowds of\nhumans collaboratively evolve images from\nCPPN\u2026 See the full description on the dataset page: https://huggingface.co/datasets/picbreeder-vlm/picbreeder-vlm-archive.",
+  "alternateName": [
+    "picbreeder-vlm/picbreeder-vlm-archive",
+    "Picbreeder-VLM Archive"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Picbreeder VLM",
+    "url": "https://huggingface.co/picbreeder-vlm"
+  },
+  "keywords": [
+    "image-to-text",
+    "machine-generated",
+    "original",
+    "English",
+    "cc-by-nc-4.0",
+    "100K - 1M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2605.23908",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "open-endedness",
+    "evolutionary-computation",
+    "cppn",
+    "neat",
+    "vision-language-models",
+    "generated-images",
+    "picbreeder"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/picbreeder-vlm/picbreeder-vlm-archive",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,466 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/prs-eth/PanoInfinigen/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-indoor",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "indoor/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-nature",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "nature/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-urban",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "urban/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "indoor_splits/split_name"
+      },
+      "@id": "indoor_splits",
+      "name": "indoor_splits",
+      "description": "Splits for the indoor config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "indoor_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "indoor_splits/split_name": "train"
+        },
+        {
+          "indoor_splits/split_name": "val"
+        },
+        {
+          "indoor_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "indoor",
+      "description": "prs-eth/PanoInfinigen - 'indoor' subset\n\nAdditional information:\n- 3 splits: train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "indoor/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-indoor"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "indoor/(?:partial-)?(train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "indoor_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "indoor/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-indoor"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "indoor/depth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-indoor"
+            },
+            "extract": {
+              "column": "depth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "indoor/normals",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-indoor"
+            },
+            "extract": {
+              "column": "normals"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "nature_splits/split_name"
+      },
+      "@id": "nature_splits",
+      "name": "nature_splits",
+      "description": "Splits for the nature config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "nature_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "nature_splits/split_name": "train"
+        },
+        {
+          "nature_splits/split_name": "val"
+        },
+        {
+          "nature_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "nature",
+      "description": "prs-eth/PanoInfinigen - 'nature' subset\n\nAdditional information:\n- 3 splits: train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "nature/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-nature"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "nature/(?:partial-)?(train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "nature_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nature/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-nature"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nature/depth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-nature"
+            },
+            "extract": {
+              "column": "depth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "nature/normals",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-nature"
+            },
+            "extract": {
+              "column": "normals"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "urban_splits/split_name"
+      },
+      "@id": "urban_splits",
+      "name": "urban_splits",
+      "description": "Splits for the urban config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "urban_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "urban_splits/split_name": "train"
+        },
+        {
+          "urban_splits/split_name": "val"
+        },
+        {
+          "urban_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "urban",
+      "description": "prs-eth/PanoInfinigen - 'urban' subset\n\nAdditional information:\n- 3 splits: train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "urban/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-urban"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "urban/(?:partial-)?(train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "urban_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "urban/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-urban"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "urban/depth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-urban"
+            },
+            "extract": {
+              "column": "depth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "urban/normals",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-urban"
+            },
+            "extract": {
+              "column": "normals"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "PanoInfinigen",
+  "description": "\ud83d\uddc3\ufe0f PanoInfinigen Dataset\n\n\n  \n    \n\n  \n    \n\n\n    \n\n\n    \n\n  \n  \n\n  \n  \n\n\n\n\nPanoInfinigen is a synthetic dataset of high-resolution panoramic images in ERP, featuring perfectly aligned RGB, Depth, and Surface Normals. This dataset was generated using a modified Infinigen framework to support wide-angle panoramic geometry, plus the iCity procedural city generator for the urban split.\nIt serves as the primary training data for PaGeR, a single-step diffusion model for zero-shot panoramic depth\u2026 See the full description on the dataset page: https://huggingface.co/datasets/prs-eth/PanoInfinigen.",
+  "alternateName": [
+    "prs-eth/PanoInfinigen",
+    "PanoInfinigen"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Photogrammetry and Remote Sensing Lab of ETH Zurich",
+    "url": "https://huggingface.co/prs-eth"
+  },
+  "keywords": [
+    "depth-estimation",
+    "image-to-image",
+    "bsd-3-clause",
+    "cc-by-nc-4.0",
+    "10K - 100K",
+    "parquet",
+    "Image",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2605.26368",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "panorama",
+    "depth",
+    "normals",
+    "Synthetic",
+    "equirectangular",
+    "360",
+    "infinigen",
+    "icity"
+  ],
+  "license": "https://choosealicense.com/licenses/bsd-3-clause/",
+  "url": "https://huggingface.co/datasets/prs-eth/PanoInfinigen",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "BSD 3-Clause License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

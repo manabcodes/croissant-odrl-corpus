@@ -1,0 +1,378 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Fsoft-AIC/RobotDesign1M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-conversations",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conversations/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-image_caption",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "image_caption/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conversations_splits/split_name"
+      },
+      "@id": "conversations_splits",
+      "name": "conversations_splits",
+      "description": "Splits for the conversations config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "conversations_splits/split_name": "train"
+        },
+        {
+          "conversations_splits/split_name": "val"
+        },
+        {
+          "conversations_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations",
+      "description": "Fsoft-AIC/RobotDesign1M - 'conversations' subset\n\nAdditional information:\n- 3 splits: train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conversations"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "conversations/(?:partial-)?(train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "conversations_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conversations"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/dialogs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/dialogs/user",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-conversations"
+                },
+                "extract": {
+                  "column": "dialogs"
+                },
+                "transform": {
+                  "jsonPath": "user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/dialogs/assistant",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-conversations"
+                },
+                "extract": {
+                  "column": "dialogs"
+                },
+                "transform": {
+                  "jsonPath": "assistant"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "image_caption_splits/split_name"
+      },
+      "@id": "image_caption_splits",
+      "name": "image_caption_splits",
+      "description": "Splits for the image_caption config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_caption_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "image_caption_splits/split_name": "train"
+        },
+        {
+          "image_caption_splits/split_name": "val"
+        },
+        {
+          "image_caption_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "image_caption",
+      "description": "Fsoft-AIC/RobotDesign1M - 'image_caption' subset\n\nAdditional information:\n- 3 splits: train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_caption/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_caption"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "image_caption/(?:partial-)?(train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "image_caption_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_caption/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_caption"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_caption/dialogs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "image_caption/dialogs/user_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-image_caption"
+                },
+                "extract": {
+                  "column": "dialogs"
+                },
+                "transform": {
+                  "jsonPath": "user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "image_caption/dialogs/assistant_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-image_caption"
+                },
+                "extract": {
+                  "column": "dialogs"
+                },
+                "transform": {
+                  "jsonPath": "assistant"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "RobotDesign1M",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tRobotDesign1M: A Large-scale Dataset for Robot Design Understanding\n\t\n\nRobotDesign1M is a large-scale, multimodal dataset for robot design understanding, built from image\u2013text data curated from scientific literature across a wide range of robotics domains. It is designed to support research on design-aware foundation models, including design image generation, visual question answering about designs, and design image retrieval.\n\n\ud83d\udcc4 Paper: RobotDesign1M: A Large-scale Dataset for\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Fsoft-AIC/RobotDesign1M.",
+  "alternateName": [
+    "Fsoft-AIC/RobotDesign1M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "FPT Software AI Center",
+    "url": "https://huggingface.co/Fsoft-AIC"
+  },
+  "keywords": [
+    "image-text-to-text",
+    "text-to-image",
+    "mit",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2503.06796",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/Fsoft-AIC/RobotDesign1M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

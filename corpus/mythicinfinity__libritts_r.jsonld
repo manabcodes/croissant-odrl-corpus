@@ -1,0 +1,773 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/mythicinfinity/libritts_r/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-all",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "all/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-clean",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dev",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dev/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-other",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "other/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "all_splits/split_name"
+      },
+      "@id": "all_splits",
+      "name": "all_splits",
+      "description": "Splits for the all config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "all_splits/split_name": "dev.clean"
+        },
+        {
+          "all_splits/split_name": "dev.other"
+        },
+        {
+          "all_splits/split_name": "test.clean"
+        },
+        {
+          "all_splits/split_name": "test.other"
+        },
+        {
+          "all_splits/split_name": "train.clean.100"
+        },
+        {
+          "all_splits/split_name": "train.clean.360"
+        },
+        {
+          "all_splits/split_name": "train.other.500"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "all",
+      "description": "mythicinfinity/libritts_r - 'all' subset\n\nAdditional information:\n- 7 splits: dev.clean, dev.other, test.clean, test.other, train.clean.100, train.clean.360, train.other.500",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "all/(?:partial-)?(dev\\.clean|dev\\.other|test\\.clean|test\\.other|train\\.clean\\.100|train\\.clean\\.360|train\\.other\\.500)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "all_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 24000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/text_normalized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/chapter_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "chapter_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "clean_splits/split_name"
+      },
+      "@id": "clean_splits",
+      "name": "clean_splits",
+      "description": "Splits for the clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "clean_splits/split_name": "dev.clean"
+        },
+        {
+          "clean_splits/split_name": "test.clean"
+        },
+        {
+          "clean_splits/split_name": "train.clean.100"
+        },
+        {
+          "clean_splits/split_name": "train.clean.360"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "clean",
+      "description": "mythicinfinity/libritts_r - 'clean' subset\n\nAdditional information:\n- 4 splits: dev.clean, test.clean, train.clean.100, train.clean.360",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "clean/(?:partial-)?(dev\\.clean|test\\.clean|train\\.clean\\.100|train\\.clean\\.360)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 24000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text_normalized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/chapter_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "chapter_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dev_splits/split_name"
+      },
+      "@id": "dev_splits",
+      "name": "dev_splits",
+      "description": "Splits for the dev config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dev_splits/split_name": "dev.clean"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dev",
+      "description": "mythicinfinity/libritts_r - 'dev' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dev/(?:partial-)?(dev\\.clean)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dev_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 24000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/text_normalized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/chapter_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "chapter_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "other_splits/split_name"
+      },
+      "@id": "other_splits",
+      "name": "other_splits",
+      "description": "Splits for the other config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "other_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "other_splits/split_name": "dev.other"
+        },
+        {
+          "other_splits/split_name": "test.other"
+        },
+        {
+          "other_splits/split_name": "train.other.500"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "other",
+      "description": "mythicinfinity/libritts_r - 'other' subset\n\nAdditional information:\n- 3 splits: dev.other, test.other, train.other.500",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "other/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "other/(?:partial-)?(dev\\.other|test\\.other|train\\.other\\.500)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "other_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 24000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/text_normalized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/chapter_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "chapter_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "libritts_r",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for LibriTTS-R\n\t\n\n\n\nLibriTTS-R [1] is a sound quality improved version of the LibriTTS corpus \n(http://www.openslr.org/60/) which is a multi-speaker English corpus of approximately \n585 hours of read English speech at 24kHz sampling rate, published in 2019.\n\n\t\n\t\t\n\t\n\t\n\t\tOverview\n\t\n\nThis is the LibriTTS-R dataset, adapted for the datasets library.\n\n\t\n\t\t\n\t\n\t\n\t\tUsage\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tSplits\n\t\n\nThere are 7 splits (dots replace dashes from the original dataset, to comply with\u2026 See the full description on the dataset page: https://huggingface.co/datasets/mythicinfinity/libritts_r.",
+  "alternateName": [
+    "mythicinfinity/libritts_r"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Mythic Infinity",
+    "url": "https://huggingface.co/mythicinfinity"
+  },
+  "keywords": [
+    "text-to-speech",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2305.18802",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/mythicinfinity/libritts_r",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

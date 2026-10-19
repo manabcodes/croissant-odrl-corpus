@@ -1,0 +1,521 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MCG-NJU/TimeLens2-93K/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-preview",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "preview/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-conversations",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conversations/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-raw_annotations",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "raw_annotations/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "preview_splits/split_name"
+      },
+      "@id": "preview_splits",
+      "name": "preview_splits",
+      "description": "Splits for the preview config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preview_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "preview_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "preview",
+      "description": "MCG-NJU/TimeLens2-93K - 'preview' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preview/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "preview/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "preview_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/raw_annotation",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "preview/raw_annotation/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preview"
+                },
+                "extract": {
+                  "column": "raw_annotation"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preview/raw_annotation/timestamps",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preview"
+                },
+                "extract": {
+                  "column": "raw_annotation"
+                },
+                "transform": {
+                  "jsonPath": "timestamps"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/conversation",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "preview/conversation/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preview"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preview/conversation/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preview"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conversations_splits/split_name"
+      },
+      "@id": "conversations_splits",
+      "name": "conversations_splits",
+      "description": "Splits for the conversations config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "conversations_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conversations",
+      "description": "MCG-NJU/TimeLens2-93K - 'conversations' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conversations"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "conversations/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "conversations_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conversations"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conversations/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/messages/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-conversations"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "conversations/messages/content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-conversations"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "raw_annotations_splits/split_name"
+      },
+      "@id": "raw_annotations_splits",
+      "name": "raw_annotations_splits",
+      "description": "Splits for the raw_annotations config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw_annotations_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "raw_annotations_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "raw_annotations",
+      "description": "MCG-NJU/TimeLens2-93K - 'raw_annotations' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw_annotations/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw_annotations"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "raw_annotations/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "raw_annotations_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw_annotations/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw_annotations"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw_annotations/annotations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "raw_annotations/annotations/text_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-raw_annotations"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "raw_annotations/annotations/timestamps_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-raw_annotations"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "timestamps"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TimeLens2-93K",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTimeLens2-93K\n\t\n\nTimeLens2-93K is a large-scale, long-video temporal grounding dataset. This release contains 23,793 videos and 93,232 text\u2013temporal interval pairs, including 12,091 multi-span pairs. The videos range from short clips to nearly 100 minutes and cover broad web domains such as entertainment, education, sports, news, science and technology, gaming, travel, vehicles, music, and daily life.\nTimeLens2-93K offers a rare combination of scale, long-context coverage\u2026 See the full description on the dataset page: https://huggingface.co/datasets/MCG-NJU/TimeLens2-93K.",
+  "alternateName": [
+    "MCG-NJU/TimeLens2-93K",
+    "TimeLens2-93K"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Multimedia Computing Group-Nanjing University",
+    "url": "https://huggingface.co/MCG-NJU"
+  },
+  "keywords": [
+    "video-text-to-text",
+    "English",
+    "Chinese",
+    "Japanese",
+    "Korean",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2607.17423",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "video-temporal-grounding",
+    "long-video-understanding"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/MCG-NJU/TimeLens2-93K",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

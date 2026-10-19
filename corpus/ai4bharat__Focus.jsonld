@@ -1,0 +1,404 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ai4bharat/Focus/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-i2t",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "i2t/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-t2i",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "t2i/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "i2t_splits/split_name"
+      },
+      "@id": "i2t_splits",
+      "name": "i2t_splits",
+      "description": "Splits for the i2t config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "i2t_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "i2t_splits/split_name": "visual_grounding"
+        },
+        {
+          "i2t_splits/split_name": "semantic_interpretation"
+        },
+        {
+          "i2t_splits/split_name": "visual_reasoning"
+        },
+        {
+          "i2t_splits/split_name": "long_form_generation"
+        },
+        {
+          "i2t_splits/split_name": "score_invariant"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "i2t",
+      "description": "ai4bharat/Focus - 'i2t' subset\n\nAdditional information:\n- 5 splits: visual_grounding, semantic_interpretation, visual_reasoning, long_form_generation, score_invariant",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "i2t/(?:partial-)?(visual_grounding|semantic_interpretation|visual_reasoning|long_form_generation|score_invariant)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "i2t_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/p_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "column": "p_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/gold_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "column": "gold_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "i2t/perturbed_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-i2t"
+            },
+            "extract": {
+              "column": "perturbed_answer"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "t2i_splits/split_name"
+      },
+      "@id": "t2i_splits",
+      "name": "t2i_splits",
+      "description": "Splits for the t2i config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "t2i_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "t2i_splits/split_name": "visual_fidelity"
+        },
+        {
+          "t2i_splits/split_name": "scene_coherence"
+        },
+        {
+          "t2i_splits/split_name": "physical_plausibility"
+        },
+        {
+          "t2i_splits/split_name": "text_rendering"
+        },
+        {
+          "t2i_splits/split_name": "score_invariant"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "t2i",
+      "description": "ai4bharat/Focus - 't2i' subset\n\nAdditional information:\n- 5 splits: visual_fidelity, scene_coherence, physical_plausibility, text_rendering, score_invariant",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "t2i/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-t2i"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "t2i/(?:partial-)?(visual_fidelity|scene_coherence|physical_plausibility|text_rendering|score_invariant)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "t2i_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "t2i/p_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-t2i"
+            },
+            "extract": {
+              "column": "p_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "t2i/prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-t2i"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "t2i/gold_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-t2i"
+            },
+            "extract": {
+              "column": "gold_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "t2i/perturbed_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-t2i"
+            },
+            "extract": {
+              "column": "perturbed_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Focus",
+  "description": "\n\t\n\t\t\n\t\tFocus Dataset\n\t\n\nFocus is meta-evaluation benchmark designed to assess the robustness of evaluator VLMs across diverse Image-to-Text (I2T) and Text-to-Image (T2I) tasks. Please refer to our paper for more details.\n\n      \n\n\n\n\t\n\t\t\n\t\n\t\n\t\tCode\n\t\n\nThe code to generate the perturbations and run evaluations are available on our github repository: ai4bharat/focus\n\n\t\n\t\t\n\t\n\t\n\t\tSubsets\n\t\n\n\n\t\n\t\t\nSubset\nDescription\nSplits\n\n\n\t\t\ni2t\nImage-to-Text perturbations\nvisual_grounding\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ai4bharat/Focus.",
+  "alternateName": [
+    "ai4bharat/Focus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "AI4Bharat",
+    "url": "https://huggingface.co/ai4bharat"
+  },
+  "keywords": [
+    "image-to-text",
+    "visual-question-answering",
+    "mit",
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2604.21523",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/ai4bharat/Focus",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

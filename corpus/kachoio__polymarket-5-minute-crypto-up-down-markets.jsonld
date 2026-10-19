@@ -1,0 +1,563 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/kachoio/polymarket-5-minute-crypto-up-down-markets/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-markets",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "markets/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ticks",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ticks/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "markets_splits/split_name"
+      },
+      "@id": "markets_splits",
+      "name": "markets_splits",
+      "description": "Splits for the markets config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "markets_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "markets_splits/split_name": "btc"
+        },
+        {
+          "markets_splits/split_name": "eth"
+        },
+        {
+          "markets_splits/split_name": "sol"
+        },
+        {
+          "markets_splits/split_name": "xrp"
+        },
+        {
+          "markets_splits/split_name": "doge"
+        },
+        {
+          "markets_splits/split_name": "hype"
+        },
+        {
+          "markets_splits/split_name": "bnb"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "markets",
+      "description": "kachoio/polymarket-5-minute-crypto-up-down-markets - 'markets' subset\n\nAdditional information:\n- 7 splits: btc, eth, sol, xrp, doge, hype, bnb\n- 3 skipped columns: market_start, market_end, recorded_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "markets/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "markets/(?:partial-)?(btc|eth|sol|xrp|doge|hype|bnb)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "markets_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/event_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "event_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "slug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/token_up",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "token_up"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/token_down",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "token_down"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/volume",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "volume"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/liquidity",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "liquidity"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/outcome",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "outcome"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/n_ticks",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "n_ticks"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ticks_splits/split_name"
+      },
+      "@id": "ticks_splits",
+      "name": "ticks_splits",
+      "description": "Splits for the ticks config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ticks_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ticks_splits/split_name": "btc"
+        },
+        {
+          "ticks_splits/split_name": "eth"
+        },
+        {
+          "ticks_splits/split_name": "sol"
+        },
+        {
+          "ticks_splits/split_name": "xrp"
+        },
+        {
+          "ticks_splits/split_name": "doge"
+        },
+        {
+          "ticks_splits/split_name": "hype"
+        },
+        {
+          "ticks_splits/split_name": "bnb"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ticks",
+      "description": "kachoio/polymarket-5-minute-crypto-up-down-markets - 'ticks' subset\n\nAdditional information:\n- 7 splits: btc, eth, sol, xrp, doge, hype, bnb\n- 1 skipped column: ts_utc",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ticks/(?:partial-)?(btc|eth|sol|xrp|doge|hype|bnb)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ticks_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/t",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "t"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/bu",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "bu"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/au",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "au"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/bd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "bd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/ad",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "ad"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/su",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "su"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/sd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "sd"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/sau",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "sau"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/sad",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "sad"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/du",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "du"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/dd",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "dd"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "polymarket-5-minute-crypto-up-down-markets",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPolymarket 5-Minute Crypto Up/Down Markets\n\t\n\nSecond-by-second top-of-book order-book recordings of Polymarket's recurring 5-minute crypto up/down markets \u2014 bet on whether a coin closes a fixed 5-minute window higher or lower \u2014 for BTC, ETH, SOL, XRP, DOGE, HYPE and BNB.\n\n~89,000 markets (one resolved 5-minute window each)\n26,858,579 per-second observations (\u2248300 ticks per market)\nSpan: BTC 24 Mar 2026 \u2192 18 May 2026; the other six 5 Apr 2026 \u2192 18 May 2026 (UTC)\nCoverage 99.8%+, no\u2026 See the full description on the dataset page: https://huggingface.co/datasets/kachoio/polymarket-5-minute-crypto-up-down-markets.",
+  "alternateName": [
+    "kachoio/polymarket-5-minute-crypto-up-down-markets",
+    "Polymarket 5-Minute Crypto Up/Down Markets"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Kacho",
+    "url": "https://huggingface.co/kachoio"
+  },
+  "keywords": [
+    "time-series-forecasting",
+    "tabular-classification",
+    "cc0-1.0",
+    "10M - 100M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "finance",
+    "crypto",
+    "prediction-markets",
+    "polymarket",
+    "order-book",
+    "time-series"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/kachoio/polymarket-5-minute-crypto-up-down-markets",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC0 1.0 Universal \u2014 public domain dedication",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ]
+  }
+}

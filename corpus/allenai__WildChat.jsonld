@@ -1,0 +1,959 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/WildChat/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "allenai/WildChat - 'default' subset\n\nAdditional information:\n- 1 skipped column: timestamp",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/conversation_id",
+          "name": "default/conversation_id",
+          "description": "Column 'conversation_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "conversation_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/model",
+          "name": "default/model",
+          "description": "Column 'model' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/conversation",
+          "name": "default/conversation",
+          "description": "Column 'conversation' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversation/content",
+              "name": "default/conversation/content",
+              "description": "Column 'conversation' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversation/language",
+              "name": "default/conversation/language",
+              "description": "Column 'conversation' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversation/redacted",
+              "name": "default/conversation/redacted",
+              "description": "Column 'conversation' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "redacted"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversation/role",
+              "name": "default/conversation/role",
+              "description": "Column 'conversation' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversation/toxic",
+              "name": "default/conversation/toxic",
+              "description": "Column 'conversation' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversation"
+                },
+                "transform": {
+                  "jsonPath": "toxic"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/turn",
+          "name": "default/turn",
+          "description": "Column 'turn' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "turn"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language",
+          "name": "default/language",
+          "description": "Column 'language' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/openai_moderation",
+          "name": "default/openai_moderation",
+          "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/openai_moderation/categories",
+              "name": "default/openai_moderation/categories",
+              "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/harassment",
+                  "name": "default/openai_moderation/categories/harassment",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "harassment"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/harassment/threatening",
+                  "name": "default/openai_moderation/categories/harassment/threatening",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "harassment/threatening"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/hate",
+                  "name": "default/openai_moderation/categories/hate",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "hate"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/hate/threatening",
+                  "name": "default/openai_moderation/categories/hate/threatening",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "hate/threatening"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/self-harm",
+                  "name": "default/openai_moderation/categories/self-harm",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/self-harm/instructions",
+                  "name": "default/openai_moderation/categories/self-harm/instructions",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm/instructions"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/self-harm/intent",
+                  "name": "default/openai_moderation/categories/self-harm/intent",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm/intent"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/sexual",
+                  "name": "default/openai_moderation/categories/sexual",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "sexual"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/sexual/minors",
+                  "name": "default/openai_moderation/categories/sexual/minors",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "sexual/minors"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/violence",
+                  "name": "default/openai_moderation/categories/violence",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "violence"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/categories/violence/graphic",
+                  "name": "default/openai_moderation/categories/violence/graphic",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "violence/graphic"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/openai_moderation/category_scores",
+              "name": "default/openai_moderation/category_scores",
+              "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/harassment",
+                  "name": "default/openai_moderation/category_scores/harassment",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "harassment"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/harassment/threatening",
+                  "name": "default/openai_moderation/category_scores/harassment/threatening",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "harassment/threatening"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/hate",
+                  "name": "default/openai_moderation/category_scores/hate",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "hate"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/hate/threatening",
+                  "name": "default/openai_moderation/category_scores/hate/threatening",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "hate/threatening"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/self-harm",
+                  "name": "default/openai_moderation/category_scores/self-harm",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/self-harm/instructions",
+                  "name": "default/openai_moderation/category_scores/self-harm/instructions",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm/instructions"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/self-harm/intent",
+                  "name": "default/openai_moderation/category_scores/self-harm/intent",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "self-harm/intent"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/sexual",
+                  "name": "default/openai_moderation/category_scores/sexual",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "sexual"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/sexual/minors",
+                  "name": "default/openai_moderation/category_scores/sexual/minors",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "sexual/minors"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/violence",
+                  "name": "default/openai_moderation/category_scores/violence",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "violence"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/openai_moderation/category_scores/violence/graphic",
+                  "name": "default/openai_moderation/category_scores/violence/graphic",
+                  "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "openai_moderation"
+                    },
+                    "transform": {
+                      "jsonPath": "violence/graphic"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/openai_moderation/flagged",
+              "name": "default/openai_moderation/flagged",
+              "description": "Column 'openai_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "openai_moderation"
+                },
+                "transform": {
+                  "jsonPath": "flagged"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/detoxify_moderation",
+          "name": "default/detoxify_moderation",
+          "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/identity_attack",
+              "name": "default/detoxify_moderation/identity_attack",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "identity_attack"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/insult",
+              "name": "default/detoxify_moderation/insult",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "insult"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/obscene",
+              "name": "default/detoxify_moderation/obscene",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "obscene"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/severe_toxicity",
+              "name": "default/detoxify_moderation/severe_toxicity",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "severe_toxicity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/sexual_explicit",
+              "name": "default/detoxify_moderation/sexual_explicit",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "sexual_explicit"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/threat",
+              "name": "default/detoxify_moderation/threat",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "threat"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/detoxify_moderation/toxicity",
+              "name": "default/detoxify_moderation/toxicity",
+              "description": "Column 'detoxify_moderation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "detoxify_moderation"
+                },
+                "transform": {
+                  "jsonPath": "toxicity"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/toxic",
+          "name": "default/toxic",
+          "description": "Column 'toxic' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "toxic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/redacted",
+          "name": "default/redacted",
+          "description": "Column 'redacted' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "redacted"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "WildChat",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for WildChat\n\t\n\n\n\t\n\t\t\n\t\tNote: a newer version with 4.8 million conversations and demographic information can be found here.\n\t\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\n\nPaper: https://arxiv.org/abs/2405.01470\n\nInteractive Search Tool: https://wildvisualizer.com (paper)\n\nLicense: ODC-BY\n\nLanguage(s) (NLP): multi-lingual\n\nPoint of Contact: Yuntian Deng\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nWildChat is a collection of 650K conversations between human users and ChatGPT. We collected WildChat\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/WildChat.",
+  "alternateName": [
+    "allenai/WildChat",
+    "WildChat"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "text-generation",
+    "question-answering",
+    "odc-by",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2405.01470",
+    "arxiv:2409.03753",
+    "arxiv:2406.13706",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "instruction-finetuning"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/allenai/WildChat",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

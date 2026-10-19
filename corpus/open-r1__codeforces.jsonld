@@ -1,0 +1,1572 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/open-r1/codeforces/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-verifiable",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "verifiable/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-verifiable-prompts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "verifiable-prompts/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "open-r1/codeforces - 'default' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/aliases",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "aliases"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contest_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contest_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contest_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contest_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contest_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contest_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contest_start",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contest_start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contest_start_year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contest_start_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/time_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "time_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/memory_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "memory_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/input_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "input_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/output_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "output_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/interaction_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "interaction_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/note",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "note"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/examples",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/examples/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/examples/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/editorial",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "editorial"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rating",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/tags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "tags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/testset_size",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "testset_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/official_tests",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/official_tests/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/official_tests/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/official_tests_complete",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "official_tests_complete"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/input_mode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "input_mode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/generated_checker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "generated_checker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/executable",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "executable"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/generated_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "generated_tests"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "verifiable_splits/split_name"
+      },
+      "@id": "verifiable_splits",
+      "name": "verifiable_splits",
+      "description": "Splits for the verifiable config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "verifiable_splits/split_name": "train"
+        },
+        {
+          "verifiable_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "verifiable",
+      "description": "open-r1/codeforces - 'verifiable' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "verifiable/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "verifiable_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/aliases",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "aliases"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/contest_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "contest_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/contest_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "contest_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/contest_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "contest_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/contest_start",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "contest_start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/contest_start_year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "contest_start_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/time_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "time_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/memory_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "memory_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/input_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "input_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/output_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "output_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/interaction_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "interaction_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/note",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "note"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/examples",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable/examples/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable/examples/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/editorial",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "editorial"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/rating",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/tags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "tags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/testset_size",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "testset_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/official_tests",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable/official_tests/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable/official_tests/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/official_tests_complete",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "official_tests_complete"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/input_mode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "input_mode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/generated_checker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "generated_checker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/executable",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "executable"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable/generated_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable"
+            },
+            "extract": {
+              "column": "generated_tests"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "verifiable-prompts_splits/split_name"
+      },
+      "@id": "verifiable-prompts_splits",
+      "name": "verifiable-prompts_splits",
+      "description": "Splits for the verifiable-prompts config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "verifiable-prompts_splits/split_name": "train"
+        },
+        {
+          "verifiable-prompts_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "verifiable-prompts",
+      "description": "open-r1/codeforces - 'verifiable-prompts' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "verifiable\\-prompts/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "verifiable-prompts_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/aliases",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "aliases"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/contest_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "contest_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/contest_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "contest_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/contest_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "contest_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/contest_start",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "contest_start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/contest_start_year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "contest_start_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/time_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "time_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/memory_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "memory_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/input_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "input_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/output_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "output_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/interaction_format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "interaction_format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/note",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "note"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/examples",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable-prompts/examples/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable-prompts"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable-prompts/examples/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable-prompts"
+                },
+                "extract": {
+                  "column": "examples"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/editorial",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "editorial"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/rating",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/tags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "tags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/testset_size",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "testset_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/official_tests",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable-prompts/official_tests/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable-prompts"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "verifiable-prompts/official_tests/output",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-verifiable-prompts"
+                },
+                "extract": {
+                  "column": "official_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/official_tests_complete",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "official_tests_complete"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/input_mode",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "input_mode"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/generated_checker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "generated_checker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/executable",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "executable"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/generated_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "generated_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "verifiable-prompts/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-verifiable-prompts"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "codeforces",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for CodeForces\n\t\n\n\n\t\n\t\t\n\t\tDataset description\n\t\n\nCodeForces is one of the most popular websites among competitive programmers, hosting regular contests where participants must solve challenging algorithmic optimization problems. The challenging nature of these problems makes them an interesting dataset to improve and test models\u2019 code reasoning capabilities. This dataset includes more than 10k unique problems covering the very first contests all the way to 2025.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/open-r1/codeforces.",
+  "alternateName": [
+    "open-r1/codeforces"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Open R1",
+    "url": "https://huggingface.co/open-r1"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/open-r1/codeforces",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

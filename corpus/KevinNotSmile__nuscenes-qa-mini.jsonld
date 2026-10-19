@@ -1,0 +1,271 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/KevinNotSmile/nuscenes-qa-mini/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-day",
+      "name": "parquet-files-for-config-day",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "day/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "day_splits/split_name"
+      },
+      "@id": "day_splits",
+      "name": "day_splits",
+      "description": "Splits for the day config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "day_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "day_splits/split_name": "train"
+        },
+        {
+          "day_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "day",
+      "name": "day",
+      "description": "KevinNotSmile/nuscenes-qa-mini - 'day' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, validation\n- 6 skipped columns: CAM_FRONT, CAM_FRONT_RIGHT, CAM_BACK_RIGHT, CAM_BACK, CAM_BACK_LEFT, CAM_FRONT_LEFT",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "day/split",
+          "name": "day/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-day"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "day/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "day_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "day/token",
+          "name": "day/token",
+          "description": "Column 'token' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-day"
+            },
+            "extract": {
+              "column": "token"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "day/LIDAR_TOP",
+          "name": "day/LIDAR_TOP",
+          "description": "Column 'LIDAR_TOP' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-day"
+            },
+            "extract": {
+              "column": "LIDAR_TOP"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "day/question",
+          "name": "day/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-day"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "day/answer",
+          "name": "day/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-day"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "nuscenes-qa-mini",
+  "description": "\n\t\n\t\t\n\t\tNuScenes-QA-mini Dataset\n\t\n\n\n\t\n\t\t\n\t\tTL;DR:\n\t\n\nThis dataset is used for multimodal question-answering tasks in autonomous driving scenarios. We created this dataset based on nuScenes-QA dataset for evaluation in our paper Modality Plug-and-Play: Elastic Modality Adaptation in Multimodal LLMs for Embodied AI. The samples are divided into day and night scenes.\n\n\t\n\t\t\nscene\n# train samples\n# validation samples\n\n\n\t\t\nday\n2,229\n2,229\n\n\nnight\n659\n659\n\n\n\t\n\n\n\t\n\t\t\nEach sample contains\u2026 See the full description on the dataset page: https://huggingface.co/datasets/KevinNotSmile/nuscenes-qa-mini.",
+  "alternateName": [
+    "KevinNotSmile/nuscenes-qa-mini"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Kai Huang",
+    "url": "https://huggingface.co/KevinNotSmile"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "text-generation",
+    "English",
+    "cc-by-nc-sa-4.0",
+    "1K - 10K",
+    "arrow",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:2312.07886",
+    "arxiv:2305.14836",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/KevinNotSmile/nuscenes-qa-mini",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,686 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-cosmopedia-v2",
+      "name": "parquet-files-for-config-cosmopedia-v2",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "cosmopedia-v2/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-fineweb-edu-dedup",
+      "name": "parquet-files-for-config-fineweb-edu-dedup",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "fineweb-edu-dedup/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-python-edu",
+      "name": "parquet-files-for-config-python-edu",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "python-edu/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "cosmopedia-v2_splits/split_name"
+      },
+      "@id": "cosmopedia-v2_splits",
+      "name": "cosmopedia-v2_splits",
+      "description": "Splits for the cosmopedia-v2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "cosmopedia-v2_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "cosmopedia-v2",
+      "name": "cosmopedia-v2",
+      "description": "HuggingFaceTB/smollm-corpus - 'cosmopedia-v2' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/split",
+          "name": "cosmopedia-v2/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "cosmopedia\\-v2/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "cosmopedia-v2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/prompt",
+          "name": "cosmopedia-v2/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/text",
+          "name": "cosmopedia-v2/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/token_length",
+          "name": "cosmopedia-v2/token_length",
+          "description": "Column 'token_length' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "token_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/audience",
+          "name": "cosmopedia-v2/audience",
+          "description": "Column 'audience' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "audience"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/format",
+          "name": "cosmopedia-v2/format",
+          "description": "Column 'format' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cosmopedia-v2/seed_data",
+          "name": "cosmopedia-v2/seed_data",
+          "description": "Column 'seed_data' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cosmopedia-v2"
+            },
+            "extract": {
+              "column": "seed_data"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "fineweb-edu-dedup_splits/split_name"
+      },
+      "@id": "fineweb-edu-dedup_splits",
+      "name": "fineweb-edu-dedup_splits",
+      "description": "Splits for the fineweb-edu-dedup config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "fineweb-edu-dedup_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "fineweb-edu-dedup_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "fineweb-edu-dedup",
+      "name": "fineweb-edu-dedup",
+      "description": "HuggingFaceTB/smollm-corpus - 'fineweb-edu-dedup' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "fineweb-edu-dedup/split",
+          "name": "fineweb-edu-dedup/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fineweb-edu-dedup"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "fineweb\\-edu\\-dedup/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "fineweb-edu-dedup_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fineweb-edu-dedup/text",
+          "name": "fineweb-edu-dedup/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fineweb-edu-dedup"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fineweb-edu-dedup/id",
+          "name": "fineweb-edu-dedup/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-fineweb-edu-dedup"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "fineweb-edu-dedup/metadata",
+          "name": "fineweb-edu-dedup/metadata",
+          "description": "Column 'metadata' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/dump",
+              "name": "fineweb-edu-dedup/metadata/dump",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "dump"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/url",
+              "name": "fineweb-edu-dedup/metadata/url",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/file_path",
+              "name": "fineweb-edu-dedup/metadata/file_path",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "file_path"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/language",
+              "name": "fineweb-edu-dedup/metadata/language",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/language_score",
+              "name": "fineweb-edu-dedup/metadata/language_score",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "language_score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/token_count",
+              "name": "fineweb-edu-dedup/metadata/token_count",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "token_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/score",
+              "name": "fineweb-edu-dedup/metadata/score",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "fineweb-edu-dedup/metadata/int_score",
+              "name": "fineweb-edu-dedup/metadata/int_score",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-fineweb-edu-dedup"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "int_score"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "python-edu_splits/split_name"
+      },
+      "@id": "python-edu_splits",
+      "name": "python-edu_splits",
+      "description": "Splits for the python-edu config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "python-edu_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "python-edu",
+      "name": "python-edu",
+      "description": "HuggingFaceTB/smollm-corpus - 'python-edu' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/split",
+          "name": "python-edu/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "python\\-edu/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "python-edu_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/blob_id",
+          "name": "python-edu/blob_id",
+          "description": "Column 'blob_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "blob_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/repo_name",
+          "name": "python-edu/repo_name",
+          "description": "Column 'repo_name' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/path",
+          "name": "python-edu/path",
+          "description": "Column 'path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/length_bytes",
+          "name": "python-edu/length_bytes",
+          "description": "Column 'length_bytes' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "length_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/score",
+          "name": "python-edu/score",
+          "description": "Column 'score' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "python-edu/int_score",
+          "name": "python-edu/int_score",
+          "description": "Column 'int_score' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-python-edu"
+            },
+            "extract": {
+              "column": "int_score"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "smollm-corpus",
+  "description": "\n\t\n\t\t\n\t\tSmolLM-Corpus\n\t\n\nThis dataset is a curated collection of high-quality educational and synthetic data designed for training small language models. \nYou can find more details about the models trained on this dataset in our SmolLM blog post.\n\n\t\n\t\t\n\t\tDataset subsets\n\t\n\n\n\t\n\t\t\n\t\tCosmopedia v2\n\t\n\nCosmopedia v2 is an enhanced version of Cosmopedia, the largest synthetic dataset for pre-training, consisting of over 39 million textbooks, blog posts, and stories generated by\u2026 See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus.",
+  "alternateName": [
+    "HuggingFaceTB/smollm-corpus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Hugging Face Smol Models Research",
+    "url": "https://huggingface.co/HuggingFaceTB"
+  },
+  "keywords": [
+    "English",
+    "odc-by",
+    "100M - 1B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/HuggingFaceTB/smollm-corpus",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

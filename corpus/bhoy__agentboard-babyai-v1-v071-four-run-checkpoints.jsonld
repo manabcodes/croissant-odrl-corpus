@@ -1,0 +1,1928 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/bhoy/agentboard-babyai-v1-v071-four-run-checkpoints/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "bhoy/agentboard-babyai-v1-v071-four-run-checkpoints - 'default' subset (first 5GB)\n\nAdditional information:\n- 3 skipped columns: tools, extra_usage, errors",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/task",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/task/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "task"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/task/data",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/idx",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "idx"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/name",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                null,
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/prompt",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/task/data/prompt/role",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "task"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "data"
+                          },
+                          {
+                            "jsonPath": "prompt"
+                          },
+                          {
+                            "jsonPath": "role"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/task/data/prompt/content",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "task"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "data"
+                          },
+                          {
+                            "jsonPath": "prompt"
+                          },
+                          {
+                            "jsonPath": "content"
+                          }
+                        ]
+                      }
+                    }
+                  ],
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/system_prompt",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "system_prompt"
+                      }
+                    ]
+                  }
+                },
+                null,
+                null,
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/timeout",
+                  "subField": [
+                    null,
+                    null,
+                    null,
+                    null
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/resources",
+                  "subField": [
+                    null,
+                    null,
+                    null,
+                    null
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/goal",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "goal"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/agentboard_commit",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "agentboard_commit"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/game_name",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "game_name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/initial_observation",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "initial_observation"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/seed",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "seed"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/subgoals",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "subgoals"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/task/data/difficulty",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "task"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "data"
+                      },
+                      {
+                        "jsonPath": "difficulty"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/runtime",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/runtime/id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "runtime"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/runtime/borrowed",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "runtime"
+                },
+                "transform": {
+                  "jsonPath": "borrowed"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/runtime/type_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "runtime"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/version",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/verifiers",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/verifiers/version",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "verifiers"
+                },
+                "transform": {
+                  "jsonPath": "version"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/verifiers/commit",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "verifiers"
+                },
+                "transform": {
+                  "jsonPath": "commit"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/run",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/run/type_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "run"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/run/step",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "run"
+                },
+                "transform": {
+                  "jsonPath": "step"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/agent",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent/model",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "agent"
+                },
+                "transform": {
+                  "jsonPath": "model"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent/sampling",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/sampling/temperature",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "agent"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "temperature"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/sampling/top_p",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "agent"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "top_p"
+                      }
+                    ]
+                  }
+                },
+                null,
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/sampling/max_tokens",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "agent"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "max_tokens"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/sampling/logprobs",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "agent"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "logprobs"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/sampling/extra_body",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/sampling/extra_body/top_k",
+                      "dataType": "cr:Int64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "agent"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sampling"
+                          },
+                          {
+                            "jsonPath": "extra_body"
+                          },
+                          {
+                            "jsonPath": "top_k"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/sampling/extra_body/min_p",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "agent"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sampling"
+                          },
+                          {
+                            "jsonPath": "extra_body"
+                          },
+                          {
+                            "jsonPath": "min_p"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/sampling/extra_body/return_token_ids",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "agent"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sampling"
+                          },
+                          {
+                            "jsonPath": "extra_body"
+                          },
+                          {
+                            "jsonPath": "return_token_ids"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/sampling/extra_body/chat_template_kwargs",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/agent/sampling/extra_body/chat_template_kwargs/enable_thinking",
+                          "dataType": "sc:Boolean",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "agent"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "sampling"
+                              },
+                              {
+                                "jsonPath": "extra_body"
+                              },
+                              {
+                                "jsonPath": "chat_template_kwargs"
+                              },
+                              {
+                                "jsonPath": "enable_thinking"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/sampling/extra_body/cache_salt",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "agent"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "sampling"
+                          },
+                          {
+                            "jsonPath": "extra_body"
+                          },
+                          {
+                            "jsonPath": "cache_salt"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent/harness_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/harness_0/id_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "agent"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "harness"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/agent/harness_0/runtime",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/agent/harness_0/runtime/type_0_0_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "agent"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "harness"
+                          },
+                          {
+                            "jsonPath": "runtime"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                null,
+                null,
+                null
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent/name_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "agent"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent/trainable",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "agent"
+                },
+                "transform": {
+                  "jsonPath": "trainable"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/nodes",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/parent",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "parent"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/sampled",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "sampled"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/timestamp",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "timestamp"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/token_ids",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "token_ids"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/mask",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "mask"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/is_content",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "is_content"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/nodes/logprobs_0",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "nodes"
+                },
+                "transform": {
+                  "jsonPath": "logprobs"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/calls",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/node",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "calls"
+                },
+                "transform": {
+                  "jsonPath": "node"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/model_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "calls"
+                },
+                "transform": {
+                  "jsonPath": "model"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/sampling_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/sampling_0/temperature_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "temperature"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/sampling_0/top_p_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "top_p"
+                      }
+                    ]
+                  }
+                },
+                null,
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/sampling_0/max_tokens_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "max_tokens"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/sampling_0/logprobs_0_0",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "sampling"
+                      },
+                      {
+                        "jsonPath": "logprobs"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/endpoint",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "calls"
+                },
+                "transform": {
+                  "jsonPath": "endpoint"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/finish_reason",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "calls"
+                },
+                "transform": {
+                  "jsonPath": "finish_reason"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/usage",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/usage/prompt_tokens",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "usage"
+                      },
+                      {
+                        "jsonPath": "prompt_tokens"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/usage/completion_tokens",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "usage"
+                      },
+                      {
+                        "jsonPath": "completion_tokens"
+                      }
+                    ]
+                  }
+                },
+                null,
+                null,
+                null
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/calls/time",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/time/start",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "time"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/calls/time/end",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "calls"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "time"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            null
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rewards",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/rewards/progress_reward",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rewards"
+                },
+                "transform": {
+                  "jsonPath": "progress_reward"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/metrics",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/metrics/babyai_turns",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metrics"
+                },
+                "transform": {
+                  "jsonPath": "babyai_turns"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metrics/grounding",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metrics"
+                },
+                "transform": {
+                  "jsonPath": "grounding"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metrics/invalid_actions",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metrics"
+                },
+                "transform": {
+                  "jsonPath": "invalid_actions"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metrics/success",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metrics"
+                },
+                "transform": {
+                  "jsonPath": "success"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/info",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/info/env_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "info"
+                },
+                "transform": {
+                  "jsonPath": "env_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/info/group_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "info"
+                },
+                "transform": {
+                  "jsonPath": "group_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/info/episode_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "info"
+                },
+                "transform": {
+                  "jsonPath": "episode_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/info/policy_version",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "info"
+                },
+                "transform": {
+                  "jsonPath": "policy_version"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_completed",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_completed"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ok",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "ok"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/stop_condition",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "stop_condition"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/timing",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/start_0",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "timing"
+                },
+                "transform": {
+                  "jsonPath": "start"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/boot",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/boot/start_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "boot"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/boot/end_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "boot"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/setup_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/setup_0/start_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "setup"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/setup_0/end_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "setup"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/generation",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/generation/start_0_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "generation"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/generation/end_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "generation"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/generation/model_0_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/timing/generation/model_0_0/duration",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "timing"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "generation"
+                          },
+                          {
+                            "jsonPath": "model"
+                          },
+                          {
+                            "jsonPath": "duration"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/generation/harness_0_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/timing/generation/harness_0_0/duration_0",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "timing"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "generation"
+                          },
+                          {
+                            "jsonPath": "harness"
+                          },
+                          {
+                            "jsonPath": "duration"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/finalize_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/finalize_0/start_0_0_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "finalize"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/finalize_0/end_0_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "finalize"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/timing/scoring_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/scoring_0/start_0_0_0_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "scoring"
+                      },
+                      {
+                        "jsonPath": "start"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/timing/scoring_0/end_0_0_0_0_0",
+                  "dataType": "cr:Float64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "timing"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "scoring"
+                      },
+                      {
+                        "jsonPath": "end"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "agentboard-babyai-v1-v071-four-run-checkpoints",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tAgentBoard BabyAI v1 Prime-RL Four-Run Checkpoints\n\t\n\nThis dataset preserves four runs from the v071 experiment series using\nQwen/Qwen3.5-9B, Prime-RL 0.7.0 at commit\ncb74ae2bebe9710b11551970a9661d10116c7179, and the packaged\nagentboard-babyai-v1-context 0.2.2 Verifiers environment.\n\n\t\n\t\t\n\t\n\t\n\t\tRuns\n\t\n\n\n\t\n\t\t\nDirectory\nAlgorithm\nECHO user alpha\nExact resume step\nFinal trainer step\nRetained adapters\n\n\n\t\t\nrlonly/\nGRPO\n0\n95\n100\n21\n\n\necho005/\nECHO\n0.05\n100\n100\n23\n\n\necho050/\nECHO\n0.5\n95\u2026 See the full description on the dataset page: https://huggingface.co/datasets/bhoy/agentboard-babyai-v1-v071-four-run-checkpoints.",
+  "alternateName": [
+    "bhoy/agentboard-babyai-v1-v071-four-run-checkpoints"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Billy Hoy",
+    "url": "https://huggingface.co/bhoy"
+  },
+  "keywords": [
+    "apache-2.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "reinforcement-learning",
+    "prime-rl",
+    "verifiers",
+    "echo",
+    "agentboard",
+    "babyai",
+    "qwen3.5"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/bhoy/agentboard-babyai-v1-v071-four-run-checkpoints",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

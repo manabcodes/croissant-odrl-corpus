@@ -1,0 +1,630 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Manusagents/cyber-security-100m/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-signals",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "signals/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "signals_splits/split_name"
+      },
+      "@id": "signals_splits",
+      "name": "signals_splits",
+      "description": "Splits for the signals config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "signals_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "signals_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "signals",
+      "description": "Manusagents/cyber-security-100m - 'signals' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "signals/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "signals/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "signals_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/timestamp",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/message_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "message_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/stream_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "stream_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/pipeline",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "pipeline"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/src_ip",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "src_ip"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/dst_ip",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "dst_ip"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/src_port",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "src_port"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/dst_port",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "dst_port"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/protocol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "protocol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/src_host",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "src_host"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/dst_host",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "dst_host"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/username",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "username"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/action",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "action"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/severity",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "severity"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/vendor_code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "vendor_code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/message_sanitized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "message_sanitized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/label_binary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "label_binary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/label_confidence",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "label_confidence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/attack_techniques",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "attack_techniques"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/attack_tactics",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "attack_tactics"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/defense_techniques",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "defense_techniques"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/mo_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "mo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/suspicion_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "suspicion_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/lifecycle_stage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "lifecycle_stage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/disposition",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "disposition"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/disposition_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "disposition_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/is_false_positive",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "is_false_positive"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/status_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "status_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/incident_ids",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "incident_ids"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/matched_rules",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "matched_rules"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/set_roles",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "set_roles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/product_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "product_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "signals/vendor_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-signals"
+            },
+            "extract": {
+              "column": "vendor_name"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "cyber-security-100m",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tWitFoo Precinct6 Cybersecurity Dataset (large)\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tOverview\n\t\n\nA large-scale, labeled cybersecurity dataset derived from production Security Operations Center (SOC) data processed by WitFoo Precinct version 6.x. This dataset contains 114,234,041 sanitized security events (signal logs) across 5 organizations and 12,361 incident provenance graphs (47,632 nodes, 32,086,552 edges).\nAvailable in two sizes:\n\nwitfoo/precinct6-cybersecurity \u2014 2.1M signals (smaller, faster to\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Manusagents/cyber-security-100m.",
+  "alternateName": [
+    "Manusagents/cyber-security-100m"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "SHS Lab",
+    "url": "https://huggingface.co/Manusagents"
+  },
+  "keywords": [
+    "text-classification",
+    "graph-ml",
+    "English",
+    "apache-2.0",
+    "100M - 1B",
+    "Tabular",
+    "Text",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "cybersecurity",
+    "intrusion-detection",
+    "provenance-graphs",
+    "MITRE-ATT&CK",
+    "SOAR",
+    "security-operations",
+    "IDS",
+    "network-security",
+    "threat-detection",
+    "labeled-dataset",
+    "lead-rules"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/Manusagents/cyber-security-100m",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

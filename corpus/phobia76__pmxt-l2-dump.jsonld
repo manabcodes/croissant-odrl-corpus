@@ -1,0 +1,234 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/phobia76/pmxt-l2-dump/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "phobia76/pmxt-l2-dump - 'default' subset\n\nAdditional information:\n- 2 skipped columns: timestamp_received, timestamp_created_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "market_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/update_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "update_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/data",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "data"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "pmxt-l2-dump",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPMXT Polymarket Orderbook Backup\n\t\n\n\u8fd9\u4e2a\u6570\u636e\u96c6\u4ed3\u5e93\u7528\u4e8e\u4fdd\u5168 PMXT \u516c\u5f00\u63d0\u4f9b\u7684 Polymarket \u5c0f\u65f6 parquet \u5bf9\u8c61\uff1b\u5b83\u662f\u4e00\u4e2a\u975e\u5b98\u65b9\u955c\u50cf/\u5907\u4efd\uff0c\u4e0d\u662f PMXT \u5b98\u65b9\u4ed3\u5e93\u3002\n\n\t\n\t\t\n\t\n\t\n\t\tSource And Attribution\n\t\n\n\nOriginal source: PMXT Database Dumps\nCurrent primary source listing: PMXT Polymarket v2\nCurrent primary object endpoint used by this mirror: https://r2v2.pmxt.dev/polymarket_orderbook_YYYY-MM-DDTHH.parquet\nHistorical v1 listing: PMXT Polymarket v1\n\u5982\u679c\u4e0a\u6e38 PMXT archive \u53ef\u7528\uff0c\u8bf7\u4f18\u5148\u4f7f\u7528\u4e0a\u6e38\u6765\u6e90\u3002\n\n\n\t\n\t\t\n\t\n\t\n\t\tLicense\n\t\n\n\n\u4e0a\u6e38 PMXT archive \u5f53\u524d\u9875\u9762\u58f0\u660e\u6570\u636e\u6309 CC BY\u2026 See the full description on the dataset page: https://huggingface.co/datasets/phobia76/pmxt-l2-dump.",
+  "alternateName": [
+    "phobia76/pmxt-l2-dump",
+    "PMXT Polymarket Orderbook Backup"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "bbbbb",
+    "url": "https://huggingface.co/phobia76"
+  },
+  "keywords": [
+    "tabular-classification",
+    "English",
+    "Chinese",
+    "cc-by-4.0",
+    "100B - 1T",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/phobia76/pmxt-l2-dump",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

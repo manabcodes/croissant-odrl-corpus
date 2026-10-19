@@ -1,0 +1,450 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/laubonghaudoi/legco-speech/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-segmented",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "segmented/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-raw",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "raw/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "segmented_splits/split_name"
+      },
+      "@id": "segmented_splits",
+      "name": "segmented_splits",
+      "description": "Splits for the segmented config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "segmented_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "segmented_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "segmented",
+      "description": "laubonghaudoi/legco-speech - 'segmented' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "segmented/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "segmented_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/segment_id",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "segment_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/start_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "start_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/end_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "end_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "segmented/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-segmented"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "raw_splits/split_name"
+      },
+      "@id": "raw_splits",
+      "name": "raw_splits",
+      "description": "Splits for the raw config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "raw_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "raw",
+      "description": "laubonghaudoi/legco-speech - 'raw' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raw/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "raw/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "raw_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/audio",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/publish_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "publish_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/duration",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raw/duration_seconds",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raw"
+            },
+            "extract": {
+              "column": "duration_seconds"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "legco-speech",
+  "description": "\n\t\n\t\t\n\t\t\u9999\u6e2f\u7acb\u6cd5\u6703\u6703\u8b70\u8a9e\u97f3\u6578\u64da\u96c6\n\t\n\n\u672c\u6578\u64da\u96c6\u4fc2\u7531\u9999\u6e2f\u7acb\u6cd5\u6703\u6703\u8b70\u88fd\u6210\u5605\u5927\u898f\u6a21\u8a9e\u97f3\u6578\u64da\u96c6\u3002\u539f\u59cb\u9304\u97f3\u7e3d\u6642\u9577 22,196 \u500b\u9418\uff0c\u5207\u5206\u8a9e\u97f3\u5f8c\u7e3d\u6642\u9577 20,471 \u500b\u9418\u3002\u6578\u64da\u96c6\u5206\u5169\u500b\u5b50\u96c6\uff0craw\u540csegmented\uff0c\u5206\u5225\u70ba\u539f\u59cb\u9304\u97f3\u540cVAD\u8b58\u5225\u5207\u5206\u5f8c\u5605\u8a9e\u97f3\u3002\n\n\t\n\t\t\n\t\t\u6578\u64da\u96c6\u88fd\u4f5c\u6d41\u7a0b\n\t\n\n\n\u5148\u53bb\u9999\u6e2f\u7279\u5225\u884c\u653f\u5340\u7acb\u6cd5\u6703 YouTube\u4e0b\u8f09\u6240\u6709\u6703\u8b70\u7d00\u9304\u4e26\u8f49\u70ba 16kHz \u63a1\u6a23\u7387\u5605 OPUS\u97f3\u983b\n\u7528 fsmn-vad \u5207\u5206\u6240\u6709\u8a9e\u97f3\uff0c\u4e26\u7528 Qwen3-ASR-1.7B \u8f49\u5beb\u6210\u7cb5\u6587 srt \u5b57\u5e55\n\u8f49\u5beb\u5f8c\u7528\u6b63\u5247\u8868\u9054\u5f0f\u4fee\u6b63\u5b57\u5e55\u4e2d\u5e38\u898b\u8f49\u5beb\u932f\u8aa4\n\u5c07\u6578\u64da\u96c6\u5206\u6210 raw\u3001 segmented \u5169\u500b\u5b50\u96c6\u50b3\u5230HF\n\n\n\t\n\t\t\n\u5b50\u96c6 subset\nraw\nsegment\n\n\n\t\t\n\u7e3d\u884c\u6578 Row number\n14,036\n9,557,109\n\n\n\u7e3d\u6642\u9577 Total duration\n22,195.55 hr (79,903,980.00 s)\n20471.21 hr (73,696,365.27 s)\n\n\n\u5e73\u5747\u6642\u9577 Average duration\n1.58 hr (5692.79 s)\n7.71\u2026 See the full description on the dataset page: https://huggingface.co/datasets/laubonghaudoi/legco-speech.",
+  "alternateName": [
+    "laubonghaudoi/legco-speech"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "laubonghaudoi",
+    "url": "https://huggingface.co/laubonghaudoi"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "audio-to-audio",
+    "audio-classification",
+    "text-generation",
+    "Yue Chinese",
+    "cc0-1.0",
+    "1M - 10M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "cantonese",
+    "speech",
+    "hong-kong",
+    "legco",
+    "legislative-council"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/laubonghaudoi/legco-speech",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC0 1.0 Universal \u2014 public domain dedication",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,2068 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/dolmino-mix-1124/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-flan",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "flan/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-math",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "math/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pes2o",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pes2o/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stackexchange",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stackexchange/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-wiki",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "wiki/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "flan_splits/split_name"
+      },
+      "@id": "flan_splits",
+      "name": "flan_splits",
+      "description": "Splits for the flan config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "flan_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "flan_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "flan",
+      "description": "allenai/dolmino-mix-1124 - 'flan' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "flan/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-flan"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "flan/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "flan_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "flan/attributes",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "flan/attributes/dedupe_ngrams_8_1_all_train",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "attributes"
+                },
+                "transform": {
+                  "jsonPath": "dedupe_ngrams_8_1_all_train"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            },
+            null
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "flan/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-flan"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "flan/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/_replicate",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "_replicate"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/_task_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "_task_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/_task_source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "_task_source"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/_template_idx",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "_template_idx"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/_template_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "_template_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "flan/metadata/provenance",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-flan"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "provenance"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "flan/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-flan"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "flan/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-flan"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "math_splits/split_name"
+      },
+      "@id": "math_splits",
+      "name": "math_splits",
+      "description": "Splits for the math config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "math_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "math_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "math",
+      "description": "allenai/dolmino-mix-1124 - 'math' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "math/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "math/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "math_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/added",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "added"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/created",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "created"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/attributes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "attributes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/text_token_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "text_token_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/len",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "len"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/__index_level_0__",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "__index_level_0__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/openai_response",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "math/openai_response/is_math",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-math"
+                },
+                "extract": {
+                  "column": "openai_response"
+                },
+                "transform": {
+                  "jsonPath": "is_math"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/original_gsm_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "original_gsm_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/metadata",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "metadata"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "math/meta/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "math/meta/query",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "query"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "math/meta/original_question",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "original_question"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "math/meta/response",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "response"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/repository_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "repository_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_path_in_repository",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_path_in_repository"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_code_string",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_code_string"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_code_tokens",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_code_tokens"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_documentation_string",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_documentation_string"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_documentation_tokens",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_documentation_tokens"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/split_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/func_code_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "func_code_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/Language_",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "Language="
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/License_",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "License="
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/Meta_Link_",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "Meta_Link="
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/audience",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "audience"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/format",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "format"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/seed_data",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "seed_data"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pes2o_splits/split_name"
+      },
+      "@id": "pes2o_splits",
+      "name": "pes2o_splits",
+      "description": "Splits for the pes2o config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pes2o_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pes2o",
+      "description": "allenai/dolmino-mix-1124 - 'pes2o' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pes2o/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pes2o_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/added",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "added"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/created",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "created"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/abstract",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "abstract"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/abstract_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "abstract_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/abstract_language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "abstract_language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/abstract_perplexity",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "abstract_perplexity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/extfieldsofstudy",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "extfieldsofstudy"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/provenance_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "provenance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/s2fieldsofstudy",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "s2fieldsofstudy"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/sha1",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "sha1"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/sources",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "sources"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/title",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/title_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "title_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/title_language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "title_language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/title_perplexity",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "title_perplexity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/top_frequencies",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "pes2o/metadata/top_frequencies/count",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pes2o"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "top_frequencies"
+                      },
+                      {
+                        "jsonPath": "count"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "pes2o/metadata/top_frequencies/token",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-pes2o"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "top_frequencies"
+                      },
+                      {
+                        "jsonPath": "token"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pes2o/metadata/year",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pes2o"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "year"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "version"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stackexchange_splits/split_name"
+      },
+      "@id": "stackexchange_splits",
+      "name": "stackexchange_splits",
+      "description": "Splits for the stackexchange config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stackexchange_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stackexchange",
+      "description": "allenai/dolmino-mix-1124 - 'stackexchange' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stackexchange/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stackexchange_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/added",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "added"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/attributes",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/attributes/dedupe_para_ngrams_13_1",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "attributes"
+                },
+                "transform": {
+                  "jsonPath": "dedupe_para_ngrams_13_1"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1,-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/created",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "created"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_comment_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_comment_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_content_license",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_content_license"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_last_activity_date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_last_activity_date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_last_edit_date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_last_edit_date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_last_editor_user_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_last_editor_user_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_owner_user_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_owner_user_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_score",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/answer_view_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "answer_view_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/forum",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "forum"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/provenance_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "provenance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_comment_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_comment_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_content_license",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_content_license"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_last_activity_date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_last_activity_date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_last_edit_date",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_last_edit_date"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_last_editor_user_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_last_editor_user_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_owner_user_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_owner_user_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_score",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stackexchange/metadata/question_view_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stackexchange"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_view_count"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stackexchange/version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stackexchange"
+            },
+            "extract": {
+              "column": "version"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "wiki_splits/split_name"
+      },
+      "@id": "wiki_splits",
+      "name": "wiki_splits",
+      "description": "Splits for the wiki config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wiki_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "wiki_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "wiki",
+      "description": "allenai/dolmino-mix-1124 - 'wiki' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "wiki/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "wiki_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/added",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "added"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/created",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "created"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "wiki/metadata/length",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wiki"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "length"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wiki/metadata/provenance_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wiki"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "provenance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wiki/metadata/revid",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wiki"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "revid"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "wiki/metadata/url",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-wiki"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "version"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "dolmino-mix-1124",
+  "description": "\n\n\n\t\n\t\t\n\t\tDOLMino dataset mix for OLMo2 stage 2 annealing training.\n\t\n\nMixture of high-quality data used for the second stage of OLMo2 training. \n\n\t\n\t\t\n\t\tSource Sizes\n\t\n\n\n\t\n\t\t\nName\nCategory\nTokens\nBytes (uncompressed)\nDocuments\nLicense\n\n\n\t\t\nDCLM\nHQ Web Pages\n752B\n4.56TB\n606M\nCC-BY-4.0\n\n\nFlan\nHQ Web Pages\n17.0B\n98.2GB\n57.3M\nODC-BY\n\n\nPes2o\nSTEM Papers\n58.6B\n413GB\n38.8M\nODC-BY\n\n\nWiki\nEncyclopedic\n3.7B\n16.2GB\n6.17M\nODC-BY\n\n\nStackExchange\nCodeText\n1.26B\n7.72GB\n2.48M\nCC-BY-SA-{2.5, 3.0, 4.0}\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/dolmino-mix-1124.",
+  "alternateName": [
+    "allenai/dolmino-mix-1124",
+    "DOLMino Mix (November 2024)"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "odc-by",
+    "100M - 1B",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/allenai/dolmino-mix-1124",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,1067 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/akshaydudhane/EarthDial-Dataset/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Classification",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Classification/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Detection",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Detection/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-GeoChat_Bench",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "GeoChat_Bench/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Image_captioning",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Image_captioning/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Region_captioning",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Region_captioning/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Classification_splits/split_name"
+      },
+      "@id": "Classification_splits",
+      "name": "Classification_splits",
+      "description": "Splits for the Classification config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Classification_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Classification_splits/split_name": "AID_sample"
+        },
+        {
+          "Classification_splits/split_name": "UCM_sample"
+        },
+        {
+          "Classification_splits/split_name": "BigEarthNet_RGB_sample"
+        },
+        {
+          "Classification_splits/split_name": "WHU_sample"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Classification",
+      "description": "akshaydudhane/EarthDial-Dataset - 'Classification' subset (first 5GB)\n\nAdditional information:\n- 4 splits: AID_sample, UCM_sample, BigEarthNet_RGB_sample, WHU_sample",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Classification/(?:partial-)?(AID_sample|UCM_sample|BigEarthNet_RGB_sample|WHU_sample)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Classification_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "column": "jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/groundtruth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "column": "groundtruth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Classification/origin",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Classification"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Detection_splits/split_name"
+      },
+      "@id": "Detection_splits",
+      "name": "Detection_splits",
+      "description": "Splits for the Detection config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Detection_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Detection_splits/split_name": "NWPU_VHR_10_sample"
+        },
+        {
+          "Detection_splits/split_name": "Swimming_pool_dataset_sample"
+        },
+        {
+          "Detection_splits/split_name": "ship_dataset_v0_sample"
+        },
+        {
+          "Detection_splits/split_name": "urban_tree_crown_sample"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Detection",
+      "description": "akshaydudhane/EarthDial-Dataset - 'Detection' subset (first 5GB)\n\nAdditional information:\n- 4 splits: NWPU_VHR_10_sample, Swimming_pool_dataset_sample, ship_dataset_v0_sample, urban_tree_crown_sample",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Detection/(?:partial-)?(NWPU_VHR_10_sample|Swimming_pool_dataset_sample|ship_dataset_v0_sample|urban_tree_crown_sample)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Detection_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/groundtruth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "groundtruth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/dataset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/ttype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "ttype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/size_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "size_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/obj_location",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "obj_location"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/obj_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "obj_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Detection/origin",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Detection"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "GeoChat_Bench_splits/split_name"
+      },
+      "@id": "GeoChat_Bench_splits",
+      "name": "GeoChat_Bench_splits",
+      "description": "Splits for the GeoChat_Bench config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "GeoChat_Bench_splits/split_name": "GeoChat_Bench_sample"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "GeoChat_Bench",
+      "description": "akshaydudhane/EarthDial-Dataset - 'GeoChat_Bench' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "GeoChat_Bench/(?:partial-)?(GeoChat_Bench_sample)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "GeoChat_Bench_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/groundtruth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "groundtruth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/dataset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/ttype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "ttype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/obj_ids",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "obj_ids"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/size_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "size_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "GeoChat_Bench/origin",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-GeoChat_Bench"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Image_captioning_splits/split_name"
+      },
+      "@id": "Image_captioning_splits",
+      "name": "Image_captioning_splits",
+      "description": "Splits for the Image_captioning config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Image_captioning_splits/split_name": "sydney_Captions"
+        },
+        {
+          "Image_captioning_splits/split_name": "UCM_Captions"
+        },
+        {
+          "Image_captioning_splits/split_name": "RSICD_Captions"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Image_captioning",
+      "description": "akshaydudhane/EarthDial-Dataset - 'Image_captioning' subset (first 5GB)\n\nAdditional information:\n- 3 splits: sydney_Captions, UCM_Captions, RSICD_Captions",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Image_captioning/(?:partial-)?(sydney_Captions|UCM_Captions|RSICD_Captions)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Image_captioning_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/groundtruth0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "groundtruth0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/groundtruth1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "groundtruth1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/groundtruth2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "groundtruth2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/groundtruth3",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "groundtruth3"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/groundtruth4",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "groundtruth4"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Image_captioning/origin",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Image_captioning"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Region_captioning_splits/split_name"
+      },
+      "@id": "Region_captioning_splits",
+      "name": "Region_captioning_splits",
+      "description": "Splits for the Region_captioning config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Region_captioning_splits/split_name": "NWPU_VHR_10"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Region_captioning",
+      "description": "akshaydudhane/EarthDial-Dataset - 'Region_captioning' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Region_captioning/(?:partial-)?(NWPU_VHR_10)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Region_captioning_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/groundtruth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "groundtruth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/dataset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/ttype",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "ttype"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/size_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "size_group"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/obj_location",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "obj_location"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/obj_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "obj_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Region_captioning/origin",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Region_captioning"
+            },
+            "extract": {
+              "column": "origin"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "EarthDial-Dataset",
+  "description": "\n\t\n\t\t\n\t\t\ud83c\udf0d EarthDial-Dataset\n\t\n\nThe EarthDial-Dataset is a curated collection of evaluation-only datasets focused on remote sensing and Earth observation downstream tasks. It is designed to benchmark vision-language models (VLMs) and multimodal reasoning systems on real-world scenarios involving satellite and aerial imagery.\n\n\n\t\n\t\t\n\t\t\ud83d\udcda Key Features\n\t\n\n\nEvaluation-focused: All datasets are for inference/testing only \u2014 no train/val splits.\nDiverse Tasks:\nClassification\nObject Detection\nChange\u2026 See the full description on the dataset page: https://huggingface.co/datasets/akshaydudhane/EarthDial-Dataset.",
+  "alternateName": [
+    "akshaydudhane/EarthDial-Dataset"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Akshay Dudhane",
+    "url": "https://huggingface.co/akshaydudhane"
+  },
+  "keywords": [
+    "question-answering",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "arrow",
+    "Image",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "remote_sensing",
+    "vlm"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/akshaydudhane/EarthDial-Dataset",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

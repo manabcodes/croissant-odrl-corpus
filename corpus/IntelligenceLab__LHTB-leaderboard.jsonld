@@ -1,0 +1,543 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/IntelligenceLab/LHTB-leaderboard/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-leaderboard",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "leaderboard/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-per_task",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "per_task/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "leaderboard_splits/split_name"
+      },
+      "@id": "leaderboard_splits",
+      "name": "leaderboard_splits",
+      "description": "Splits for the leaderboard config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "leaderboard_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "leaderboard",
+      "description": "IntelligenceLab/LHTB-leaderboard - 'leaderboard' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "leaderboard/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "leaderboard_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/rank",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "rank"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/agent",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "agent"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/model_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "model_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/harness_model_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "harness_model_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/mean_reward",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "mean_reward"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/solved_at_095",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "solved_at_095"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/strict_pass_at_10",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "strict_pass_at_10"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/n_tasks",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "n_tasks"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/agent_budget_sec",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "agent_budget_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/trials_per_task",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "trials_per_task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/submitter",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "submitter"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "leaderboard/submission_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-leaderboard"
+            },
+            "extract": {
+              "column": "submission_path"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "per_task_splits/split_name"
+      },
+      "@id": "per_task_splits",
+      "name": "per_task_splits",
+      "description": "Splits for the per_task config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "per_task_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "per_task_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "per_task",
+      "description": "IntelligenceLab/LHTB-leaderboard - 'per_task' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "per_task/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "per_task_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/model_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "model_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/reward",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "reward"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/solved",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "solved"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/strict_pass",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "strict_pass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/exception",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "exception"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "per_task/submission_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-per_task"
+            },
+            "extract": {
+              "column": "submission_path"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "LHTB-leaderboard",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tLHTB Leaderboard \u2014 Long-Horizon Terminal-Bench\n\t\n\nThis repository hosts submitted runs for\nLong-Horizon Terminal-Bench (LHTB),\na 46-task benchmark measuring how well LLM agents sustain useful work in a\ncontainerized terminal over hundreds of steps.\nEvery entry below ships its complete run artifacts \u2014 per-trial configs, results,\nverifier outputs and terminal recordings \u2014 so any score on this board can be audited\nwithout rerunning the suite.\n\n\ud83d\udcca Benchmark dataset:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/IntelligenceLab/LHTB-leaderboard.",
+  "alternateName": [
+    "IntelligenceLab/LHTB-leaderboard",
+    "LHTB Leaderboard"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Agent Intelligence-Lab \ud83e\udd9e",
+    "url": "https://huggingface.co/IntelligenceLab"
+  },
+  "keywords": [
+    "English",
+    "apache-2.0",
+    "1K - 10K",
+    "Tabular",
+    "Text",
+    "arxiv:2607.08964",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "agents",
+    "llm-agents",
+    "terminal",
+    "long-horizon",
+    "benchmark",
+    "agentic",
+    "leaderboard",
+    "harbor"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/IntelligenceLab/LHTB-leaderboard",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

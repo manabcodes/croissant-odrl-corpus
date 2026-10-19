@@ -1,0 +1,1136 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/permitt/superglue-sr/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-boolq",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "boolq/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-cb",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "cb/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-copa",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "copa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-multirc",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "multirc/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-record",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "record/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-rte",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "rte/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-wsc",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "wsc/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "boolq_splits/split_name"
+      },
+      "@id": "boolq_splits",
+      "name": "boolq_splits",
+      "description": "Splits for the boolq config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "boolq_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "boolq_splits/split_name": "train"
+        },
+        {
+          "boolq_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "boolq",
+      "description": "permitt/superglue-sr - 'boolq' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "boolq/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-boolq"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "boolq/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "boolq_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "boolq/idx",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-boolq"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "boolq/label",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-boolq"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "boolq/passage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-boolq"
+            },
+            "extract": {
+              "column": "passage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "boolq/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-boolq"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "cb_splits/split_name"
+      },
+      "@id": "cb_splits",
+      "name": "cb_splits",
+      "description": "Splits for the cb config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cb_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "cb_splits/split_name": "train"
+        },
+        {
+          "cb_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "cb",
+      "description": "permitt/superglue-sr - 'cb' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cb/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cb"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "cb/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "cb_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cb/idx",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cb"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cb/label",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cb"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cb/hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cb"
+            },
+            "extract": {
+              "column": "hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cb/premise",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cb"
+            },
+            "extract": {
+              "column": "premise"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "copa_splits/split_name"
+      },
+      "@id": "copa_splits",
+      "name": "copa_splits",
+      "description": "Splits for the copa config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "copa_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "copa_splits/split_name": "train"
+        },
+        {
+          "copa_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "copa",
+      "description": "permitt/superglue-sr - 'copa' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "copa/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "copa/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "copa_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/premise",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "premise"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/choice1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "choice1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/choice2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "choice2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/label",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/idx",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "copa/changed",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-copa"
+            },
+            "extract": {
+              "column": "changed"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "multirc_splits/split_name"
+      },
+      "@id": "multirc_splits",
+      "name": "multirc_splits",
+      "description": "Splits for the multirc config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multirc_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "multirc_splits/split_name": "train"
+        },
+        {
+          "multirc_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multirc",
+      "description": "permitt/superglue-sr - 'multirc' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multirc"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "multirc/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "multirc_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/idx",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "multirc/idx/paragraph",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multirc"
+                },
+                "extract": {
+                  "column": "idx"
+                },
+                "transform": {
+                  "jsonPath": "paragraph"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "multirc/idx/question",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multirc"
+                },
+                "extract": {
+                  "column": "idx"
+                },
+                "transform": {
+                  "jsonPath": "question"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "multirc/idx/answer",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multirc"
+                },
+                "extract": {
+                  "column": "idx"
+                },
+                "transform": {
+                  "jsonPath": "answer"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/label",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multirc"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multirc"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multirc"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multirc/paragraph",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multirc"
+            },
+            "extract": {
+              "column": "paragraph"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "record_splits/split_name"
+      },
+      "@id": "record_splits",
+      "name": "record_splits",
+      "description": "Splits for the record config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "record_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "record_splits/split_name": "train"
+        },
+        {
+          "record_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "record",
+      "description": "permitt/superglue-sr - 'record' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "record/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "record/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "record_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/passage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "column": "passage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/entities",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "column": "entities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/entity_spans",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "record/entity_spans/end",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-record"
+                },
+                "extract": {
+                  "column": "entity_spans"
+                },
+                "transform": {
+                  "jsonPath": "end"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "record/entity_spans/start",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-record"
+                },
+                "extract": {
+                  "column": "entity_spans"
+                },
+                "transform": {
+                  "jsonPath": "start"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/answers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "record/idx",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-record"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "rte_splits/split_name"
+      },
+      "@id": "rte_splits",
+      "name": "rte_splits",
+      "description": "Splits for the rte config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "rte_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "rte_splits/split_name": "train"
+        },
+        {
+          "rte_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "rte",
+      "description": "permitt/superglue-sr - 'rte' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "rte/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rte"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "rte/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "rte_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rte/idx",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rte"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rte/label",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rte"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rte/hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rte"
+            },
+            "extract": {
+              "column": "hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rte/premise",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rte"
+            },
+            "extract": {
+              "column": "premise"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "wsc_splits/split_name"
+      },
+      "@id": "wsc_splits",
+      "name": "wsc_splits",
+      "description": "Splits for the wsc config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wsc_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "wsc_splits/split_name": "train"
+        },
+        {
+          "wsc_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "wsc",
+      "description": "permitt/superglue-sr - 'wsc' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "wsc/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "wsc_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/span1_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "span1_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/span2_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "span2_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/idx",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/label",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/span1_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "span1_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/span2_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "span2_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wsc/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wsc"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "superglue-sr",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tBalkanBench SuperGLUE - Serbian\n\t\n\n\nPart of BalkanBench - the open, reproducible\nbenchmark for language models across Serbian, Croatian, Montenegrin, and\nBosnian (BCMS). Live leaderboard at https://balkanbench.com/leaderboard.\nBackground and motivation: Release of BalkanBench - the vision behind it\n(Medium, 2026-04-27).\n\nThis is the Serbian SuperGLUE track of BalkanBench v0.1. Serbian is the\nofficial frozen track: the leaderboard's ranked average is computed over\n6 ranked tasks\u2026 See the full description on the dataset page: https://huggingface.co/datasets/permitt/superglue-sr.",
+  "alternateName": [
+    "permitt/superglue-sr",
+    "BalkanBench SuperGLUE - Serbian"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Mitar",
+    "url": "https://huggingface.co/permitt"
+  },
+  "keywords": [
+    "text-classification",
+    "multiple-choice",
+    "question-answering",
+    "monolingual",
+    "extended|super_glue",
+    "Serbian",
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "optimized-parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "balkanbench",
+    "bcms",
+    "serbian",
+    "superglue",
+    "nlu",
+    "benchmark"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/permitt/superglue-sr",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

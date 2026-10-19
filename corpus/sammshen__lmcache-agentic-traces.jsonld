@@ -1,0 +1,429 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/sammshen/lmcache-agentic-traces/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "sammshen/lmcache-agentic-traces - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/session_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "session_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/input",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/input/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "input"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/input/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "input"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/input/tool_calls",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/input/tool_calls/id",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "input"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/input/tool_calls/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "input"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/input/tool_calls/function",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/input/tool_calls/function/name",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "input"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "name"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/input/tool_calls/function/arguments",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "input"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "arguments"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/input/tool_call_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "input"
+                },
+                "transform": {
+                  "jsonPath": "tool_call_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/input/name_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "input"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/output_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "output_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pre_gap",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pre_gap"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "lmcache-agentic-traces",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tLMCache Agentic Dataset Collection\n\t\n\nA curated dataset collection of 787 multi-turn agentic LLM sessions (24,881 total LLM iterations) designed for benchmarking stateful LLM serving systems. Every session exhibits at least 5 turns with prefix growth and builds to at least 10K tokens of context \u2014 making it ideal for evaluating tiered KV Cache solutions like LMCache.\n\n\t\n\t\t\n\t\n\t\n\t\tMotivation\n\t\n\nModern LLM agents (coding assistants, research agents, tool-calling systems) make dozens of\u2026 See the full description on the dataset page: https://huggingface.co/datasets/sammshen/lmcache-agentic-traces.",
+  "alternateName": [
+    "sammshen/lmcache-agentic-traces",
+    "LMCache Agentic Dataset Collection"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Samuel Shen",
+    "url": "https://huggingface.co/sammshen"
+  },
+  "keywords": [
+    "text-generation",
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "optimized-parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "kv-cache",
+    "llm-serving",
+    "agentic",
+    "multi-turn",
+    "traces",
+    "benchmark"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/sammshen/lmcache-agentic-traces",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

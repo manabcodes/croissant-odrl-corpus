@@ -1,0 +1,477 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/truthfulqa/truthful_qa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-generation",
+      "name": "parquet-files-for-config-generation",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "generation/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-multiple_choice",
+      "name": "parquet-files-for-config-multiple_choice",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "multiple_choice/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "generation_splits/split_name"
+      },
+      "@id": "generation_splits",
+      "name": "generation_splits",
+      "description": "Splits for the generation config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "generation_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "generation_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "generation",
+      "name": "generation",
+      "description": "truthfulqa/truthful_qa - 'generation' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "generation/split",
+          "name": "generation/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "generation/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "generation_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/type",
+          "name": "generation/type",
+          "description": "Column 'type' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/category",
+          "name": "generation/category",
+          "description": "Column 'category' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/question",
+          "name": "generation/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/best_answer",
+          "name": "generation/best_answer",
+          "description": "Column 'best_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "best_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/correct_answers",
+          "name": "generation/correct_answers",
+          "description": "Column 'correct_answers' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "correct_answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/incorrect_answers",
+          "name": "generation/incorrect_answers",
+          "description": "Column 'incorrect_answers' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "incorrect_answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "generation/source",
+          "name": "generation/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-generation"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "multiple_choice_splits/split_name"
+      },
+      "@id": "multiple_choice_splits",
+      "name": "multiple_choice_splits",
+      "description": "Splits for the multiple_choice config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multiple_choice_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "multiple_choice_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multiple_choice",
+      "name": "multiple_choice",
+      "description": "truthfulqa/truthful_qa - 'multiple_choice' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multiple_choice/split",
+          "name": "multiple_choice/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multiple_choice"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "multiple_choice/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "multiple_choice_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multiple_choice/question",
+          "name": "multiple_choice/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multiple_choice"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multiple_choice/mc1_targets",
+          "name": "multiple_choice/mc1_targets",
+          "description": "Column 'mc1_targets' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "multiple_choice/mc1_targets/choices",
+              "name": "multiple_choice/mc1_targets/choices",
+              "description": "Column 'mc1_targets' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multiple_choice"
+                },
+                "extract": {
+                  "column": "mc1_targets"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "multiple_choice/mc1_targets/labels",
+              "name": "multiple_choice/mc1_targets/labels",
+              "description": "Column 'mc1_targets' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multiple_choice"
+                },
+                "extract": {
+                  "column": "mc1_targets"
+                }
+              },
+              "repeated": true
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multiple_choice/mc2_targets",
+          "name": "multiple_choice/mc2_targets",
+          "description": "Column 'mc2_targets' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "multiple_choice/mc2_targets/choices",
+              "name": "multiple_choice/mc2_targets/choices",
+              "description": "Column 'mc2_targets' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multiple_choice"
+                },
+                "extract": {
+                  "column": "mc2_targets"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "multiple_choice/mc2_targets/labels",
+              "name": "multiple_choice/mc2_targets/labels",
+              "description": "Column 'mc2_targets' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-multiple_choice"
+                },
+                "extract": {
+                  "column": "mc2_targets"
+                }
+              },
+              "repeated": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "truthful_qa",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for truthful_qa\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nTruthfulQA is a benchmark to measure whether a language model is truthful in generating answers to questions. The benchmark comprises 817 questions that span 38 categories, including health, law, finance and politics. Questions are crafted so that some humans would answer falsely due to a false belief or misconception. To perform well, models must avoid generating false answers learned from imitating human texts.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/truthfulqa/truthful_qa.",
+  "alternateName": [
+    "truthfulqa/truthful_qa",
+    "TruthfulQA"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "TruthfulQA",
+    "url": "https://huggingface.co/truthfulqa"
+  },
+  "keywords": [
+    "multiple-choice",
+    "text-generation",
+    "question-answering",
+    "multiple-choice-qa",
+    "language-modeling",
+    "open-domain-qa",
+    "expert-generated",
+    "expert-generated",
+    "monolingual",
+    "original",
+    "English",
+    "apache-2.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2109.07958",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "sameAs": "",
+  "url": "https://huggingface.co/datasets/truthfulqa/truthful_qa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

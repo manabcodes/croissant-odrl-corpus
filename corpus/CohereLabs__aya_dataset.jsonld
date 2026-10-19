@@ -1,0 +1,494 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/CohereLabs/aya_dataset/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-demographics",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "demographics/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "CohereLabs/aya_dataset - 'default' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/targets",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "targets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language_code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "language_code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/annotation_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "annotation_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/user_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "user_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "demographics_splits/split_name"
+      },
+      "@id": "demographics_splits",
+      "name": "demographics_splits",
+      "description": "Splits for the demographics config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "demographics_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "demographics_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "demographics",
+      "description": "CohereLabs/aya_dataset - 'demographics' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "demographics/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "demographics_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/user_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "user_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/age_range",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "age_range"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/country",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "country"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/languages",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "languages"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "demographics/dialects",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-demographics"
+            },
+            "extract": {
+              "column": "dialects"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "aya_dataset",
+  "description": "\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe Aya Dataset is a multilingual instruction fine-tuning dataset curated by an open-science community via Aya Annotation Platform from Cohere Labs. The dataset contains a total of 204k human-annotated prompt-completion pairs along with the demographics data of the annotators.\nThis dataset can be used to train, finetune, and evaluate multilingual LLMs.\n\nCurated by: Contributors of Aya Open Science Intiative.\n\nLanguage(s): 65 languages (71 including dialects &\u2026 See the full description on the dataset page: https://huggingface.co/datasets/CohereLabs/aya_dataset.",
+  "alternateName": [
+    "CohereLabs/aya_dataset",
+    "Aya Dataset"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Cohere Labs",
+    "url": "https://huggingface.co/CohereLabs"
+  },
+  "keywords": [
+    "other",
+    "crowdsourced",
+    "expert-generated",
+    "crowdsourced",
+    "expert-generated",
+    "multilingual",
+    "original",
+    "Amharic",
+    "Standard Arabic",
+    "Moroccan Arabic",
+    "Najdi Arabic",
+    "Ta'izzi-Adeni Arabic",
+    "Egyptian Arabic",
+    "Levantine Arabic",
+    "Bengali",
+    "Cebuano",
+    "Danish",
+    "German",
+    "Modern Greek (1453-)",
+    "English",
+    "Basque",
+    "Filipino",
+    "Finnish",
+    "French",
+    "Irish",
+    "Gujarati",
+    "Haitian",
+    "Hausa",
+    "Hindi",
+    "Hungarian",
+    "Igbo",
+    "Indonesian",
+    "Italian",
+    "Javanese",
+    "Japanese",
+    "Kannada",
+    "Kirghiz",
+    "Korean",
+    "Kurdish",
+    "Lithuanian",
+    "Malayalam",
+    "Marathi",
+    "Malagasy",
+    "Malay (macrolanguage)",
+    "Burmese",
+    "Nepali (macrolanguage)",
+    "Dutch",
+    "Pedi",
+    "Nyanja",
+    "Panjabi",
+    "Iranian Persian",
+    "Polish",
+    "Portuguese",
+    "Pushto",
+    "Russian",
+    "Sinhala",
+    "Shona",
+    "Sindhi",
+    "Somali",
+    "Spanish",
+    "Albanian",
+    "Serbian",
+    "Sundanese",
+    "Swahili (macrolanguage)",
+    "Swedish",
+    "Tamil",
+    "Telugu",
+    "Thai",
+    "Turkish",
+    "Ukrainian",
+    "Urdu",
+    "Vietnamese",
+    "Wolof",
+    "Xhosa",
+    "Yoruba",
+    "Chinese",
+    "Zulu",
+    "apache-2.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2402.06619",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/CohereLabs/aya_dataset",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

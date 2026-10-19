@@ -1,0 +1,947 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/NoeFlandre/osm-polygon-image-tag/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-polygons",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "polygons/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-image_assets",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "image_assets/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "polygons_splits/split_name"
+      },
+      "@id": "polygons_splits",
+      "name": "polygons_splits",
+      "description": "Splits for the polygons config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "polygons_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "polygons_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "polygons",
+      "description": "NoeFlandre/osm-polygon-image-tag - 'polygons' subset\n\nAdditional information:\n- 1 skipped column: osm_timestamp",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "polygons/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "polygons_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/osm_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "osm_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/osm_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "osm_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/osm_version",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "osm_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/osm_changeset",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "osm_changeset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/source_pbf",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "source_pbf"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/source_feature_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "source_feature_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/geometry",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "geometry"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/geometry_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "geometry_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/area_m2",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "area_m2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/bbox_min_lon",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "bbox_min_lon"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/bbox_min_lat",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "bbox_min_lat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/bbox_max_lon",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "bbox_max_lon"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/bbox_max_lat",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "bbox_max_lat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/tags",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "polygons/tags/key",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-polygons"
+                },
+                "extract": {
+                  "column": "tags"
+                },
+                "transform": {
+                  "jsonPath": "key"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "polygons/tags/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-polygons"
+                },
+                "extract": {
+                  "column": "tags"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/wikimedia_commons",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "wikimedia_commons"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/mapillary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "mapillary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/panoramax",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "panoramax"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/panoramax_values",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "polygons/panoramax_values/key_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-polygons"
+                },
+                "extract": {
+                  "column": "panoramax_values"
+                },
+                "transform": {
+                  "jsonPath": "key"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "polygons/panoramax_values/value_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-polygons"
+                },
+                "extract": {
+                  "column": "panoramax_values"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/kartaview",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "kartaview"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/flickr",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "flickr"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/bubbleid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "bubbleid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "polygons/source_pbfs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-polygons"
+            },
+            "extract": {
+              "column": "source_pbfs"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "image_assets_splits/split_name"
+      },
+      "@id": "image_assets_splits",
+      "name": "image_assets_splits",
+      "description": "Splits for the image_assets config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "image_assets_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "image_assets",
+      "description": "NoeFlandre/osm-polygon-image-tag - 'image_assets' subset\n\nAdditional information:\n- 2 skipped columns: image_url_expires_at, retry_after",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "image_assets/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "image_assets_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/source_pbf",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "source_pbf"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/source_polygon_shard",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "source_polygon_shard"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/osm_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "osm_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/osm_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "osm_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/osm_version",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "osm_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/provider",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "provider"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/source_tag_key",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "source_tag_key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/source_tag_value",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "source_tag_value"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/canonical_reference",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "canonical_reference"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/provider_asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "provider_asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/asset_index",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "asset_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/relation_kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "relation_kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/page_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "page_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/image_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "image_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/thumbnail_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "thumbnail_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/mime_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "mime_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/width",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "width"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/height",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "height"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/license_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "license_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/license_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "license_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/reason",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "reason"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/category_truncated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "category_truncated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/resolver_contract_version",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "resolver_contract_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "image_assets/response_sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-image_assets"
+            },
+            "extract": {
+              "column": "response_sha256"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "osm-polygon-image-tag",
+  "description": "\n\n\t\n\t\t\n\t\n\t\n\t\tOSM Polygon Image Tag\n\t\n\nThis dataset connects OpenStreetMap polygons to image references found in their\ntags. It contains closed ways and relations only. A polygon row is one unique\nOSM feature. An image-asset row describes one image reference or one lookup\nresult for a feature.\nA tag value is the original reference. It may be a direct URL, a provider ID,\na UUID, or a category name; it is not always an image URL. image_assets keeps\nthat value and records the lookup result\u2026 See the full description on the dataset page: https://huggingface.co/datasets/NoeFlandre/osm-polygon-image-tag.",
+  "alternateName": [
+    "NoeFlandre/osm-polygon-image-tag"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "No\u00e9 Flandre",
+    "url": "https://huggingface.co/NoeFlandre"
+  },
+  "keywords": [
+    "odbl",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Tabular",
+    "Text",
+    "Geospatial",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "openstreetmap",
+    "geospatial",
+    "geoparquet",
+    "image"
+  ],
+  "license": "https://choosealicense.com/licenses/odbl/",
+  "url": "https://huggingface.co/datasets/NoeFlandre/osm-polygon-image-tag",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Open Database License v1.0 (ODbL)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

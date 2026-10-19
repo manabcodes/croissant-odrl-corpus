@@ -1,0 +1,869 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/EasonXiao-888/SpatialEdit-500K/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "EasonXiao-888/SpatialEdit-500K - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/json",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/SAMPLE_ID",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "SAMPLE_ID"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/conversations",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations/from",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations"
+                      },
+                      {
+                        "jsonPath": "from"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations/value",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations"
+                      },
+                      {
+                        "jsonPath": "value"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/conversations_description",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_description/from_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_description"
+                      },
+                      {
+                        "jsonPath": "from"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_description/value_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_description"
+                      },
+                      {
+                        "jsonPath": "value"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/conversations_human",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_human/from_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_human"
+                      },
+                      {
+                        "jsonPath": "from"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_human/value_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_human"
+                      },
+                      {
+                        "jsonPath": "value"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/conversations_human_description",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_human_description/from_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_human_description"
+                      },
+                      {
+                        "jsonPath": "from"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/conversations_human_description/value_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "conversations_human_description"
+                      },
+                      {
+                        "jsonPath": "value"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/data_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "data_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/height",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "height"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/metadata",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/dataset_source",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "dataset_source"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/edit_ypd",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/json/metadata/edit_ypd/distance",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "json"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "metadata"
+                          },
+                          {
+                            "jsonPath": "edit_ypd"
+                          },
+                          {
+                            "jsonPath": "distance"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/json/metadata/edit_ypd/pitch",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "json"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "metadata"
+                          },
+                          {
+                            "jsonPath": "edit_ypd"
+                          },
+                          {
+                            "jsonPath": "pitch"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/json/metadata/edit_ypd/yaw",
+                      "dataType": "cr:Float64",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "json"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "metadata"
+                          },
+                          {
+                            "jsonPath": "edit_ypd"
+                          },
+                          {
+                            "jsonPath": "yaw"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/id_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/input",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "input"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/instruction",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "instruction"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/instruction_human",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "instruction_human"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/instruction_type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "instruction_type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/object_list",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "object_list"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/output",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "output"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/target_description",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "target_description"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/metadata/task",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metadata"
+                      },
+                      {
+                        "jsonPath": "task"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/multi_image",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "multi_image"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/only_text",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "only_text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/width",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "width"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/0.jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "0.jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/1.jpg",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "1.jpg"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__url__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__url__"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "SpatialEdit-500K",
+  "description": "\n\t\n\t\t\n\t\tSpatialEdit-500K\n\t\n\nSpatialEdit-500K is a synthetic training dataset for fine-grained image spatial editing. It is built for learning geometry-aware edits such as object moving, object rotation, and camera viewpoint change.\nThe dataset was introduced in the paper SpatialEdit: Benchmarking Fine-Grained Image Spatial Editing. It is generated with a controllable rendering pipeline to provide structured spatial transformations at scale.\n\n\t\n\t\t\n\t\n\t\n\t\tProject Resources\n\t\n\n\nGitHub Repository:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/EasonXiao-888/SpatialEdit-500K.",
+  "alternateName": [
+    "EasonXiao-888/SpatialEdit-500K"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "YC Xiao",
+    "url": "https://huggingface.co/EasonXiao-888"
+  },
+  "keywords": [
+    "image-to-image",
+    "apache-2.0",
+    "100K - 1M",
+    "webdataset",
+    "Image",
+    "Text",
+    "Datasets",
+    "WebDataset",
+    "Croissant",
+    "arxiv:2604.04911",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/EasonXiao-888/SpatialEdit-500K",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

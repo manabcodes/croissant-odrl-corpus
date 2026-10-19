@@ -1,0 +1,76 @@
+# ODRL usage policy for a Croissant dataset
+#
+# This file covers Croissant 1.1's "Fine-Grained Control with ODRL" section
+# (docs.mlcommons.org/croissant/docs/croissant-spec-1.1.html), which recommends
+# W3C ODRL (https://www.w3.org/TR/odrl-model/) for expressing dataset usage
+# permissions, prohibitions, and duties as machine-actionable metadata under
+# schema.org's `usageInfo` property.
+#
+# Usage:
+#   When generating a new Croissant file:
+#     croissant-baker --input ./my-dataset --creator "Name" --odrl-config odrl.yaml
+#
+#   When enriching an existing Croissant file (e.g. one downloaded from
+#   Hugging Face, Kaggle, or OpenML that doesn't have a policy yet):
+#     croissant-baker odrl-apply dataset-croissant.jsonld --odrl-config odrl.yaml
+#
+# All fields are optional. Remove or leave blank any section that does not apply.
+#
+# OUTPUT STRUCTURE
+# ----------------
+# Everything below becomes a single `usageInfo` node on the dataset, typed
+# ["CreativeWork", "odrl:Offer"], containing odrl:permission / odrl:prohibition
+# / odrl:duty rules — the exact shape the spec's own examples use.
+# ----------------------------------------------------------------------------
+
+# Human-readable label for the policy as a whole.
+name: PhysioNet Credentialed Health Data License — research use only
+
+# ── Permissions ─────────────────────────────────────────────────────────────
+#
+# action    — an ODRL action term (use, distribute, reproduce, commercialize,
+#             derive, ...), or a CURIE from another vocabulary, e.g. a DUO
+#             action term (duo:0000006 = "Health or Medical or Biomedical Use").
+# target    — optional @id of a FileObject/FileSet/RecordSet this rule
+#             applies to. Omit for a dataset-wide rule.
+# constraints — optional list of {left_operand, operator, right_operand}.
+#             left_operand/operator are ODRL terms unless they already contain
+#             a colon (then used as-is, e.g. a DUO/MONDO CURIE).
+#             right_operand is a plain value ("research") or a CURIE
+#             reference ("duo:0000018") if it contains a colon.
+
+permissions:
+  - action: use
+    constraints:
+      - left_operand: purpose
+        operator: eq
+        right_operand: research
+
+  # A DUO-flavoured permission, mirroring the spec's own health-data example:
+  # allow "Health or Medical or Biomedical Use" (duo:0000006), but restricted
+  # to non-commercial use (duo:0000018) via the DUO modifier vocabulary.
+  # Requires the `duo` prefix, which is auto-declared in @context by
+  # inject_odrl() since it's a built-in known prefix.
+  - action: duo:0000006
+    constraints:
+      - left_operand: duo:0000018
+        operator: eq
+        right_operand: duo:0000018
+
+# ── Prohibitions ────────────────────────────────────────────────────────────
+
+prohibitions:
+  - action: commercialize
+  - action: distribute
+
+# ── Duties ──────────────────────────────────────────────────────────────────
+#
+# NOTE: as of this writing, third-party ODRL reasoners (e.g. SolidLabResearch's
+# ODRL-Evaluator) generally do not yet evaluate Duty as an independently
+# checkable rule — duty satisfaction is typically expected to already be
+# reflected as a fact elsewhere, not derived by the reasoner. Duties here are
+# still worth encoding for machine-readability and documentation purposes,
+# just don't expect an evaluator to auto-verify them yet.
+
+duties:
+  - action: odrl:attribution

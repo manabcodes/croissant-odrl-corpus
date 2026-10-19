@@ -1,0 +1,335 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/codefuse-ai/F2LLM-v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "codefuse-ai/F2LLM-v2 - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/lang",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/passage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "passage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/negative_1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "negative_1"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "F2LLM-v2",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tNote on Contamination\n\t\n\nAs of June 2026, MTEB uses the training split of MKQA and SIB200 for evaluation. We recommend removing these two datasets from the training data.\n\n\t\n\t\t\n\t\n\t\n\t\tCitation\n\t\n\n@misc{f2llm-v2,\n      title={F2LLM-v2: Inclusive, Performant, and Efficient Embeddings for a Multilingual World}, \n      author={Ziyin Zhang and Zihan Liao and Hang Yu and Peng Di and Rui Wang},\n      year={2026},\n      eprint={2603.19223},\n      archivePrefix={arXiv}\u2026 See the full description on the dataset page: https://huggingface.co/datasets/codefuse-ai/F2LLM-v2.",
+  "alternateName": [
+    "codefuse-ai/F2LLM-v2"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "CodeFuse AI",
+    "url": "https://huggingface.co/codefuse-ai"
+  },
+  "keywords": [
+    "text-retrieval",
+    "text-classification",
+    "sentence-similarity",
+    "feature-extraction",
+    "English",
+    "Chinese",
+    "Russian",
+    "Spanish",
+    "French",
+    "German",
+    "Arabic",
+    "Dutch",
+    "Vietnamese",
+    "Hindi",
+    "Korean",
+    "Japanese",
+    "Italian",
+    "Indonesian",
+    "Portuguese",
+    "Polish",
+    "Turkish",
+    "Danish",
+    "Thai",
+    "Swedish",
+    "Persian",
+    "Ukrainian",
+    "Czech",
+    "Norwegian",
+    "Greek",
+    "Catalan",
+    "Romanian",
+    "Finnish",
+    "Bulgarian",
+    "Tagalog",
+    "Galician",
+    "Burmese",
+    "Armenian",
+    "Khmer",
+    "Nepali",
+    "Hungarian",
+    "Basque",
+    "Hebrew",
+    "Lao",
+    "Swahili",
+    "Azerbaijani",
+    "Latvian",
+    "Sinhala",
+    "Slovak",
+    "Tajik",
+    "Estonian",
+    "Lithuanian",
+    "Malay",
+    "Croatian",
+    "Icelandic",
+    "Slovenian",
+    "Serbian",
+    "Urdu",
+    "Bengali",
+    "Afrikaans",
+    "Tamil",
+    "Georgian",
+    "Telugu",
+    "Malayalam",
+    "Mongolian",
+    "Norwegian Nynorsk",
+    "Kazakh",
+    "Welsh",
+    "Marathi",
+    "Albanian",
+    "Norwegian Bokm\u00e5l",
+    "Macedonian",
+    "Javanese",
+    "Kannada",
+    "Esperanto",
+    "Latin",
+    "Gujarati",
+    "Uzbek",
+    "Amharic",
+    "Occitan",
+    "Belarusian",
+    "Malagasy",
+    "Volap\u00fck",
+    "Panjabi",
+    "Luxembourgish",
+    "Haitian",
+    "Breton",
+    "Irish",
+    "Xhosa",
+    "Tatar",
+    "Bosnian",
+    "Yoruba",
+    "apache-2.0",
+    "10M - 100M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2603.19223",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/codefuse-ai/F2LLM-v2",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

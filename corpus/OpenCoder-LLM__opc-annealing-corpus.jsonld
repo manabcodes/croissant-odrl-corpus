@@ -1,0 +1,459 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/OpenCoder-LLM/opc-annealing-corpus/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-algorithmic_corpus",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "algorithmic_corpus/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-synthetic_code_snippet",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "synthetic_code_snippet/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-synthetic_qa",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "synthetic_qa/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "algorithmic_corpus_splits/split_name"
+      },
+      "@id": "algorithmic_corpus_splits",
+      "name": "algorithmic_corpus_splits",
+      "description": "Splits for the algorithmic_corpus config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "algorithmic_corpus_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "algorithmic_corpus_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "algorithmic_corpus",
+      "description": "OpenCoder-LLM/opc-annealing-corpus - 'algorithmic_corpus' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "algorithmic_corpus/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-algorithmic_corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "algorithmic_corpus/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "algorithmic_corpus_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "algorithmic_corpus/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-algorithmic_corpus"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "algorithmic_corpus/lang",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-algorithmic_corpus"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "algorithmic_corpus/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-algorithmic_corpus"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "synthetic_code_snippet_splits/split_name"
+      },
+      "@id": "synthetic_code_snippet_splits",
+      "name": "synthetic_code_snippet_splits",
+      "description": "Splits for the synthetic_code_snippet config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_code_snippet_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "synthetic_code_snippet_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "synthetic_code_snippet",
+      "description": "OpenCoder-LLM/opc-annealing-corpus - 'synthetic_code_snippet' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_code_snippet/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_code_snippet"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "synthetic_code_snippet/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "synthetic_code_snippet_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_code_snippet/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_code_snippet"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_code_snippet/lang",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_code_snippet"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_code_snippet/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_code_snippet"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "synthetic_qa_splits/split_name"
+      },
+      "@id": "synthetic_qa_splits",
+      "name": "synthetic_qa_splits",
+      "description": "Splits for the synthetic_qa config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "synthetic_qa_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "synthetic_qa",
+      "description": "OpenCoder-LLM/opc-annealing-corpus - 'synthetic_qa' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "synthetic_qa/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "synthetic_qa_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/file_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "file_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/file_ext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "file_ext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/file_size_in_byte",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "file_size_in_byte"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/lang",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_qa/program_lang",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_qa"
+            },
+            "extract": {
+              "column": "program_lang"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "opc-annealing-corpus",
+  "description": "\n\n\t\n\t\t\n\t\tOpenCoder Dataset\n\t\n\nThe OpenCoder dataset is composed of the following datasets:\n\nopc-sft-stage1: the sft data used for opencoder sft-stage1\nopc-sft-stage2: the sft data used for opencoder sft-stage2\nopc-annealing-corpus: the synthetic data & algorithmic corpus used for opencoder annealing <-- you are here\nfineweb-code-corpus: the code-related page recalled from fineweb\nfineweb-math-corpus: the math-related page recalled from finewebrefineCode-code-corpus-meta: the meta-data of\u2026 See the full description on the dataset page: https://huggingface.co/datasets/OpenCoder-LLM/opc-annealing-corpus.",
+  "alternateName": [
+    "OpenCoder-LLM/opc-annealing-corpus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenCoder",
+    "url": "https://huggingface.co/OpenCoder-LLM"
+  },
+  "keywords": [
+    "odc-by",
+    "10M - 100M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2411.04905",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/OpenCoder-LLM/opc-annealing-corpus",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,955 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Kkuntal990/LIVR_mixed/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-blink_eval",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "blink_eval/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-livr_holdout",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "livr_holdout/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-livr_train",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "livr_train/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pixmo_count_eval",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pixmo_count_eval/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-vsp_planning_eval",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "vsp_planning_eval/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "blink_eval_splits/split_name"
+      },
+      "@id": "blink_eval_splits",
+      "name": "blink_eval_splits",
+      "description": "Splits for the blink_eval config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "blink_eval_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "blink_eval",
+      "description": "Kkuntal990/LIVR_mixed - 'blink_eval' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "blink_eval/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "blink_eval_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/ground_truth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "blink_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-blink_eval"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "livr_holdout_splits/split_name"
+      },
+      "@id": "livr_holdout_splits",
+      "name": "livr_holdout_splits",
+      "description": "Splits for the livr_holdout config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "livr_holdout_splits/split_name": "validation"
+        },
+        {
+          "livr_holdout_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "livr_holdout",
+      "description": "Kkuntal990/LIVR_mixed - 'livr_holdout' subset\n\nAdditional information:\n- 2 splits: validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "livr_holdout/(?:partial-)?(validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "livr_holdout_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/ground_truth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_holdout/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_holdout"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "livr_train_splits/split_name"
+      },
+      "@id": "livr_train_splits",
+      "name": "livr_train_splits",
+      "description": "Splits for the livr_train config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "livr_train_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "livr_train",
+      "description": "Kkuntal990/LIVR_mixed - 'livr_train' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "livr_train/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "livr_train_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/ground_truth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "livr_train/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-livr_train"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pixmo_count_eval_splits/split_name"
+      },
+      "@id": "pixmo_count_eval_splits",
+      "name": "pixmo_count_eval_splits",
+      "description": "Splits for the pixmo_count_eval config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pixmo_count_eval_splits/split_name": "validation"
+        },
+        {
+          "pixmo_count_eval_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pixmo_count_eval",
+      "description": "Kkuntal990/LIVR_mixed - 'pixmo_count_eval' subset\n\nAdditional information:\n- 2 splits: validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pixmo_count_eval/(?:partial-)?(validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pixmo_count_eval_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/ground_truth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pixmo_count_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pixmo_count_eval"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "vsp_planning_eval_splits/split_name"
+      },
+      "@id": "vsp_planning_eval_splits",
+      "name": "vsp_planning_eval_splits",
+      "description": "Splits for the vsp_planning_eval config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "vsp_planning_eval_splits/split_name": "train"
+        },
+        {
+          "vsp_planning_eval_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "vsp_planning_eval",
+      "description": "Kkuntal990/LIVR_mixed - 'vsp_planning_eval' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "vsp_planning_eval/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "vsp_planning_eval_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/ground_truth",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "dataset_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/map_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "map_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/map_desc",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "map_desc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vsp_planning_eval/level",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vsp_planning_eval"
+            },
+            "extract": {
+              "column": "level"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "LIVR_mixed",
+  "description": "\n\t\n\t\t\n\t\tLIVR_mixed (v2)\n\t\n\nCurated multimodal data for training a Qwen2.5-VL self-reflection RL pipeline,\nplus the held-out LIVR splits and three external benchmarks (BLINK +\nPixMo-Count + VSP) used to evaluate it.\n\n\t\n\t\t\n\t\tLayout\n\t\n\ntrain/                          # LIVR train (9 tasks \u00d7 1000)\n  metadata.jsonl\n  livr_v2_manifest.json\n  images/<task>/...             # ~8.7 GB\n\nlivr_eval/                      # LIVR's own held-out val + test (8 tasks; counting \u2192 pixmo_count_eval)\n  validation/\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Kkuntal990/LIVR_mixed.",
+  "alternateName": [
+    "Kkuntal990/LIVR_mixed"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Kuntal Kokate",
+    "url": "https://huggingface.co/Kkuntal990"
+  },
+  "keywords": [
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "imagefolder",
+    "Image",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:2407.01863",
+    "arxiv:2512.21218",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "visual-reasoning",
+    "multimodal",
+    "vqa",
+    "mcq",
+    "counting",
+    "spatial-planning",
+    "grpo",
+    "self-reflection"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/Kkuntal990/LIVR_mixed",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

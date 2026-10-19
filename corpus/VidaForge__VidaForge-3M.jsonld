@@ -1,0 +1,513 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/VidaForge/VidaForge-3M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-preview",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "preview/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "preview_splits/split_name"
+      },
+      "@id": "preview_splits",
+      "name": "preview_splits",
+      "description": "Splits for the preview config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preview_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "preview_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "preview",
+      "description": "VidaForge/VidaForge-3M - 'preview' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preview/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "preview/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "preview_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/clip_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "clip_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/duration_sec",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "duration_sec"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/width",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "width"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/height",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "height"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/fps",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "fps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/has_audio",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "has_audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/caption_level_0",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "caption_level_0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/caption_level_1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "caption_level_1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/caption_level_2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "caption_level_2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/caption_level_3",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "caption_level_3"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/camera_json",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "camera_json"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_scene",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_scene"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_subjects",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_subjects"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_actions",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_actions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_style",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_style"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/tag_watermark",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "tag_watermark"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/optical_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "optical_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/motion_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "motion_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/aesthetic_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "aesthetic_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preview/text_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preview"
+            },
+            "extract": {
+              "column": "text_score"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "VidaForge-3M",
+  "description": "\n   3.14 million scene-level video clips with multi-level captions, camera labels, semantic tags, quality signals, and duplicate groups.\n\n\n\n  VidaForge Code\n  \u00b7\n  Project Blog\n  \u00b7\n  Source Dataset\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tOverview\n\t\n\nVidaForge-3M is a large-scale video pretraining dataset produced with\nVidaForge, an open data pipeline for\nbuilding and studying video foundation model pretraining data.\nThe release contains 3,141,246 annotation-complete clips totaling\n6,475.1 hours. Every clip has four\u2026 See the full description on the dataset page: https://huggingface.co/datasets/VidaForge/VidaForge-3M.",
+  "alternateName": [
+    "VidaForge/VidaForge-3M",
+    "VidaForge-3M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "VidaForge",
+    "url": "https://huggingface.co/VidaForge"
+  },
+  "keywords": [
+    "text-to-video",
+    "video-text-to-text",
+    "video-classification",
+    "machine-generated",
+    "machine-generated",
+    "monolingual",
+    "extended",
+    "English",
+    "apache-2.0",
+    "< 1K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Video",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "video",
+    "video-pretraining",
+    "video-captioning",
+    "video-generation",
+    "self-supervised-learning",
+    "parquet",
+    "indexed-tar",
+    "vidaforge"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/VidaForge/VidaForge-3M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

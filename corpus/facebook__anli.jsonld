@@ -1,0 +1,307 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/facebook/anli/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plain_text",
+      "name": "parquet-files-for-config-plain_text",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plain_text/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "plain_text_splits/split_name"
+      },
+      "@id": "plain_text_splits",
+      "name": "plain_text_splits",
+      "description": "Splits for the plain_text config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "plain_text_splits/split_name": "train_r1"
+        },
+        {
+          "plain_text_splits/split_name": "dev_r1"
+        },
+        {
+          "plain_text_splits/split_name": "test_r1"
+        },
+        {
+          "plain_text_splits/split_name": "train_r2"
+        },
+        {
+          "plain_text_splits/split_name": "dev_r2"
+        },
+        {
+          "plain_text_splits/split_name": "test_r2"
+        },
+        {
+          "plain_text_splits/split_name": "train_r3"
+        },
+        {
+          "plain_text_splits/split_name": "dev_r3"
+        },
+        {
+          "plain_text_splits/split_name": "test_r3"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "plain_text",
+      "name": "plain_text",
+      "description": "facebook/anli - 'plain_text' subset\n\nAdditional information:\n- 9 splits: train_r1, dev_r1, test_r1, train_r2, dev_r2, test_r2, train_r3, dev_r3, test_r3",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/split",
+          "name": "plain_text/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plain_text/(?:partial-)?(train_r1|dev_r1|test_r1|train_r2|dev_r2|test_r2|train_r3|dev_r3|test_r3)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "plain_text_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/uid",
+          "name": "plain_text/uid",
+          "description": "Column 'uid' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "uid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/premise",
+          "name": "plain_text/premise",
+          "description": "Column 'premise' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "premise"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/hypothesis",
+          "name": "plain_text/hypothesis",
+          "description": "Column 'hypothesis' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/label",
+          "name": "plain_text/label",
+          "description": "ClassLabel column 'label' from the Hugging Face parquet file.\nLabels:\nentailment (0), neutral (1), contradiction (2)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plain_text/reason",
+          "name": "plain_text/reason",
+          "description": "Column 'reason' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plain_text"
+            },
+            "extract": {
+              "column": "reason"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "anli",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for \"anli\"\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe Adversarial Natural Language Inference (ANLI) is a new large-scale NLI benchmark dataset,\nThe dataset is collected via an iterative, adversarial human-and-model-in-the-loop procedure.\nANLI is much more difficult than its predecessors including SNLI and MNLI.\nIt contains three rounds. Each round has train/dev/test splits.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\nMore Information Needed\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nEnglish\u2026 See the full description on the dataset page: https://huggingface.co/datasets/facebook/anli.",
+  "alternateName": [
+    "facebook/anli",
+    "Adversarial NLI"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "AI at Meta",
+    "url": "https://huggingface.co/facebook"
+  },
+  "keywords": [
+    "text-classification",
+    "natural-language-inference",
+    "multi-input-text-classification",
+    "crowdsourced",
+    "machine-generated",
+    "found",
+    "monolingual",
+    "original",
+    "extended|hotpot_qa",
+    "English",
+    "cc-by-nc-4.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:1910.14599",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "sameAs": "",
+  "url": "https://huggingface.co/datasets/facebook/anli",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,486 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/mlfoundations/MINT-1T-PDF-CC-2023-14/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "mlfoundations/MINT-1T-PDF-CC-2023-14 - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__key__",
+          "name": "default/__key__",
+          "description": "Column '__key__' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__url__",
+          "name": "default/__url__",
+          "description": "Column '__url__' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__url__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/json",
+          "name": "default/json",
+          "description": "Column 'json' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/bff_contained_ngram_count_before_dedupe",
+              "name": "default/json/bff_contained_ngram_count_before_dedupe",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "bff_contained_ngram_count_before_dedupe"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/image_metadata",
+              "name": "default/json/image_metadata",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/image_metadata/height",
+                  "name": "default/json/image_metadata/height",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "height"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/image_metadata/page",
+                  "name": "default/json/image_metadata/page",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "page"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/image_metadata/sha256",
+                  "name": "default/json/image_metadata/sha256",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "sha256"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/image_metadata/width",
+                  "name": "default/json/image_metadata/width",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "width"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/image_metadata/xref",
+                  "name": "default/json/image_metadata/xref",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "xref"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/images",
+              "name": "default/json/images",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/language_id_whole_page_fasttext",
+              "name": "default/json/language_id_whole_page_fasttext",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/json/language_id_whole_page_fasttext/en",
+                  "name": "default/json/language_id_whole_page_fasttext/en",
+                  "description": "Column 'json' from the Hugging Face parquet file.",
+                  "dataType": "sc:Float",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "json"
+                    },
+                    "transform": {
+                      "jsonPath": "en"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/pdf_name",
+              "name": "default/json/pdf_name",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "pdf_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/previous_word_count",
+              "name": "default/json/previous_word_count",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "previous_word_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/texts",
+              "name": "default/json/texts",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/url",
+              "name": "default/json/url",
+              "description": "Column 'json' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/tiff",
+          "name": "default/tiff",
+          "description": "Image column 'tiff' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "tiff"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "MINT-1T-PDF-CC-2023-14",
+  "description": "\n  \ud83c\udf43 MINT-1T:Scaling Open-Source Multimodal Data by 10x: A Multimodal Dataset with One Trillion Tokens\n\n\n\ud83c\udf43 MINT-1T is an open-source Multimodal INTerleaved dataset with 1 trillion text tokens and 3.4 billion images, a 10x scale-up from existing open-source datasets. Additionally, we include previously untapped sources such as PDFs and ArXiv papers. \ud83c\udf43 MINT-1T is designed to facilitate research in multimodal pretraining. \ud83c\udf43 MINT-1T is created by a team from the University of Washington in\u2026 See the full description on the dataset page: https://huggingface.co/datasets/mlfoundations/MINT-1T-PDF-CC-2023-14.",
+  "alternateName": [
+    "mlfoundations/MINT-1T-PDF-CC-2023-14",
+    "MINT-1T"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ML Foundations",
+    "url": "https://huggingface.co/mlfoundations"
+  },
+  "keywords": [
+    "image-to-text",
+    "text-generation",
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "webdataset",
+    "Image",
+    "Text",
+    "Datasets",
+    "WebDataset",
+    "Croissant",
+    "arxiv:2406.11271",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "multimodal"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/mlfoundations/MINT-1T-PDF-CC-2023-14",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

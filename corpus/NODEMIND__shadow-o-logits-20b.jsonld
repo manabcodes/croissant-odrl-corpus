@@ -1,0 +1,540 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/NODEMIND/shadow-o-logits-20b/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "NODEMIND/shadow-o-logits-20b - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/files",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/.ids.npy",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.ids.npy/byte_count",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.ids.npy']"
+                      },
+                      {
+                        "jsonPath": "byte_count"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.ids.npy/remote_etag",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.ids.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_etag"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.ids.npy/remote_path",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.ids.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_path"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.ids.npy/sha256",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.ids.npy']"
+                      },
+                      {
+                        "jsonPath": "sha256"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.ids.npy/storage",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.ids.npy']"
+                      },
+                      {
+                        "jsonPath": "storage"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/.tok.npy",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.tok.npy/byte_count_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.tok.npy']"
+                      },
+                      {
+                        "jsonPath": "byte_count"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.tok.npy/remote_etag_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.tok.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_etag"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.tok.npy/remote_path_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.tok.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_path"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.tok.npy/sha256_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.tok.npy']"
+                      },
+                      {
+                        "jsonPath": "sha256"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.tok.npy/storage_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.tok.npy']"
+                      },
+                      {
+                        "jsonPath": "storage"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/.val.npy",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.val.npy/byte_count_0_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.val.npy']"
+                      },
+                      {
+                        "jsonPath": "byte_count"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.val.npy/remote_etag_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.val.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_etag"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.val.npy/remote_path_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.val.npy']"
+                      },
+                      {
+                        "jsonPath": "remote_path"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.val.npy/sha256_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.val.npy']"
+                      },
+                      {
+                        "jsonPath": "sha256"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/files/.val.npy/storage_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "files"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "['.val.npy']"
+                      },
+                      {
+                        "jsonPath": "storage"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/format",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "format"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "shadow-o-logits-20b",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tSHADOW-O OLMo-2 top-16 logits\n\t\n\nSparse next-token teacher logits for training the 252.8M SHADOW-O student.\n\nTeacher: allenai/OLMo-2-0425-1B\nToken ID space: AI2 Dolma/OLMo, first 100,278 IDs\nContext length: 2,048\nStored per token: input uint32, top-16 IDs uint32, top-16 logits float16\nPlanned size: 20B tokens, approximately 2.0 TB\nCapture code: 10_distill/capture_logits.py in the SHADOW-O workspace\n\nEach logical shard contains three files with the same base name:\n\n*.tok.npy: input\u2026 See the full description on the dataset page: https://huggingface.co/datasets/NODEMIND/shadow-o-logits-20b.",
+  "alternateName": [
+    "NODEMIND/shadow-o-logits-20b",
+    "SHADOW-O OLMo-2 Top-16 Logits (20B)"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Sai kiran",
+    "url": "https://huggingface.co/NODEMIND"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "odc-by",
+    "< 1K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/NODEMIND/shadow-o-logits-20b",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

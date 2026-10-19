@@ -1,0 +1,604 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/real-toxicity-prompts/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "allenai/real-toxicity-prompts - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/filename",
+          "name": "default/filename",
+          "description": "Column 'filename' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/begin",
+          "name": "default/begin",
+          "description": "Column 'begin' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "begin"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/end",
+          "name": "default/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/challenging",
+          "name": "default/challenging",
+          "description": "Column 'challenging' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "challenging"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt",
+          "name": "default/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/text",
+              "name": "default/prompt/text",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/toxicity",
+              "name": "default/prompt/toxicity",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "toxicity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/profanity",
+              "name": "default/prompt/profanity",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "profanity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/sexually_explicit",
+              "name": "default/prompt/sexually_explicit",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "sexually_explicit"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/flirtation",
+              "name": "default/prompt/flirtation",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "flirtation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/identity_attack",
+              "name": "default/prompt/identity_attack",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "identity_attack"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/threat",
+              "name": "default/prompt/threat",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "threat"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/insult",
+              "name": "default/prompt/insult",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "insult"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/prompt/severe_toxicity",
+              "name": "default/prompt/severe_toxicity",
+              "description": "Column 'prompt' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "severe_toxicity"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/continuation",
+          "name": "default/continuation",
+          "description": "Column 'continuation' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/text",
+              "name": "default/continuation/text",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/profanity",
+              "name": "default/continuation/profanity",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "profanity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/sexually_explicit",
+              "name": "default/continuation/sexually_explicit",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "sexually_explicit"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/identity_attack",
+              "name": "default/continuation/identity_attack",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "identity_attack"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/flirtation",
+              "name": "default/continuation/flirtation",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "flirtation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/threat",
+              "name": "default/continuation/threat",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "threat"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/insult",
+              "name": "default/continuation/insult",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "insult"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/severe_toxicity",
+              "name": "default/continuation/severe_toxicity",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "severe_toxicity"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/continuation/toxicity",
+              "name": "default/continuation/toxicity",
+              "description": "Column 'continuation' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "continuation"
+                },
+                "transform": {
+                  "jsonPath": "toxicity"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "real-toxicity-prompts",
+  "identifier": "10.57967/hf/0002",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Real Toxicity Prompts\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nRealToxicityPrompts is a dataset of 100k sentence snippets from the web for researchers to further address the risk of neural toxic degeneration in models.\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nEnglish\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\n\n\t\n\t\t\n\t\tData Instances\n\t\n\nEach instance represents a prompt and its metadata:\n{\n  \"filename\":\"0766186-bc7f2a64cb271f5f56cf6f25570cd9ed.txt\",\n  \"begin\":340,\n  \"end\":564,\n  \"challenging\":false\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/real-toxicity-prompts.",
+  "alternateName": [
+    "allenai/real-toxicity-prompts",
+    "Real Toxicity Prompts"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "monolingual",
+    "original",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2009.11462",
+    "doi:10.57967/hf/0002",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "sameAs": "https://toxicdegeneration.allenai.org/",
+  "url": "https://huggingface.co/datasets/allenai/real-toxicity-prompts",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

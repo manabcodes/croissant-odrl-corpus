@@ -1,0 +1,1097 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Open-Eval-Commons/OpenEval/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-bench",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "bench/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-item",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "item/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-response",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "response/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "bench_splits/split_name"
+      },
+      "@id": "bench_splits",
+      "name": "bench_splits",
+      "description": "Splits for the bench config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bench_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "bench_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bench",
+      "description": "Open-Eval-Commons/OpenEval - 'bench' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bench/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "bench/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "bench_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bench/benchmark_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "column": "benchmark_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bench/benchmark_version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "column": "benchmark_version"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bench/paper_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "column": "paper_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bench/dataset_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "column": "dataset_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bench/benchmark_tags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bench"
+            },
+            "extract": {
+              "column": "benchmark_tags"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "item_splits/split_name"
+      },
+      "@id": "item_splits",
+      "name": "item_splits",
+      "description": "Splits for the item config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "item_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "item_splits/split_name": "all"
+        },
+        {
+          "item_splits/split_name": "anthropic_red_teaming"
+        },
+        {
+          "item_splits/split_name": "imdb"
+        },
+        {
+          "item_splits/split_name": "mmlu_pro"
+        },
+        {
+          "item_splits/split_name": "gpqa"
+        },
+        {
+          "item_splits/split_name": "omni_math"
+        },
+        {
+          "item_splits/split_name": "ifeval"
+        },
+        {
+          "item_splits/split_name": "bbq"
+        },
+        {
+          "item_splits/split_name": "disinformation"
+        },
+        {
+          "item_splits/split_name": "cnndm"
+        },
+        {
+          "item_splits/split_name": "xsum"
+        },
+        {
+          "item_splits/split_name": "boolq"
+        },
+        {
+          "item_splits/split_name": "bold"
+        },
+        {
+          "item_splits/split_name": "culturalbench"
+        },
+        {
+          "item_splits/split_name": "do_not_answer"
+        },
+        {
+          "item_splits/split_name": "emobench"
+        },
+        {
+          "item_splits/split_name": "hi_tom"
+        },
+        {
+          "item_splits/split_name": "moralbench"
+        },
+        {
+          "item_splits/split_name": "opentom"
+        },
+        {
+          "item_splits/split_name": "salad_bench"
+        },
+        {
+          "item_splits/split_name": "truthfulqa"
+        },
+        {
+          "item_splits/split_name": "wildbench"
+        },
+        {
+          "item_splits/split_name": "harmbench"
+        },
+        {
+          "item_splits/split_name": "xstest"
+        },
+        {
+          "item_splits/split_name": "simplesafetytests"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "item",
+      "description": "Open-Eval-Commons/OpenEval - 'item' subset\n\nAdditional information:\n- 25 splits: all, anthropic_red_teaming, imdb, mmlu_pro, gpqa, omni_math, ifeval, bbq, disinformation, cnndm, xsum, boolq, bold, culturalbench, do_not_answer, emobench, hi_tom, moralbench, opentom, salad_bench, truthfulqa, wildbench, harmbench, xstest, simplesafetytests",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "item/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-item"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "item/(?:partial-)?(all|anthropic_red_teaming|imdb|mmlu_pro|gpqa|omni_math|ifeval|bbq|disinformation|cnndm|xsum|boolq|bold|culturalbench|do_not_answer|emobench|hi_tom|moralbench|opentom|salad_bench|truthfulqa|wildbench|harmbench|xstest|simplesafetytests)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "item_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "item/item_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-item"
+            },
+            "extract": {
+              "column": "item_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "item/item_metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "item/item_metadata/ingestion_time",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-item"
+                },
+                "extract": {
+                  "column": "item_metadata"
+                },
+                "transform": {
+                  "jsonPath": "ingestion_time"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "item/item_metadata/contributor",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "item/item_metadata/contributor/name",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-item"
+                    },
+                    "extract": {
+                      "column": "item_metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "contributor"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "item/item_metadata/contributor/email",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-item"
+                    },
+                    "extract": {
+                      "column": "item_metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "contributor"
+                      },
+                      {
+                        "jsonPath": "email"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "item/item_metadata/contributor/affiliation",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-item"
+                    },
+                    "extract": {
+                      "column": "item_metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "contributor"
+                      },
+                      {
+                        "jsonPath": "affiliation"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "item/item_metadata/source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-item"
+                },
+                "extract": {
+                  "column": "item_metadata"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "item/item_content",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "item/item_content/input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-item"
+                },
+                "extract": {
+                  "column": "item_content"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "item/item_content/references",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-item"
+                },
+                "extract": {
+                  "column": "item_content"
+                },
+                "transform": {
+                  "jsonPath": "references"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "item/schema_version",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-item"
+            },
+            "extract": {
+              "column": "schema_version"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "response_splits/split_name"
+      },
+      "@id": "response_splits",
+      "name": "response_splits",
+      "description": "Splits for the response config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "response_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "response_splits/split_name": "all"
+        },
+        {
+          "response_splits/split_name": "imdb"
+        },
+        {
+          "response_splits/split_name": "mmlu_pro"
+        },
+        {
+          "response_splits/split_name": "gpqa"
+        },
+        {
+          "response_splits/split_name": "omni_math"
+        },
+        {
+          "response_splits/split_name": "ifeval"
+        },
+        {
+          "response_splits/split_name": "bbq"
+        },
+        {
+          "response_splits/split_name": "disinformation"
+        },
+        {
+          "response_splits/split_name": "cnndm"
+        },
+        {
+          "response_splits/split_name": "xsum"
+        },
+        {
+          "response_splits/split_name": "boolq"
+        },
+        {
+          "response_splits/split_name": "bold"
+        },
+        {
+          "response_splits/split_name": "culturalbench"
+        },
+        {
+          "response_splits/split_name": "emobench"
+        },
+        {
+          "response_splits/split_name": "hi_tom"
+        },
+        {
+          "response_splits/split_name": "moralbench"
+        },
+        {
+          "response_splits/split_name": "opentom"
+        },
+        {
+          "response_splits/split_name": "salad_bench"
+        },
+        {
+          "response_splits/split_name": "truthfulqa"
+        },
+        {
+          "response_splits/split_name": "wildbench"
+        },
+        {
+          "response_splits/split_name": "harmbench"
+        },
+        {
+          "response_splits/split_name": "xstest"
+        },
+        {
+          "response_splits/split_name": "simplesafetytests"
+        },
+        {
+          "response_splits/split_name": "anthropic_red_teaming"
+        },
+        {
+          "response_splits/split_name": "do_not_answer"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "response",
+      "description": "Open-Eval-Commons/OpenEval - 'response' subset\n\nAdditional information:\n- 25 splits: all, imdb, mmlu_pro, gpqa, omni_math, ifeval, bbq, disinformation, cnndm, xsum, boolq, bold, culturalbench, emobench, hi_tom, moralbench, opentom, salad_bench, truthfulqa, wildbench, harmbench, xstest, simplesafetytests, anthropic_red_teaming, do_not_answer",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "response/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-response"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "response/(?:partial-)?(all|imdb|mmlu_pro|gpqa|omni_math|ifeval|bbq|disinformation|cnndm|xsum|boolq|bold|culturalbench|emobench|hi_tom|moralbench|opentom|salad_bench|truthfulqa|wildbench|harmbench|xstest|simplesafetytests|anthropic_red_teaming|do_not_answer)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "response_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "response/response_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-response"
+            },
+            "extract": {
+              "column": "response_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "response/model",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "response/model/name_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-response"
+                },
+                "extract": {
+                  "column": "model"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "response/model/size",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-response"
+                },
+                "extract": {
+                  "column": "model"
+                },
+                "transform": {
+                  "jsonPath": "size"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "response/model/model_adaptation",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/model/model_adaptation/system_instruction",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "model"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_adaptation"
+                      },
+                      {
+                        "jsonPath": "system_instruction"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/model/model_adaptation/generation_parameters",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "model"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_adaptation"
+                      },
+                      {
+                        "jsonPath": "generation_parameters"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/model/model_adaptation/tools",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "response/model/model_adaptation/tools/type",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-response"
+                        },
+                        "extract": {
+                          "column": "model"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "model_adaptation"
+                          },
+                          {
+                            "jsonPath": "tools"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "response/model/model_adaptation/tools/content",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-response"
+                        },
+                        "extract": {
+                          "column": "model"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "model_adaptation"
+                          },
+                          {
+                            "jsonPath": "tools"
+                          },
+                          {
+                            "jsonPath": "content"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "response/item_adaptation",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "response/item_adaptation/request_input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-response"
+                },
+                "extract": {
+                  "column": "item_adaptation"
+                },
+                "transform": {
+                  "jsonPath": "request_input"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "response/item_adaptation/demonstrations",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-response"
+                },
+                "extract": {
+                  "column": "item_adaptation"
+                },
+                "transform": {
+                  "jsonPath": "demonstrations"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "response/item_adaptation/external_resources",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/item_adaptation/external_resources/type_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "item_adaptation"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "external_resources"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/item_adaptation/external_resources/content_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "item_adaptation"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "external_resources"
+                      },
+                      {
+                        "jsonPath": "content"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "response/response_content",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-response"
+            },
+            "extract": {
+              "column": "response_content"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "response/scores",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "response/scores/metric",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/scores/metric/name_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "scores"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metric"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/scores/metric/models",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-response"
+                    },
+                    "extract": {
+                      "column": "scores"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "metric"
+                      },
+                      {
+                        "jsonPath": "models"
+                      }
+                    ]
+                  },
+                  "isArray": true,
+                  "arrayShape": "-1"
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "response/scores/metric/extra_artifacts",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "response/scores/metric/extra_artifacts/type_0_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-response"
+                        },
+                        "extract": {
+                          "column": "scores"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "metric"
+                          },
+                          {
+                            "jsonPath": "extra_artifacts"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "response/scores/metric/extra_artifacts/content_0_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-response"
+                        },
+                        "extract": {
+                          "column": "scores"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "metric"
+                          },
+                          {
+                            "jsonPath": "extra_artifacts"
+                          },
+                          {
+                            "jsonPath": "content"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    }
+                  ]
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "response/scores/value",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-response"
+                },
+                "extract": {
+                  "column": "scores"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "OpenEval",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tOpenEval\n\t\n\nAn open-source, item-centered evaluation repository toward the open science of AI evaluation.\nThis official dataset is maintained by the Human-Centered Eval project.\n\n\ud83c\udf10 OpenEval Homepage | \ud83d\udce6 GitHub Repository\n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83d\udcd3Developer Note\n\t\n\nMay 11, 2026 - \ud83c\udf89 OpenEval now has 9,996,697 responses from ~70 models on average across 155,537 items from 24 benchmark datasets, and supports loading items/responses by benchmark (see splits)! A benchmark-level model\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Open-Eval-Commons/OpenEval.",
+  "alternateName": [
+    "Open-Eval-Commons/OpenEval"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Open Eval Commons",
+    "url": "https://huggingface.co/Open-Eval-Commons"
+  },
+  "keywords": [
+    "Chinese",
+    "English",
+    "cc-by-nc-4.0",
+    "10M - 100M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/Open-Eval-Commons/OpenEval",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

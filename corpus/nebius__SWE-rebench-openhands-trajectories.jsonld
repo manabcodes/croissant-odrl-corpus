@@ -1,0 +1,2020 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nebius/SWE-rebench-openhands-trajectories/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "nebius/SWE-rebench-openhands-trajectories - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/trajectory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "trajectory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/instance_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "instance_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/trajectory",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/trajectory/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/trajectory/name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/trajectory/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/trajectory/tool_call_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "tool_call_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/trajectory/tool_calls",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/trajectory/tool_calls/function",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/trajectory/tool_calls/function/arguments",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "arguments"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/trajectory/tool_calls/function/name_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "name"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/trajectory/tool_calls/id",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/trajectory/tool_calls/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/tools",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/tools/function_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/tools/function_0/description",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/tools/function_0/name_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/tools/function_0/parameters",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/tools/function_0/parameters/additionalProperties",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "additionalProperties"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/tools/function_0/parameters/properties",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/command",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/command/description_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "command"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/command/enum",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "command"
+                                  },
+                                  {
+                                    "jsonPath": "enum"
+                                  }
+                                ]
+                              },
+                              "isArray": true,
+                              "arrayShape": "-1"
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/command/type_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "command"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/file_text",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/file_text/description_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "file_text"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/file_text/type_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "file_text"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/insert_line",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/insert_line/description_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "insert_line"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/insert_line/type_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "insert_line"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/is_input",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/is_input/description_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "is_input"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/is_input/enum_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "is_input"
+                                  },
+                                  {
+                                    "jsonPath": "enum"
+                                  }
+                                ]
+                              },
+                              "isArray": true,
+                              "arrayShape": "-1"
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/is_input/type_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "is_input"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/message",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/message/description_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "message"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/message/type_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "message"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/new_str",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/new_str/description_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "new_str"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/new_str/type_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "new_str"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/old_str",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/old_str/description_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "old_str"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/old_str/type_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "old_str"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/path",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/path/description_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "path"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/path/type_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "path"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/task_list",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/task_list/description_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "task_list"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/task_list/items",
+                              "subField": [
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "default/tools/function_0/parameters/properties/task_list/items/additionalProperties_0",
+                                  "dataType": "sc:Boolean",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-default"
+                                    },
+                                    "extract": {
+                                      "column": "tools"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "function"
+                                      },
+                                      {
+                                        "jsonPath": "parameters"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "task_list"
+                                      },
+                                      {
+                                        "jsonPath": "items"
+                                      },
+                                      {
+                                        "jsonPath": "additionalProperties"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0",
+                                  "subField": [
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/id_0",
+                                      "subField": [
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/id_0/description_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "id"
+                                              },
+                                              {
+                                                "jsonPath": "description"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/id_0/type_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "id"
+                                              },
+                                              {
+                                                "jsonPath": "type"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/notes",
+                                      "subField": [
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/notes/description_0_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "notes"
+                                              },
+                                              {
+                                                "jsonPath": "description"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/notes/type_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "notes"
+                                              },
+                                              {
+                                                "jsonPath": "type"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/status",
+                                      "subField": [
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/status/description_0_0_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "status"
+                                              },
+                                              {
+                                                "jsonPath": "description"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/status/enum_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "status"
+                                              },
+                                              {
+                                                "jsonPath": "enum"
+                                              }
+                                            ]
+                                          },
+                                          "isArray": true,
+                                          "arrayShape": "-1"
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/status/type_0_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "status"
+                                              },
+                                              {
+                                                "jsonPath": "type"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "@type": "cr:Field",
+                                      "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/title",
+                                      "subField": [
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/title/description_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "title"
+                                              },
+                                              {
+                                                "jsonPath": "description"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "@type": "cr:Field",
+                                          "@id": "default/tools/function_0/parameters/properties/task_list/items/properties_0/title/type_0_0_0_0_0_0_0_0_0_0_0_0",
+                                          "dataType": "sc:Text",
+                                          "source": {
+                                            "fileSet": {
+                                              "@id": "parquet-files-for-config-default"
+                                            },
+                                            "extract": {
+                                              "column": "tools"
+                                            },
+                                            "transform": [
+                                              {
+                                                "jsonPath": "function"
+                                              },
+                                              {
+                                                "jsonPath": "parameters"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "task_list"
+                                              },
+                                              {
+                                                "jsonPath": "items"
+                                              },
+                                              {
+                                                "jsonPath": "properties"
+                                              },
+                                              {
+                                                "jsonPath": "title"
+                                              },
+                                              {
+                                                "jsonPath": "type"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "default/tools/function_0/parameters/properties/task_list/items/required",
+                                  "dataType": "sc:Text",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-default"
+                                    },
+                                    "extract": {
+                                      "column": "tools"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "function"
+                                      },
+                                      {
+                                        "jsonPath": "parameters"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "task_list"
+                                      },
+                                      {
+                                        "jsonPath": "items"
+                                      },
+                                      {
+                                        "jsonPath": "required"
+                                      }
+                                    ]
+                                  },
+                                  "isArray": true,
+                                  "arrayShape": "-1"
+                                },
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "default/tools/function_0/parameters/properties/task_list/items/type_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                  "dataType": "sc:Text",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-default"
+                                    },
+                                    "extract": {
+                                      "column": "tools"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "function"
+                                      },
+                                      {
+                                        "jsonPath": "parameters"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "task_list"
+                                      },
+                                      {
+                                        "jsonPath": "items"
+                                      },
+                                      {
+                                        "jsonPath": "type"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/task_list/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "task_list"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/thought",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/thought/description_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "thought"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/thought/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "thought"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/timeout",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/timeout/description_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "timeout"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/timeout/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "timeout"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/tools/function_0/parameters/properties/view_range",
+                          "subField": [
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/view_range/description_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "view_range"
+                                  },
+                                  {
+                                    "jsonPath": "description"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/view_range/items_0",
+                              "subField": [
+                                {
+                                  "@type": "cr:Field",
+                                  "@id": "default/tools/function_0/parameters/properties/view_range/items_0/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                                  "dataType": "sc:Text",
+                                  "source": {
+                                    "fileSet": {
+                                      "@id": "parquet-files-for-config-default"
+                                    },
+                                    "extract": {
+                                      "column": "tools"
+                                    },
+                                    "transform": [
+                                      {
+                                        "jsonPath": "function"
+                                      },
+                                      {
+                                        "jsonPath": "parameters"
+                                      },
+                                      {
+                                        "jsonPath": "properties"
+                                      },
+                                      {
+                                        "jsonPath": "view_range"
+                                      },
+                                      {
+                                        "jsonPath": "items"
+                                      },
+                                      {
+                                        "jsonPath": "type"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "@type": "cr:Field",
+                              "@id": "default/tools/function_0/parameters/properties/view_range/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                              "dataType": "sc:Text",
+                              "source": {
+                                "fileSet": {
+                                  "@id": "parquet-files-for-config-default"
+                                },
+                                "extract": {
+                                  "column": "tools"
+                                },
+                                "transform": [
+                                  {
+                                    "jsonPath": "function"
+                                  },
+                                  {
+                                    "jsonPath": "parameters"
+                                  },
+                                  {
+                                    "jsonPath": "properties"
+                                  },
+                                  {
+                                    "jsonPath": "view_range"
+                                  },
+                                  {
+                                    "jsonPath": "type"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/tools/function_0/parameters/required_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "required"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/tools/function_0/parameters/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/tools/type_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "tools"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/model_patch",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "model_patch"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/exit_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "exit_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/resolved",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "resolved"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/gen_tests_correct",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "gen_tests_correct"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pred_passes_gen_tests",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pred_passes_gen_tests"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "SWE-rebench-openhands-trajectories",
+  "description": "\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nSWE-rebench-OpenHands-Trajectories is a dataset of multi-turn agent trajectories for software engineering tasks, collected\nusing Qwen/Qwen3-Coder-480B-A35B-Instruct with OpenHands (v0.54.0) agent scaffolding.\nThis dataset captures complete agent execution traces as they attempt to resolve real GitHub issues from\nnebius/SWE-rebench.\nEach trajectory contains the agent's step-by-step reasoning, actions, and environmental observations.\n\n\t\n\t\t\nMetric\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nebius/SWE-rebench-openhands-trajectories.",
+  "alternateName": [
+    "nebius/SWE-rebench-openhands-trajectories"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Nebius",
+    "url": "https://huggingface.co/nebius"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code",
+    "Synthetic",
+    "tools",
+    "agents",
+    "software"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nebius/SWE-rebench-openhands-trajectories",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

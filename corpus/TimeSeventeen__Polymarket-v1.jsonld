@@ -1,0 +1,1200 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/TimeSeventeen/Polymarket-v1/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ctf",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ctf/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-daily_aligned",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "daily_aligned/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-daily_aligned_multi",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "daily_aligned_multi/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-orderfilled",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "orderfilled/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ctf_splits/split_name"
+      },
+      "@id": "ctf_splits",
+      "name": "ctf_splits",
+      "description": "Splits for the ctf config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ctf_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ctf_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ctf",
+      "description": "TimeSeventeen/Polymarket-v1 - 'ctf' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ctf/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ctf_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/stakeholder",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "stakeholder"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/collateral_token",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "collateral_token"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/parent_collection_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "parent_collection_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/partition",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "partition"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ctf/usdc_amount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ctf"
+            },
+            "extract": {
+              "column": "usdc_amount"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "daily_aligned_splits/split_name"
+      },
+      "@id": "daily_aligned_splits",
+      "name": "daily_aligned_splits",
+      "description": "Splits for the daily_aligned config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "daily_aligned_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "daily_aligned",
+      "description": "TimeSeventeen/Polymarket-v1 - 'daily_aligned' subset\n\nAdditional information:\n- 3 skipped columns: opens_at, close_at, resolved_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "daily_aligned/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "daily_aligned_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/block_timestamp",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "block_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/maker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "maker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/taker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "taker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/taker_direction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "taker_direction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/usdc_amount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "usdc_amount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/fee_usdc",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "fee_usdc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/outcome_seq",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "outcome_seq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/neg_risk",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "neg_risk"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/category_refined",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "category_refined"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/outcome_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "outcome_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/winning_outcome_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "winning_outcome_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/resolution_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "resolution_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/taker_base_fee",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "taker_base_fee"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/maker_base_fee",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "maker_base_fee"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/market_slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "market_slug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/p_event",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "p_event"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned/D",
+          "dataType": "cr:Int8",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned"
+            },
+            "extract": {
+              "column": "D"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "daily_aligned_multi_splits/split_name"
+      },
+      "@id": "daily_aligned_multi_splits",
+      "name": "daily_aligned_multi_splits",
+      "description": "Splits for the daily_aligned_multi config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "daily_aligned_multi_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "daily_aligned_multi",
+      "description": "TimeSeventeen/Polymarket-v1 - 'daily_aligned_multi' subset\n\nAdditional information:\n- 3 skipped columns: opens_at, close_at, resolved_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "daily_aligned_multi/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "daily_aligned_multi_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/block_timestamp",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "block_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/maker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "maker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/taker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "taker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/taker_direction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "taker_direction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/usdc_amount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "usdc_amount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/fee_usdc",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "fee_usdc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/outcome_seq",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "outcome_seq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/neg_risk",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "neg_risk"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/category_refined",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "category_refined"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/outcome_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "outcome_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/winning_outcome_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "winning_outcome_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/resolution_status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "resolution_status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/taker_base_fee",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "taker_base_fee"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/maker_base_fee",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "maker_base_fee"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/market_slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "market_slug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/p_event",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "p_event"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/D",
+          "dataType": "cr:Int8",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "D"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "daily_aligned_multi/neg_risk_market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-daily_aligned_multi"
+            },
+            "extract": {
+              "column": "neg_risk_market_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "orderfilled_splits/split_name"
+      },
+      "@id": "orderfilled_splits",
+      "name": "orderfilled_splits",
+      "description": "Splits for the orderfilled config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "orderfilled_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "orderfilled",
+      "description": "TimeSeventeen/Polymarket-v1 - 'orderfilled' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "orderfilled/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "orderfilled_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/maker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "maker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/taker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "taker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/block_timestamp",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "block_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/maker_asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "maker_asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/taker_asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "taker_asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/maker_direction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "maker_direction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/taker_direction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "taker_direction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/token_asset_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "token_asset_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/token_amount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "token_amount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/usdc_amount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "usdc_amount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderfilled/fee_usdc",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderfilled"
+            },
+            "extract": {
+              "column": "fee_usdc"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Polymarket-v1",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPolymarket-v1\n\t\n\n\n\nA large-scale dataset of on-chain event logs from Polymarket v1, the prediction-market platform on the Polygon network. The repository contains four layers covering the full contract lifecycle from 2022-11-21 to 2026-04-28 (from first settlement to natural termination): OrderFilled/ (the raw on-chain trade tape), daily_aligned/ (the cleaned, metadata-enriched, and normalized analysis layer for Standard Binary markets, neg_risk=false), daily_aligned_multi/ (the\u2026 See the full description on the dataset page: https://huggingface.co/datasets/TimeSeventeen/Polymarket-v1.",
+  "alternateName": [
+    "TimeSeventeen/Polymarket-v1"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Time Seventeen",
+    "url": "https://huggingface.co/TimeSeventeen"
+  },
+  "keywords": [
+    "tabular-classification",
+    "English",
+    "cc-by-4.0",
+    "1B - 10B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2606.04217",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "polymarket",
+    "prediction-markets",
+    "market-microstructure",
+    "on-chain",
+    "polygon",
+    "orderfilled",
+    "finance"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/TimeSeventeen/Polymarket-v1",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

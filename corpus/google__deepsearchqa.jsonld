@@ -1,0 +1,255 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/google/deepsearchqa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-deepsearchqa",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "deepsearchqa/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "deepsearchqa_splits/split_name"
+      },
+      "@id": "deepsearchqa_splits",
+      "name": "deepsearchqa_splits",
+      "description": "Splits for the deepsearchqa config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "deepsearchqa_splits/split_name": "eval"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "deepsearchqa",
+      "description": "google/deepsearchqa - 'deepsearchqa' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-deepsearchqa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "deepsearchqa/(?:partial-)?(eval)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "deepsearchqa_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa/problem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-deepsearchqa"
+            },
+            "extract": {
+              "column": "problem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa/problem_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-deepsearchqa"
+            },
+            "extract": {
+              "column": "problem_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-deepsearchqa"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "deepsearchqa/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-deepsearchqa"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "deepsearchqa",
+  "description": "\n\t\n\t\t\n\t\tDeepSearchQA\n\t\n\n\n\t\n\t\t\n\t\tA 900-prompt factuality benchmark from Google DeepMind, designed to evaluate agents on difficult multi-step information-seeking tasks across 17 different fields.\n\t\n\n\u25b6 Google DeepMind Release Blog Post\u25b6 DeepSearchQA Leaderboard on Kaggle\u25b6 Technical Report\u25b6 Evaluation Starter Code\n\n\t\n\t\t\n\t\n\t\n\t\tBenchmark\n\t\n\nDeepSearchQA is a 900-prompt benchmark for evaluating agents on difficult multi-step information-seeking tasks across 17 different fields. Unlike traditional\u2026 See the full description on the dataset page: https://huggingface.co/datasets/google/deepsearchqa.",
+  "alternateName": [
+    "google/deepsearchqa",
+    "DeepSearchQA"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Google",
+    "url": "https://huggingface.co/google"
+  },
+  "keywords": [
+    "question-answering",
+    "English",
+    "apache-2.0",
+    "< 1K",
+    "csv",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "factuality",
+    "search",
+    "retrieval",
+    "deep research",
+    "comprehensiveness",
+    "agent",
+    "posttraining",
+    "benchmark",
+    "Google DeepMind"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/google/deepsearchqa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

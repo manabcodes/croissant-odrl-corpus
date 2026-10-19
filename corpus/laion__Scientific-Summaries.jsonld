@@ -1,0 +1,2678 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/laion/Scientific-Summaries/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-arxiv",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "arxiv/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-bethgelab",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "bethgelab/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pubmed",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pubmed/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-web-papers",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "web-papers/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "arxiv_splits/split_name"
+      },
+      "@id": "arxiv_splits",
+      "name": "arxiv_splits",
+      "description": "Splits for the arxiv config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "arxiv_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "arxiv",
+      "description": "laion/Scientific-Summaries - 'arxiv' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "arxiv/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "arxiv_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/source_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "source_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/source_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "source_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/source_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "source_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/source_venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "source_venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/source_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "source_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/summary_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "summary_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/summary_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "summary_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/field_subfield",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "field_subfield"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/type_of_paper",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "type_of_paper"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/executive_summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "executive_summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/research_context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "research_context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/research_question_hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "research_question_hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/methodological_details",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "methodological_details"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/procedures_architectures",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "procedures_architectures"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/key_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "key_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/interpretation_implications",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "interpretation_implications"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/contradictions_limitations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "contradictions_limitations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/claims",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "claims"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/data_code_availability",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "data_code_availability"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/robustness_ablation_notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "robustness_ablation_notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/ethical_considerations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "ethical_considerations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/key_figures_tables",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "key_figures_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/three_takeaways",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "three_takeaways"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/summary_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "summary_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/summary_tokens_in",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "summary_tokens_in"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/summary_tokens_out",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "summary_tokens_out"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/openalex_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "openalex_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_cited_by_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_cited_by_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_is_retracted",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_is_retracted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_is_open_access",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_is_open_access"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_authorships",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_authorships"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/oa_referenced_works",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "oa_referenced_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/match_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "match_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/has_openalex_match",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "has_openalex_match"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/text_sanitized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "text_sanitized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv/text_raw",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv"
+            },
+            "extract": {
+              "column": "text_raw"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "bethgelab_splits/split_name"
+      },
+      "@id": "bethgelab_splits",
+      "name": "bethgelab_splits",
+      "description": "Splits for the bethgelab config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "bethgelab_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "bethgelab",
+      "description": "laion/Scientific-Summaries - 'bethgelab' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "bethgelab/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "bethgelab_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/source_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "source_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/source_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "source_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/source_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "source_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/source_venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "source_venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/source_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "source_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/summary_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "summary_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/summary_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "summary_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/field_subfield",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "field_subfield"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/type_of_paper",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "type_of_paper"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/executive_summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "executive_summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/research_context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "research_context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/research_question_hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "research_question_hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/methodological_details",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "methodological_details"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/procedures_architectures",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "procedures_architectures"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/key_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "key_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/interpretation_implications",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "interpretation_implications"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/contradictions_limitations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "contradictions_limitations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/claims",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "claims"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/data_code_availability",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "data_code_availability"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/robustness_ablation_notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "robustness_ablation_notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/ethical_considerations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "ethical_considerations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/key_figures_tables",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "key_figures_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/three_takeaways",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "three_takeaways"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/summary_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "summary_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/summary_tokens_in",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "summary_tokens_in"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/summary_tokens_out",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "summary_tokens_out"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/openalex_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "openalex_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_cited_by_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_cited_by_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_is_retracted",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_is_retracted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_is_open_access",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_is_open_access"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_authorships",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_authorships"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/oa_referenced_works",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "oa_referenced_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/match_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "match_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/has_openalex_match",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "has_openalex_match"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/text_sanitized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "text_sanitized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "bethgelab/text_raw",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-bethgelab"
+            },
+            "extract": {
+              "column": "text_raw"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pubmed_splits/split_name"
+      },
+      "@id": "pubmed_splits",
+      "name": "pubmed_splits",
+      "description": "Splits for the pubmed config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pubmed_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pubmed",
+      "description": "laion/Scientific-Summaries - 'pubmed' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pubmed/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pubmed_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/source_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "source_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/source_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "source_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/source_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "source_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/source_venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "source_venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/source_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "source_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/summary_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "summary_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/summary_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "summary_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/field_subfield",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "field_subfield"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/type_of_paper",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "type_of_paper"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/executive_summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "executive_summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/research_context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "research_context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/research_question_hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "research_question_hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/methodological_details",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "methodological_details"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/procedures_architectures",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "procedures_architectures"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/key_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "key_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/interpretation_implications",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "interpretation_implications"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/contradictions_limitations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "contradictions_limitations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/claims",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "claims"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/data_code_availability",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "data_code_availability"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/robustness_ablation_notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "robustness_ablation_notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/ethical_considerations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "ethical_considerations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/key_figures_tables",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "key_figures_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/three_takeaways",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "three_takeaways"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/summary_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "summary_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/summary_tokens_in",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "summary_tokens_in"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/summary_tokens_out",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "summary_tokens_out"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/openalex_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "openalex_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_cited_by_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_cited_by_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_is_retracted",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_is_retracted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_is_open_access",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_is_open_access"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_authorships",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_authorships"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/oa_referenced_works",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "oa_referenced_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/match_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "match_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/has_openalex_match",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "has_openalex_match"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/text_sanitized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "text_sanitized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pubmed/text_raw",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pubmed"
+            },
+            "extract": {
+              "column": "text_raw"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "web-papers_splits/split_name"
+      },
+      "@id": "web-papers_splits",
+      "name": "web-papers_splits",
+      "description": "Splits for the web-papers config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "web-papers_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "web-papers",
+      "description": "laion/Scientific-Summaries - 'web-papers' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "web\\-papers/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "web-papers_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/source_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "source_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/source_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "source_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/source_year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "source_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/source_venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "source_venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/source_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "source_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/summary_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "summary_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/summary_authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "summary_authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/field_subfield",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "field_subfield"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/type_of_paper",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "type_of_paper"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/executive_summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "executive_summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/research_context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "research_context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/research_question_hypothesis",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "research_question_hypothesis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/methodological_details",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "methodological_details"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/procedures_architectures",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "procedures_architectures"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/key_results",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "key_results"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/interpretation_implications",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "interpretation_implications"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/contradictions_limitations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "contradictions_limitations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/claims",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "claims"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/data_code_availability",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "data_code_availability"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/robustness_ablation_notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "robustness_ablation_notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/ethical_considerations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "ethical_considerations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/key_figures_tables",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "key_figures_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/three_takeaways",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "three_takeaways"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/summary_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "summary_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/summary_tokens_in",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "summary_tokens_in"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/summary_tokens_out",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "summary_tokens_out"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/openalex_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "openalex_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_cited_by_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_cited_by_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_is_retracted",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_is_retracted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_is_open_access",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_is_open_access"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_authorships",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_authorships"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/oa_referenced_works",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "oa_referenced_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/match_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "match_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/has_openalex_match",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "has_openalex_match"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/text_sanitized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "text_sanitized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "web-papers/text_raw",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-web-papers"
+            },
+            "extract": {
+              "column": "text_raw"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Scientific-Summaries",
+  "description": "\n\t\n\t\t\n\t\tScientific Summaries\n\t\n\n22 million LLM-generated structured summaries of scientific papers, enriched with OpenAlex scholarly metadata. Each paper has an 18-field structured summary covering methodology, key results, claims, limitations, and more. This public dataset includes full paper text for ~5.3 million papers where open-access status has been confirmed -- either through OpenAlex metadata or because the paper originates from a permissively licensed source such as the arXiv preprint\u2026 See the full description on the dataset page: https://huggingface.co/datasets/laion/Scientific-Summaries.",
+  "alternateName": [
+    "laion/Scientific-Summaries"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "LAION eV",
+    "url": "https://huggingface.co/laion"
+  },
+  "keywords": [
+    "summarization",
+    "text-classification",
+    "feature-extraction",
+    "machine-generated",
+    "s2orc",
+    "arxiv",
+    "pubmed",
+    "bethgelab/paper_parsed_jsons",
+    "English",
+    "multilingual",
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2502.19413",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "science",
+    "papers",
+    "arxiv",
+    "pubmed",
+    "summaries",
+    "openalex",
+    "project-alexandria",
+    "search",
+    "faiss",
+    "bm25"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/laion/Scientific-Summaries",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

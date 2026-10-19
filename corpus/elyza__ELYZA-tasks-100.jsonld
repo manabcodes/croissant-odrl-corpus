@@ -1,0 +1,251 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/elyza/ELYZA-tasks-100/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "elyza/ELYZA-tasks-100 - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/input",
+          "name": "default/input",
+          "description": "Column 'input' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/output",
+          "name": "default/output",
+          "description": "Column 'output' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/eval_aspect",
+          "name": "default/eval_aspect",
+          "description": "Column 'eval_aspect' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "eval_aspect"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ELYZA-tasks-100",
+  "description": "\n\t\n\t\t\n\t\tELYZA-tasks-100: \u65e5\u672c\u8a9einstruction\u30e2\u30c7\u30eb\u8a55\u4fa1\u30c7\u30fc\u30bf\u30bb\u30c3\u30c8\n\t\n\n\n\n\t\n\t\t\n\t\tData Description\n\t\n\n\u672c\u30c7\u30fc\u30bf\u30bb\u30c3\u30c8\u306finstruction-tuning\u3092\u884c\u3063\u305f\u30e2\u30c7\u30eb\u306e\u8a55\u4fa1\u7528\u30c7\u30fc\u30bf\u30bb\u30c3\u30c8\u3067\u3059\u3002\u8a73\u7d30\u306f \u30ea\u30ea\u30fc\u30b9\u306enote\u8a18\u4e8b \u3092\u53c2\u7167\u3057\u3066\u304f\u3060\u3055\u3044\u3002\n\u7279\u5fb4:\n\n\u8907\u96d1\u306a\u6307\u793a\u30fb\u30bf\u30b9\u30af\u3092\u542b\u3080100\u4ef6\u306e\u65e5\u672c\u8a9e\u30c7\u30fc\u30bf\u3067\u3059\u3002\n\u5f79\u306b\u7acb\u3064AI\u30a2\u30b7\u30b9\u30bf\u30f3\u30c8\u3068\u3057\u3066\u3001\u4e01\u5be7\u306a\u51fa\u529b\u304c\u6c42\u3081\u3089\u308c\u307e\u3059\u3002\n\u5168\u3066\u306e\u30c7\u30fc\u30bf\u306b\u5bfe\u3057\u3066\u8a55\u4fa1\u89b3\u70b9\u304c\u30a2\u30ce\u30c6\u30fc\u30b7\u30e7\u30f3\u3055\u308c\u3066\u304a\u308a\u3001\u8a55\u4fa1\u306e\u63fa\u3089\u304e\u3092\u6291\u3048\u308b\u3053\u3068\u304c\u671f\u5f85\u3055\u308c\u307e\u3059\u3002\n\n\u5177\u4f53\u7684\u306b\u306f\u4ee5\u4e0b\u306e\u3088\u3046\u306a\u30bf\u30b9\u30af\u3092\u542b\u307f\u307e\u3059\u3002\n\n\u8981\u7d04\u3092\u4fee\u6b63\u3057\u3001\u4fee\u6b63\u7b87\u6240\u3092\u8aac\u660e\u3059\u308b\u30bf\u30b9\u30af\n\u5177\u4f53\u7684\u306a\u30a8\u30d4\u30bd\u30fc\u30c9\u304b\u3089\u62bd\u8c61\u7684\u306a\u6559\u8a13\u3092\u8ff0\u3079\u308b\u30bf\u30b9\u30af\n\u30e6\u30fc\u30b6\u30fc\u306e\u610f\u56f3\u3092\u6c72\u307f\u5f79\u306b\u7acb\u3064AI\u30a2\u30b7\u30b9\u30bf\u30f3\u30c8\u3068\u3057\u3066\u632f\u308b\u821e\u3046\u30bf\u30b9\u30af\n\u5834\u5408\u5206\u3051\u3092\u5fc5\u8981\u3068\u3059\u308b\u8907\u96d1\u306a\u7b97\u6570\u306e\u30bf\u30b9\u30af\n\u672a\u77e5\u306e\u8a00\u8a9e\u304b\u3089\u30d1\u30bf\u30fc\u30f3\u3092\u62bd\u51fa\u3057\u65e5\u672c\u8a9e\u8a33\u3059\u308b\u9ad8\u5ea6\u306a\u63a8\u8ad6\u3092\u5fc5\u8981\u3068\u3059\u308b\u30bf\u30b9\u30af\n\u8907\u6570\u306e\u6307\u793a\u3092\u8e0f\u307e\u3048\u305f\u4e0a\u3067youtube\u306e\u5bfe\u8a71\u3092\u751f\u6210\u3059\u308b\u30bf\u30b9\u30af\n\u67b6\u7a7a\u306e\u751f\u304d\u7269\u3084\u719f\u8a9e\u306b\u95a2\u3059\u308b\u751f\u6210\u30fb\u5927\u559c\u5229\u306a\u3069\u306e\u60f3\u50cf\u529b\u304c\u6c42\u3081\u3089\u308c\u308b\u30bf\u30b9\u30af\u2026 See the full description on the dataset page: https://huggingface.co/datasets/elyza/ELYZA-tasks-100.",
+  "alternateName": [
+    "elyza/ELYZA-tasks-100"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ELYZA.inc",
+    "url": "https://huggingface.co/elyza"
+  },
+  "keywords": [
+    "Japanese",
+    "cc-by-sa-4.0",
+    "< 1K",
+    "csv",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2307.09288",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/elyza/ELYZA-tasks-100",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

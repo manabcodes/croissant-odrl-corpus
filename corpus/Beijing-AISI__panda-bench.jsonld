@@ -1,0 +1,378 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Beijing-AISI/panda-bench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-data",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "data/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "data_splits/split_name"
+      },
+      "@id": "data_splits",
+      "name": "data_splits",
+      "description": "Splits for the data config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "data_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "data_splits/split_name": "Analysis"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "data",
+      "description": "Beijing-AISI/panda-bench - 'data' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "data/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "data/(?:partial-)?(Analysis)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "data_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/Unnamed__0.1",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "Unnamed: 0.1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/Unnamed__0",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "Unnamed: 0"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/model_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "model_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/attack_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "attack_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/jailbreak_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "jailbreak_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/GCG",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "GCG"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/PAIR_gpt-4o-2024-11-20",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "PAIR_gpt-4o-2024-11-20"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/PAIR_Qwen_Qwen2.5-72B-Instruct",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "PAIR_Qwen_Qwen2.5-72B-Instruct"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/PAIR_meta-llama_Llama-3.3-70B-Instruct",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "PAIR_meta-llama_Llama-3.3-70B-Instruct"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/defense_method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "defense_method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/prompt_tokens",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "prompt_tokens"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/completion_tokens",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "completion_tokens"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/alpaca_winrate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "alpaca_winrate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "data/alpaca_lc_winrate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-data"
+            },
+            "extract": {
+              "column": "alpaca_lc_winrate"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "panda-bench",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPandaBench\n\t\n\nPandaBench is a comprehensive benchmark for evaluating Large Language Model (LLM) safety, focusing on jailbreak attacks, defense mechanisms, and evaluation methodologies.\n\nThe PandaGuard framework architecture illustrating the end-to-end pipeline for LLM safety evaluation. The system connects three key components: Attackers, Defenders, and Judges.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\nThis repository contains the benchmark results from extensive evaluations of various\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Beijing-AISI/panda-bench.",
+  "alternateName": [
+    "Beijing-AISI/panda-bench",
+    "panda"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Beijing Institute of AI Safety and Governance",
+    "url": "https://huggingface.co/Beijing-AISI"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "mit",
+    "100K - 1M",
+    "csv",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "jailbreak"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/Beijing-AISI/panda-bench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,417 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/textmachinelab/quail/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-quail",
+      "name": "parquet-files-for-config-quail",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "quail/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "quail_splits/split_name"
+      },
+      "@id": "quail_splits",
+      "name": "quail_splits",
+      "description": "Splits for the quail config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "quail_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "quail_splits/split_name": "train"
+        },
+        {
+          "quail_splits/split_name": "validation"
+        },
+        {
+          "quail_splits/split_name": "challenge"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "quail",
+      "name": "quail",
+      "description": "textmachinelab/quail - 'quail' subset\n\nAdditional information:\n- 3 splits: train, validation, challenge",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "quail/split",
+          "name": "quail/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "quail/(?:partial-)?(train|validation|challenge)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "quail_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/id",
+          "name": "quail/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/context_id",
+          "name": "quail/context_id",
+          "description": "Column 'context_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "context_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/question_id",
+          "name": "quail/question_id",
+          "description": "Column 'question_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/domain",
+          "name": "quail/domain",
+          "description": "Column 'domain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/metadata",
+          "name": "quail/metadata",
+          "description": "Column 'metadata' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "quail/metadata/author",
+              "name": "quail/metadata/author",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-quail"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "author"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "quail/metadata/title",
+              "name": "quail/metadata/title",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-quail"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "quail/metadata/url",
+              "name": "quail/metadata/url",
+              "description": "Column 'metadata' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-quail"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/context",
+          "name": "quail/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/question",
+          "name": "quail/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/question_type",
+          "name": "quail/question_type",
+          "description": "Column 'question_type' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/answers",
+          "name": "quail/answers",
+          "description": "Column 'answers' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "quail/correct_answer_id",
+          "name": "quail/correct_answer_id",
+          "description": "Column 'correct_answer_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-quail"
+            },
+            "extract": {
+              "column": "correct_answer_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "quail",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for \"quail\"\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nQuAIL is a  reading comprehension dataset. QuAIL contains 15K multi-choice questions in texts 300-350 tokens long 4 domains (news, user stories, fiction, blogs).QuAIL is balanced and annotated for question types.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\nMore Information Needed\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nMore Information Needed\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\n\n\t\n\t\t\n\t\tData Instances\n\t\n\n\n\t\n\t\t\n\t\tquail\n\t\n\n\nSize of downloaded dataset files:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/textmachinelab/quail.",
+  "alternateName": [
+    "textmachinelab/quail",
+    "Question Answering for Artificial Intelligence (QuAIL)"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Text Machine Lab, UMass Lowell",
+    "url": "https://huggingface.co/textmachinelab"
+  },
+  "keywords": [
+    "multiple-choice",
+    "multiple-choice-qa",
+    "crowdsourced",
+    "found",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-nc-sa-4.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "sameAs": "https://text-machine-lab.github.io/blog/2020/quail/",
+  "url": "https://huggingface.co/datasets/textmachinelab/quail",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

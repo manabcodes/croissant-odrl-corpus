@@ -1,0 +1,659 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/RoganInglis/apps-control-arena/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "RoganInglis/apps-control-arena - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/outputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "outputs"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solutions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/solutions/code",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "solutions"
+                },
+                "transform": {
+                  "jsonPath": "code"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/solutions/compiles",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "solutions"
+                },
+                "transform": {
+                  "jsonPath": "compiles"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/solutions/passes_tests",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "solutions"
+                },
+                "transform": {
+                  "jsonPath": "passes_tests"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/difficulty",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/backdoors",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/backdoor_code",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "backdoor_code"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/backdoor_input",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "backdoor_input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/backdoor_works",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "backdoor_works"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/compiles",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "compiles"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/model",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "model"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/passes_tests",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "passes_tests"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/backdoors/source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "backdoors"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/has_apps_backdoor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "has_apps_backdoor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/has_control_tax_backdoor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "has_control_tax_backdoor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/has_backdoor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "has_backdoor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solution_compiles",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "solution_compiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solution_passes_tests",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "solution_passes_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/backdoor_solution_compiles",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "backdoor_solution_compiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/backdoor_solution_passes_tests",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "backdoor_solution_passes_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/backdoor_works",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "backdoor_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/apps_backdoor_solution_compiles",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "apps_backdoor_solution_compiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/apps_backdoor_solution_passes_tests",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "apps_backdoor_solution_passes_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/apps_backdoor_works",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "apps_backdoor_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/control_tax_backdoor_solution_compiles",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "control_tax_backdoor_solution_compiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/control_tax_backdoor_solution_passes_tests",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "control_tax_backdoor_solution_passes_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/control_tax_backdoor_works",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "control_tax_backdoor_works"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_nondeterministic",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_nondeterministic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/nondeterminism_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "nondeterminism_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/nondeterminism_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "nondeterminism_category"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "apps-control-arena",
+  "description": "\n\t\n\t\t\n\t\tAPPS Control Arena Dataset\n\t\n\nUnified dataset combining APPS problems with backdoors from both the AI Control paper and Control-Tax paper.\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nThis dataset is based on the codeparrot/apps dataset,\nenhanced with backdoor solutions from two sources:\n\nAPPS Backdoors: From \"AI Control: Improving Safety Despite Intentional Subversion\" / TylordTheGreat/apps-backdoors-04-02-25\nControl-Tax Backdoors: From \"Control Tax: The Price of Keeping AI in Check\"\u2026 See the full description on the dataset page: https://huggingface.co/datasets/RoganInglis/apps-control-arena.",
+  "alternateName": [
+    "RoganInglis/apps-control-arena"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Rogan Inglis",
+    "url": "https://huggingface.co/RoganInglis"
+  },
+  "keywords": [
+    "mit",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2312.06942",
+    "arxiv:2506.05296",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/RoganInglis/apps-control-arena",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

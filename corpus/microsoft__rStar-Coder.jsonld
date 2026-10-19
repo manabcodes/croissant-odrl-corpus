@@ -1,0 +1,806 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/microsoft/rStar-Coder/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-seed_sft",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "seed_sft/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-seed_testcase",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "seed_testcase/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-synthetic_rl",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "synthetic_rl/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-synthetic_rl_testcase",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "synthetic_rl_testcase/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-synthetic_sft",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "synthetic_sft/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "seed_sft_splits/split_name"
+      },
+      "@id": "seed_sft_splits",
+      "name": "seed_sft_splits",
+      "description": "Splits for the seed_sft config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "seed_sft_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "seed_sft",
+      "description": "microsoft/rStar-Coder - 'seed_sft' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "seed_sft/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "seed_sft_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/starter_code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "starter_code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/verified",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "verified"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_sft/is_passed",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_sft"
+            },
+            "extract": {
+              "column": "is_passed"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "seed_testcase_splits/split_name"
+      },
+      "@id": "seed_testcase_splits",
+      "name": "seed_testcase_splits",
+      "description": "Splits for the seed_testcase config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "seed_testcase_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "seed_testcase",
+      "description": "microsoft/rStar-Coder - 'seed_testcase' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "seed_testcase/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "seed_testcase_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/starter_code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "starter_code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/outputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "outputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/is_synthesized",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "is_synthesized"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/test_case_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "test_case_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/func_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "func_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "seed_testcase/class_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-seed_testcase"
+            },
+            "extract": {
+              "column": "class_name"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "synthetic_rl_splits/split_name"
+      },
+      "@id": "synthetic_rl_splits",
+      "name": "synthetic_rl_splits",
+      "description": "Splits for the synthetic_rl config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "synthetic_rl_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "synthetic_rl",
+      "description": "microsoft/rStar-Coder - 'synthetic_rl' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "synthetic_rl/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "synthetic_rl_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl/seed_question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl"
+            },
+            "extract": {
+              "column": "seed_question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl/seed_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl"
+            },
+            "extract": {
+              "column": "seed_source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "synthetic_rl_testcase_splits/split_name"
+      },
+      "@id": "synthetic_rl_testcase_splits",
+      "name": "synthetic_rl_testcase_splits",
+      "description": "Splits for the synthetic_rl_testcase config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "synthetic_rl_testcase_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "synthetic_rl_testcase",
+      "description": "microsoft/rStar-Coder - 'synthetic_rl_testcase' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl_testcase"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "synthetic_rl_testcase/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "synthetic_rl_testcase_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase/question_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl_testcase"
+            },
+            "extract": {
+              "column": "question_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl_testcase"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl_testcase"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_rl_testcase/outputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_rl_testcase"
+            },
+            "extract": {
+              "column": "outputs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "synthetic_sft_splits/split_name"
+      },
+      "@id": "synthetic_sft_splits",
+      "name": "synthetic_sft_splits",
+      "description": "Splits for the synthetic_sft config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "synthetic_sft_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "synthetic_sft",
+      "description": "microsoft/rStar-Coder - 'synthetic_sft' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "synthetic_sft/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "synthetic_sft_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/seed_question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "column": "seed_question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/seed_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "column": "seed_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "synthetic_sft/code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-synthetic_sft"
+            },
+            "extract": {
+              "column": "code"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "rStar-Coder",
+  "description": "\n\t\n\t\t\n\t\trStar-Coder Dataset\n\t\n\n\n\nProject GitHub | Paper\n\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nrStar-Coder is a large-scale competitive code problem dataset containing 418K programming problems, 580K long-reasoning solutions, and rich test cases of varying difficulty levels. This dataset aims to enhance code reasoning capabilities in large language models, particularly in handling competitive code problems.\nExperiments on Qwen models (1.5B-14B) across various  code reasoning benchmarks demonstrate\u2026 See the full description on the dataset page: https://huggingface.co/datasets/microsoft/rStar-Coder.",
+  "alternateName": [
+    "microsoft/rStar-Coder",
+    "rStar-Coder"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Microsoft",
+    "url": "https://huggingface.co/microsoft"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "1M - 10M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2505.21297",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/microsoft/rStar-Coder",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,1995 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tokyotech-llm/swallow-code-v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage1-auto-format",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage1-auto-format/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage2-length-filter",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage2-length-filter/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage3-llm-score",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage3-llm-score/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-stage4-llm-rewrite",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "stage4-llm-rewrite/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage1-auto-format_splits/split_name"
+      },
+      "@id": "stage1-auto-format_splits",
+      "name": "stage1-auto-format_splits",
+      "description": "Splits for the stage1-auto-format config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage1-auto-format_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage1-auto-format",
+      "description": "tokyotech-llm/swallow-code-v2 - 'stage1-auto-format' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage1\\-auto\\-format/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage1-auto-format_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/blob_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "blob_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/directory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "directory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/content_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "content_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/detected_licenses",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "detected_licenses"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/license_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "license_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/repo_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/snapshot_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "snapshot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/revision_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "revision_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/branch_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "branch_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/visit_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "visit_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/revision_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "revision_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/committer_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "committer_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/github_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "github_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/star_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "star_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/fork_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "fork_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/gha_license_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "gha_license_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/gha_event_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "gha_event_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/gha_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "gha_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/gha_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "gha_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/src_encoding",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "src_encoding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/is_vendor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "is_vendor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/is_generated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "is_generated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/length_bytes",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "length_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/extension",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "extension"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/lint_report",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "stage1-auto-format/lint_report/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stage1-auto-format"
+                },
+                "extract": {
+                  "column": "lint_report"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "stage1-auto-format/lint_report/message",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-stage1-auto-format"
+                },
+                "extract": {
+                  "column": "lint_report"
+                },
+                "transform": {
+                  "jsonPath": "message"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/old_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "old_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage1-auto-format/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage1-auto-format"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage2-length-filter_splits/split_name"
+      },
+      "@id": "stage2-length-filter_splits",
+      "name": "stage2-length-filter_splits",
+      "description": "Splits for the stage2-length-filter config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage2-length-filter_splits/split_name": "high"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage2-length-filter",
+      "description": "tokyotech-llm/swallow-code-v2 - 'stage2-length-filter' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: lint_report",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage2\\-length\\-filter/(?:partial-)?(high)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage2-length-filter_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/blob_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "blob_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/directory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "directory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/content_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "content_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/detected_licenses",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "detected_licenses"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/license_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "license_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/repo_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/snapshot_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "snapshot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/revision_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "revision_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/branch_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "branch_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/visit_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "visit_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/revision_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "revision_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/committer_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "committer_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/github_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "github_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/star_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "star_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/fork_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "fork_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/gha_license_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "gha_license_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/gha_event_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "gha_event_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/gha_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "gha_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/gha_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "gha_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/src_encoding",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "src_encoding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/is_vendor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "is_vendor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/is_generated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "is_generated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/length_bytes",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "length_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/extension",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "extension"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/auto_fix_output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "auto_fix_output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/old_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "old_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage2-length-filter/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage2-length-filter"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage3-llm-score_splits/split_name"
+      },
+      "@id": "stage3-llm-score_splits",
+      "name": "stage3-llm-score_splits",
+      "description": "Splits for the stage3-llm-score config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage3-llm-score_splits/split_name": "medium"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage3-llm-score",
+      "description": "tokyotech-llm/swallow-code-v2 - 'stage3-llm-score' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: lint_report",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage3\\-llm\\-score/(?:partial-)?(medium)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage3-llm-score_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/blob_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "blob_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/directory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "directory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/content_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "content_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/detected_licenses",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "detected_licenses"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/license_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "license_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/repo_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/snapshot_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "snapshot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/revision_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "revision_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/branch_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "branch_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/visit_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "visit_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/revision_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "revision_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/committer_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "committer_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/github_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "github_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/star_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "star_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/fork_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "fork_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/gha_license_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "gha_license_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/gha_event_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "gha_event_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/gha_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "gha_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/gha_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "gha_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/src_encoding",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "src_encoding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/is_vendor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "is_vendor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/is_generated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "is_generated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/length_bytes",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "length_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/extension",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "extension"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/auto_fix_output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "auto_fix_output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/Qwen3-14B_evaluation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "Qwen3-14B_evaluation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/old_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "old_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage3-llm-score/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage3-llm-score"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "stage4-llm-rewrite_splits/split_name"
+      },
+      "@id": "stage4-llm-rewrite_splits",
+      "name": "stage4-llm-rewrite_splits",
+      "description": "Splits for the stage4-llm-rewrite config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "stage4-llm-rewrite_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "stage4-llm-rewrite",
+      "description": "tokyotech-llm/swallow-code-v2 - 'stage4-llm-rewrite' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: lint_report",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "stage4\\-llm\\-rewrite/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "stage4-llm-rewrite_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/blob_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "blob_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/directory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "directory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/content_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "content_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/detected_licenses",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "detected_licenses"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/license_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "license_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/repo_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "repo_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/snapshot_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "snapshot_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/revision_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "revision_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/branch_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "branch_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/visit_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "visit_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/revision_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "revision_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/committer_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "committer_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/github_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "github_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/star_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "star_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/fork_events_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "fork_events_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/gha_license_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "gha_license_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/gha_event_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "gha_event_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/gha_created_at",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "gha_created_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/gha_language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "gha_language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/src_encoding",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "src_encoding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/is_vendor",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "is_vendor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/is_generated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "is_generated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/length_bytes",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "length_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/extension",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "extension"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/text_formatted",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "text_formatted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/auto_fix_output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "auto_fix_output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/Qwen3-14B_evaluation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "Qwen3-14B_evaluation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/improved_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "improved_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/old_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "old_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "stage4-llm-rewrite/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-stage4-llm-rewrite"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "swallow-code-v2",
+  "description": "\n\t\n\t\t\n\t\tSwallowCode-v2\n\t\n\n\n\n\n\t\n\t\t\n\t\tResources\n\t\n\n\n\ud83d\udcd1 arXiv: Read our paper for detailed methodology and results at arXiv:2505.02881.\n\ud83e\udd17 Sister Dataset: Discover SwallowMath-v2, our companion dataset for mathematical reasoning.\n\n\n\t\n\t\t\n\t\t\ud83d\udcbb What is it?\n\t\n\nSwallowCode-v1 was a high-quality Python code dataset generated through an LLM-based rewriting pipeline.\nHowever, it had two significant limitations:\n(1) it was distributed under the Llama 3.3 Community License, and\n(2) its size was limited to\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tokyotech-llm/swallow-code-v2.",
+  "alternateName": [
+    "tokyotech-llm/swallow-code-v2",
+    "swallowcode2"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "tokyotech-llm",
+    "url": "https://huggingface.co/tokyotech-llm"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "apache-2.0",
+    "100M - 1B",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2505.02881",
+    "arxiv:2506.03524",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/tokyotech-llm/swallow-code-v2",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

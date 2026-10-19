@@ -1,0 +1,1107 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/HelpSteer3/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-preference",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "preference/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-edit",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "edit/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-edit_quality",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "edit_quality/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-feedback",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "feedback/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-principle",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "principle/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "preference_splits/split_name"
+      },
+      "@id": "preference_splits",
+      "name": "preference_splits",
+      "description": "Splits for the preference config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preference_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "preference_splits/split_name": "train"
+        },
+        {
+          "preference_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "preference",
+      "description": "nvidia/HelpSteer3 - 'preference' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "preference/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "preference/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "preference_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "preference/context/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preference/context/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/response1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "column": "response1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/response2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "column": "response2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/overall_preference",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-preference"
+            },
+            "extract": {
+              "column": "overall_preference"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "preference/individual_preference",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "preference/individual_preference/score",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "individual_preference"
+                },
+                "transform": {
+                  "jsonPath": "score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preference/individual_preference/reasoning",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "individual_preference"
+                },
+                "transform": {
+                  "jsonPath": "reasoning"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preference/individual_preference/feedback1",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "individual_preference"
+                },
+                "transform": {
+                  "jsonPath": "feedback1"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "preference/individual_preference/feedback2",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-preference"
+                },
+                "extract": {
+                  "column": "individual_preference"
+                },
+                "transform": {
+                  "jsonPath": "feedback2"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "edit_splits/split_name"
+      },
+      "@id": "edit_splits",
+      "name": "edit_splits",
+      "description": "Splits for the edit config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "edit_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "edit_splits/split_name": "train"
+        },
+        {
+          "edit_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "edit",
+      "description": "nvidia/HelpSteer3 - 'edit' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "edit/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "edit/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "edit_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "edit/context/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-edit"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "edit/context/content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-edit"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/original_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "original_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/edited_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "edited_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/feedback",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "feedback"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit/change_summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit"
+            },
+            "extract": {
+              "column": "change_summary"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "edit_quality_splits/split_name"
+      },
+      "@id": "edit_quality_splits",
+      "name": "edit_quality_splits",
+      "description": "Splits for the edit_quality config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "edit_quality_splits/split_name": "train"
+        },
+        {
+          "edit_quality_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "edit_quality",
+      "description": "nvidia/HelpSteer3 - 'edit_quality' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "edit_quality/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "edit_quality_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "edit_quality/context/role_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-edit_quality"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "edit_quality/context/content_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-edit_quality"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/original_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "original_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/good_edited_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "good_edited_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/bad_edited_response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "bad_edited_response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "edit_quality/feedback",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-edit_quality"
+            },
+            "extract": {
+              "column": "feedback"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "feedback_splits/split_name"
+      },
+      "@id": "feedback_splits",
+      "name": "feedback_splits",
+      "description": "Splits for the feedback config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "feedback_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "feedback_splits/split_name": "train"
+        },
+        {
+          "feedback_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "feedback",
+      "description": "nvidia/HelpSteer3 - 'feedback' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "feedback/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "feedback_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "feedback/context/role_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-feedback"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "feedback/context/content_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-feedback"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/response1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "response1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/response2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "response2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/feedback1",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "feedback1"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "feedback/feedback2",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-feedback"
+            },
+            "extract": {
+              "column": "feedback2"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "principle_splits/split_name"
+      },
+      "@id": "principle_splits",
+      "name": "principle_splits",
+      "description": "Splits for the principle config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "principle_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "principle_splits/split_name": "train"
+        },
+        {
+          "principle_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "principle",
+      "description": "nvidia/HelpSteer3 - 'principle' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "principle/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "principle/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "principle_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/context",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "principle/context/role_0_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-principle"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "principle/context/content_0_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-principle"
+                },
+                "extract": {
+                  "column": "context"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/principle",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "column": "principle"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "principle/fulfilment",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-principle"
+            },
+            "extract": {
+              "column": "fulfilment"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "HelpSteer3",
+  "description": "\n\t\n\t\t\n\t\tHelpSteer3\n\t\n\nHelpSteer3 is an open-source dataset (CC-BY-4.0) that supports aligning models to become more helpful in responding to user prompts.\nHelpSteer3-Preference can be used to train Llama 3.3 Nemotron Super 49B v1 (for Generative RMs) and Llama 3.3 70B Instruct Models (for Bradley-Terry RMs) to produce Reward Models that score as high as 85.5% on RM-Bench and 78.6% on JudgeBench, which substantially surpass existing Reward Models on these benchmarks.\nHelpSteer3-Feedback and\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/HelpSteer3.",
+  "alternateName": [
+    "nvidia/HelpSteer3",
+    "HelpSteer3"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "English",
+    "Chinese",
+    "Korean",
+    "French",
+    "Spanish",
+    "Russian",
+    "Japanese",
+    "German",
+    "Italian",
+    "Portuguese",
+    "Polish",
+    "Indonesian",
+    "Dutch",
+    "Vietnamese",
+    "cc-by-4.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2410.16184",
+    "arxiv:2505.11475",
+    "arxiv:2503.04378",
+    "arxiv:2509.21319",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "human-feedback",
+    "reinforcement-learning"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/HelpSteer3",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

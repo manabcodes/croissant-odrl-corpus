@@ -1,0 +1,573 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/adyen/DABstep/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tasks",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tasks/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-submissions",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "submissions/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-task_scores",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "task_scores/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tasks_splits/split_name"
+      },
+      "@id": "tasks_splits",
+      "name": "tasks_splits",
+      "description": "Splits for the tasks config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tasks_splits/split_name": "default"
+        },
+        {
+          "tasks_splits/split_name": "dev"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tasks",
+      "description": "adyen/DABstep - 'tasks' subset\n\nAdditional information:\n- 2 splits: default, dev",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tasks/(?:partial-)?(default|dev)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tasks_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/guidelines",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "guidelines"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tasks/level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tasks"
+            },
+            "extract": {
+              "column": "level"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "submissions_splits/split_name"
+      },
+      "@id": "submissions_splits",
+      "name": "submissions_splits",
+      "description": "Splits for the submissions config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "submissions_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "submissions_splits/split_name": "default"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "submissions",
+      "description": "adyen/DABstep - 'submissions' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "submissions/(?:partial-)?(default)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "submissions_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/agent_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "agent_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/submission_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "submission_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/agent_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "agent_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/model_family",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "model_family"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/organisation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "organisation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/repo_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "repo_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/validated",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "validated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submissions/reasoning_trace",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submissions"
+            },
+            "extract": {
+              "column": "reasoning_trace"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "task_scores_splits/split_name"
+      },
+      "@id": "task_scores_splits",
+      "name": "task_scores_splits",
+      "description": "Splits for the task_scores config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "task_scores_splits/split_name": "default"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "task_scores",
+      "description": "adyen/DABstep - 'task_scores' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "task_scores/(?:partial-)?(default)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "task_scores_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/submission_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "column": "submission_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/score",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "column": "level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "task_scores/agent_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-task_scores"
+            },
+            "extract": {
+              "column": "agent_answer"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "DABstep",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tData Agent Benchmark for Multi-step Reasoning (DABstep) Dataset\n\t\n\nThis repository hosts a HF Dataset the supports the benchmark and leaderboard. \nFor the main entrypoint to the benchmark, see the leaderboard here: \nhttps://huggingface.co/spaces/adyen/DABstep \nThis Dataset has 3 splits:\n\ntasks\nsubmissions\ntask_scores\n\nUsers of the benchmark would read from the tasks split to run the baseline. The other splits are used to support the leaderboard.\nThe datasets are in the data/context\u2026 See the full description on the dataset page: https://huggingface.co/datasets/adyen/DABstep.",
+  "alternateName": [
+    "adyen/DABstep",
+    "\ud83d\udd7a DABstep"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Adyen",
+    "url": "https://huggingface.co/adyen"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/adyen/DABstep",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

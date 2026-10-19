@@ -1,0 +1,578 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HuggingFaceM4/Docmatix/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-images",
+      "name": "parquet-files-for-config-images",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "images/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pdf",
+      "name": "parquet-files-for-config-pdf",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pdf/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-zero-shot-exp",
+      "name": "parquet-files-for-config-zero-shot-exp",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "zero-shot-exp/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "images_splits/split_name"
+      },
+      "@id": "images_splits",
+      "name": "images_splits",
+      "description": "Splits for the images config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "images_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "images",
+      "name": "images",
+      "description": "HuggingFaceM4/Docmatix - 'images' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "images/split",
+          "name": "images/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "images/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "images_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/images",
+          "name": "images/images",
+          "description": "Image column 'images' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-images"
+            },
+            "extract": {
+              "column": "images"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "images/texts",
+          "name": "images/texts",
+          "description": "Column 'texts' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "images/texts/user",
+              "name": "images/texts/user",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-images"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "images/texts/assistant",
+              "name": "images/texts/assistant",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-images"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "assistant"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "images/texts/source",
+              "name": "images/texts/source",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-images"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pdf_splits/split_name"
+      },
+      "@id": "pdf_splits",
+      "name": "pdf_splits",
+      "description": "Splits for the pdf config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pdf_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pdf_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pdf",
+      "name": "pdf",
+      "description": "HuggingFaceM4/Docmatix - 'pdf' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pdf/split",
+          "name": "pdf/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pdf"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pdf/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pdf_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pdf/pdf",
+          "name": "pdf/pdf",
+          "description": "Column 'pdf' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pdf"
+            },
+            "extract": {
+              "column": "pdf"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pdf/texts",
+          "name": "pdf/texts",
+          "description": "Column 'texts' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pdf/texts/user",
+              "name": "pdf/texts/user",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pdf"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pdf/texts/assistant",
+              "name": "pdf/texts/assistant",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pdf"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "assistant"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pdf/texts/source",
+              "name": "pdf/texts/source",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pdf"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "zero-shot-exp_splits/split_name"
+      },
+      "@id": "zero-shot-exp_splits",
+      "name": "zero-shot-exp_splits",
+      "description": "Splits for the zero-shot-exp config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "zero-shot-exp_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "zero-shot-exp_splits/split_name": "train"
+        },
+        {
+          "zero-shot-exp_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "zero-shot-exp",
+      "name": "zero-shot-exp",
+      "description": "HuggingFaceM4/Docmatix - 'zero-shot-exp' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "zero-shot-exp/split",
+          "name": "zero-shot-exp/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zero-shot-exp"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "zero\\-shot\\-exp/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "zero-shot-exp_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zero-shot-exp/images",
+          "name": "zero-shot-exp/images",
+          "description": "Image column 'images' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zero-shot-exp"
+            },
+            "extract": {
+              "column": "images"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zero-shot-exp/texts",
+          "name": "zero-shot-exp/texts",
+          "description": "Column 'texts' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "zero-shot-exp/texts/user",
+              "name": "zero-shot-exp/texts/user",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-zero-shot-exp"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "user"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "zero-shot-exp/texts/assistant",
+              "name": "zero-shot-exp/texts/assistant",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-zero-shot-exp"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "assistant"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "zero-shot-exp/texts/source",
+              "name": "zero-shot-exp/texts/source",
+              "description": "Column 'texts' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-zero-shot-exp"
+                },
+                "extract": {
+                  "column": "texts"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "Docmatix",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Docmatix\n\t\n\n\n\n\t\n\t\t\n\t\tDataset description\n\t\n\nDocmatix is part of the Idefics3 release (stay tuned).\nIt is a massive dataset for Document Visual Question Answering that was used for the fine-tuning of the vision-language model Idefics3.\n\n\t\n\t\t\n\t\tLoad the dataset\n\t\n\nTo load the dataset, install the library datasets with pip install datasets. Then,\nfrom datasets import load_dataset\nds = load_dataset(\"HuggingFaceM4/Docmatix\")\n\nIf you want the dataset to link to the pdf files\u2026 See the full description on the dataset page: https://huggingface.co/datasets/HuggingFaceM4/Docmatix.",
+  "alternateName": [
+    "HuggingFaceM4/Docmatix",
+    "Docmatix"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "HuggingFaceM4",
+    "url": "https://huggingface.co/HuggingFaceM4"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "English",
+    "mit",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2408.12637",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "docvqa"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/HuggingFaceM4/Docmatix",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

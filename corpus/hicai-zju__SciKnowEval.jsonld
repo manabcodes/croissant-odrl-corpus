@@ -1,0 +1,398 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/hicai-zju/SciKnowEval/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-v2",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "v2/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "v2_splits/split_name"
+      },
+      "@id": "v2_splits",
+      "name": "v2_splits",
+      "description": "Splits for the v2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "v2_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "v2_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "v2",
+      "description": "hicai-zju/SciKnowEval - 'v2' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "v2/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "v2/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "v2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/prompt",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "v2/prompt/default",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "prompt"
+                },
+                "transform": {
+                  "jsonPath": "default"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/details",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "v2/details/level",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "details"
+                },
+                "transform": {
+                  "jsonPath": "level"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "v2/details/task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "details"
+                },
+                "transform": {
+                  "jsonPath": "task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "v2/details/subtask",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "details"
+                },
+                "transform": {
+                  "jsonPath": "subtask"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "v2/details/source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "details"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/answerKey",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-v2"
+            },
+            "extract": {
+              "column": "answerKey"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "v2/choices",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "v2/choices/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "v2/choices/label",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-v2"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "label"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "SciKnowEval",
+  "description": "\n\n   SciKnowEval \n Evaluating Multi-level Scientific Knowledge of Large Language Models \n\n\n\nPlease refer to our repository and paper for more details.\n\n\n\u535a\u5b66\u4e4b \uff0c\u5ba1\u95ee\u4e4b \uff0c\u614e\u601d\u4e4b \uff0c\u660e\u8fa8\u4e4b \uff0c\u7b03\u884c\u4e4b\u3002\n\u2014\u2014 \u300a\u793c\u8bb0 \u00b7 \u4e2d\u5eb8\u300b Doctrine of the Mean\n\n\n\n\n\n\nThe Scientific Knowledge Evaluation (SciKnowEval) benchmark for Large Language Models (LLMs) is inspired by the profound principles outlined in the \u201cDoctrine of the Mean\u201d from ancient Chinese philosophy. This benchmark is designed to assess LLMs based on their proficiency in\u2026 See the full description on the dataset page: https://huggingface.co/datasets/hicai-zju/SciKnowEval.",
+  "alternateName": [
+    "hicai-zju/SciKnowEval"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "AI CrossX  Lab, HIC@Zhejiang University",
+    "url": "https://huggingface.co/hicai-zju"
+  },
+  "keywords": [
+    "question-answering",
+    "feature-extraction",
+    "text-classification",
+    "summarization",
+    "English",
+    "mit",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2406.09098",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "biology",
+    "chemistry"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/hicai-zju/SciKnowEval",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

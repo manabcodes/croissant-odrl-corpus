@@ -1,0 +1,592 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/google-research-datasets/tydiqa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-primary_task",
+      "name": "parquet-files-for-config-primary_task",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "primary_task/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-secondary_task",
+      "name": "parquet-files-for-config-secondary_task",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "secondary_task/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "primary_task_splits/split_name"
+      },
+      "@id": "primary_task_splits",
+      "name": "primary_task_splits",
+      "description": "Splits for the primary_task config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "primary_task_splits/split_name": "train"
+        },
+        {
+          "primary_task_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "primary_task",
+      "name": "primary_task",
+      "description": "google-research-datasets/tydiqa - 'primary_task' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/split",
+          "name": "primary_task/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "primary_task/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "primary_task_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/passage_answer_candidates",
+          "name": "primary_task/passage_answer_candidates",
+          "description": "Column 'passage_answer_candidates' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/passage_answer_candidates/plaintext_start_byte",
+              "name": "primary_task/passage_answer_candidates/plaintext_start_byte",
+              "description": "Column 'passage_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "passage_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "plaintext_start_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/passage_answer_candidates/plaintext_end_byte",
+              "name": "primary_task/passage_answer_candidates/plaintext_end_byte",
+              "description": "Column 'passage_answer_candidates' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "passage_answer_candidates"
+                },
+                "transform": {
+                  "jsonPath": "plaintext_end_byte"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/question_text",
+          "name": "primary_task/question_text",
+          "description": "Column 'question_text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "column": "question_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/document_title",
+          "name": "primary_task/document_title",
+          "description": "Column 'document_title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "column": "document_title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/language",
+          "name": "primary_task/language",
+          "description": "Column 'language' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/annotations",
+          "name": "primary_task/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/annotations/passage_answer_candidate_index",
+              "name": "primary_task/annotations/passage_answer_candidate_index",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "passage_answer_candidate_index"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/annotations/minimal_answers_start_byte",
+              "name": "primary_task/annotations/minimal_answers_start_byte",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "minimal_answers_start_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/annotations/minimal_answers_end_byte",
+              "name": "primary_task/annotations/minimal_answers_end_byte",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "minimal_answers_end_byte"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "primary_task/annotations/yes_no_answer",
+              "name": "primary_task/annotations/yes_no_answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-primary_task"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "yes_no_answer"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/document_plaintext",
+          "name": "primary_task/document_plaintext",
+          "description": "Column 'document_plaintext' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "column": "document_plaintext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "primary_task/document_url",
+          "name": "primary_task/document_url",
+          "description": "Column 'document_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-primary_task"
+            },
+            "extract": {
+              "column": "document_url"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "secondary_task_splits/split_name"
+      },
+      "@id": "secondary_task_splits",
+      "name": "secondary_task_splits",
+      "description": "Splits for the secondary_task config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "secondary_task_splits/split_name": "train"
+        },
+        {
+          "secondary_task_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "secondary_task",
+      "name": "secondary_task",
+      "description": "google-research-datasets/tydiqa - 'secondary_task' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/split",
+          "name": "secondary_task/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secondary_task"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "secondary_task/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "secondary_task_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/id",
+          "name": "secondary_task/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secondary_task"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/title",
+          "name": "secondary_task/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secondary_task"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/context",
+          "name": "secondary_task/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secondary_task"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/question",
+          "name": "secondary_task/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secondary_task"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secondary_task/answers",
+          "name": "secondary_task/answers",
+          "description": "Column 'answers' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "secondary_task/answers/text",
+              "name": "secondary_task/answers/text",
+              "description": "Column 'answers' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-secondary_task"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "secondary_task/answers/answer_start",
+              "name": "secondary_task/answers/answer_start",
+              "description": "Column 'answers' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-secondary_task"
+                },
+                "extract": {
+                  "column": "answers"
+                },
+                "transform": {
+                  "jsonPath": "answer_start"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "tydiqa",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for \"tydiqa\"\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nTyDi QA is a question answering dataset covering 11 typologically diverse languages with 204K question-answer pairs.\nThe languages of TyDi QA are diverse with regard to their typology -- the set of linguistic features that each language\nexpresses -- such that we expect models performing well on this set to generalize across a large number of the languages\nin the world. It contains language phenomena that would not be found in\u2026 See the full description on the dataset page: https://huggingface.co/datasets/google-research-datasets/tydiqa.",
+  "alternateName": [
+    "google-research-datasets/tydiqa",
+    "TyDi QA"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Google Research Datasets",
+    "url": "https://huggingface.co/google-research-datasets"
+  },
+  "keywords": [
+    "question-answering",
+    "extractive-qa",
+    "crowdsourced",
+    "crowdsourced",
+    "multilingual",
+    "extended|wikipedia",
+    "Arabic",
+    "Bengali",
+    "English",
+    "Finnish",
+    "Indonesian",
+    "Japanese",
+    "Korean",
+    "Russian",
+    "Swahili",
+    "Telugu",
+    "Thai",
+    "apache-2.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "sameAs": "https://github.com/google-research-datasets/tydiqa",
+  "url": "https://huggingface.co/datasets/google-research-datasets/tydiqa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

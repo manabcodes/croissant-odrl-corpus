@@ -1,0 +1,1511 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/tahoebio/Tahoe-100M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-expression_data",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "expression_data/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-cell_line_metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "cell_line_metadata/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-drug_metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "drug_metadata/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-gene_metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "gene_metadata/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-obs_metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "obs_metadata/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pseudobulk_differential_expression",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pseudobulk_differential_expression/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sample_metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sample_metadata/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "expression_data_splits/split_name"
+      },
+      "@id": "expression_data_splits",
+      "name": "expression_data_splits",
+      "description": "Splits for the expression_data config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "expression_data_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "expression_data",
+      "description": "tahoebio/Tahoe-100M - 'expression_data' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "expression_data/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "expression_data_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/genes",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "genes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/expressions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "expressions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/drug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "drug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/sample",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "sample"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/BARCODE_SUB_LIB_ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "BARCODE_SUB_LIB_ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/cell_line_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "cell_line_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/moa-fine",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "moa-fine"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/canonical_smiles",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "canonical_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/pubchem_cid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "pubchem_cid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "expression_data/plate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-expression_data"
+            },
+            "extract": {
+              "column": "plate"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "cell_line_metadata_splits/split_name"
+      },
+      "@id": "cell_line_metadata_splits",
+      "name": "cell_line_metadata_splits",
+      "description": "Splits for the cell_line_metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "cell_line_metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "cell_line_metadata",
+      "description": "tahoebio/Tahoe-100M - 'cell_line_metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "cell_line_metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "cell_line_metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/cell_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "cell_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Cell_ID_DepMap",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Cell_ID_DepMap"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Cell_ID_Cellosaur",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Cell_ID_Cellosaur"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Organ",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Organ"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_Gene_Symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_Gene_Symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_VarZyg",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_VarZyg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_VarType",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_VarType"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_ProtEffect_or_CdnaEffect",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_ProtEffect_or_CdnaEffect"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_Mech_InferDM",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_Mech_InferDM"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cell_line_metadata/Driver_GeneType_DM",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cell_line_metadata"
+            },
+            "extract": {
+              "column": "Driver_GeneType_DM"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "drug_metadata_splits/split_name"
+      },
+      "@id": "drug_metadata_splits",
+      "name": "drug_metadata_splits",
+      "description": "Splits for the drug_metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "drug_metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "drug_metadata",
+      "description": "tahoebio/Tahoe-100M - 'drug_metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "drug_metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "drug_metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/drug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "drug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/targets",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "targets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/moa-broad",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "moa-broad"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/moa-fine",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "moa-fine"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/human-approved",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "human-approved"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/clinical-trials",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "clinical-trials"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/gpt-notes-approval",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "gpt-notes-approval"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/canonical_smiles",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "canonical_smiles"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "drug_metadata/pubchem_cid",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-drug_metadata"
+            },
+            "extract": {
+              "column": "pubchem_cid"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "gene_metadata_splits/split_name"
+      },
+      "@id": "gene_metadata_splits",
+      "name": "gene_metadata_splits",
+      "description": "Splits for the gene_metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "gene_metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "gene_metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "gene_metadata",
+      "description": "tahoebio/Tahoe-100M - 'gene_metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "gene_metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gene_metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "gene_metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "gene_metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gene_metadata/gene_symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gene_metadata"
+            },
+            "extract": {
+              "column": "gene_symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gene_metadata/ensembl_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gene_metadata"
+            },
+            "extract": {
+              "column": "ensembl_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "gene_metadata/token_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-gene_metadata"
+            },
+            "extract": {
+              "column": "token_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "obs_metadata_splits/split_name"
+      },
+      "@id": "obs_metadata_splits",
+      "name": "obs_metadata_splits",
+      "description": "Splits for the obs_metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "obs_metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "obs_metadata",
+      "description": "tahoebio/Tahoe-100M - 'obs_metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "obs_metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "obs_metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/plate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "plate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/BARCODE_SUB_LIB_ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "BARCODE_SUB_LIB_ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/sample",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "sample"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/gene_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "gene_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/tscp_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "tscp_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/mread_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "mread_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/drugname_drugconc",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "drugname_drugconc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/drug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "drug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/cell_line",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "cell_line"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/sublibrary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "sublibrary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/BARCODE",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "BARCODE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/pcnt_mito",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "pcnt_mito"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/S_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "S_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/G2M_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "G2M_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/phase",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "phase"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/pass_filter",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "pass_filter"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/cell_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "cell_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "obs_metadata/__index_level_0__",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-obs_metadata"
+            },
+            "extract": {
+              "column": "__index_level_0__"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pseudobulk_differential_expression_splits/split_name"
+      },
+      "@id": "pseudobulk_differential_expression_splits",
+      "name": "pseudobulk_differential_expression_splits",
+      "description": "Splits for the pseudobulk_differential_expression config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pseudobulk_differential_expression_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pseudobulk_differential_expression",
+      "description": "tahoebio/Tahoe-100M - 'pseudobulk_differential_expression' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pseudobulk_differential_expression/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pseudobulk_differential_expression_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/gene_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "gene_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/baseMean",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "baseMean"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/log2FoldChange",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "log2FoldChange"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/lfcSE",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "lfcSE"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/stat",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "stat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/pvalue",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "pvalue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/padj",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "padj"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/plate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "plate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/n_cells_trt",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "n_cells_trt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/n_cells_ctrl",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "n_cells_ctrl"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/Cell_ID_Cellosaur",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "Cell_ID_Cellosaur"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/Cell_ID_DepMap",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "Cell_ID_DepMap"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/drug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "drug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/concentration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "concentration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/concentration_unit",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "concentration_unit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pseudobulk_differential_expression/Cell_Name_Vevo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pseudobulk_differential_expression"
+            },
+            "extract": {
+              "column": "Cell_Name_Vevo"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sample_metadata_splits/split_name"
+      },
+      "@id": "sample_metadata_splits",
+      "name": "sample_metadata_splits",
+      "description": "Splits for the sample_metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sample_metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sample_metadata",
+      "description": "tahoebio/Tahoe-100M - 'sample_metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sample_metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sample_metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/sample",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "sample"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/plate",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "plate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/mean_gene_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "mean_gene_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/mean_tscp_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "mean_tscp_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/mean_mread_count",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "mean_mread_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/mean_pcnt_mito",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "mean_pcnt_mito"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/drug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "drug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample_metadata/drugname_drugconc",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample_metadata"
+            },
+            "extract": {
+              "column": "drugname_drugconc"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Tahoe-100M",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tTahoe-100M\n\t\n\nTahoe-100M is a giga-scale single-cell perturbation atlas consisting of over 100 million transcriptomic profiles from \n50 cancer cell lines exposed to 1,100 small-molecule perturbations. Generated using Vevo Therapeutics' \nMosaic high-throughput platform, Tahoe-100M enables deep, context-aware exploration of gene function, cellular states, and drug responses at unprecedented scale and resolution.\nThis dataset is designed to power the development of next-generation AI\u2026 See the full description on the dataset page: https://huggingface.co/datasets/tahoebio/Tahoe-100M.",
+  "alternateName": [
+    "tahoebio/Tahoe-100M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Tahoe Bio",
+    "url": "https://huggingface.co/tahoebio"
+  },
+  "keywords": [
+    "cc0-1.0",
+    "1B - 10B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "biology",
+    "single-cell",
+    "RNA",
+    "chemistry"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/tahoebio/Tahoe-100M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC0 1.0 Universal \u2014 public domain dedication",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ]
+  }
+}

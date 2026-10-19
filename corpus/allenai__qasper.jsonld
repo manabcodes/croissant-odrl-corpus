@@ -1,0 +1,631 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/qasper/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-qasper",
+      "name": "parquet-files-for-config-qasper",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "qasper/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "qasper_splits/split_name"
+      },
+      "@id": "qasper_splits",
+      "name": "qasper_splits",
+      "description": "Splits for the qasper config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qasper_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "qasper_splits/split_name": "train"
+        },
+        {
+          "qasper_splits/split_name": "validation"
+        },
+        {
+          "qasper_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "qasper",
+      "name": "qasper",
+      "description": "allenai/qasper - 'qasper' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/split",
+          "name": "qasper/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qasper"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "qasper/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "qasper_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/id",
+          "name": "qasper/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qasper"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/title",
+          "name": "qasper/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qasper"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/abstract",
+          "name": "qasper/abstract",
+          "description": "Column 'abstract' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qasper"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/full_text",
+          "name": "qasper/full_text",
+          "description": "Column 'full_text' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/full_text/section_name",
+              "name": "qasper/full_text/section_name",
+              "description": "Column 'full_text' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "full_text"
+                },
+                "transform": {
+                  "jsonPath": "section_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/full_text/paragraphs",
+              "name": "qasper/full_text/paragraphs",
+              "description": "Column 'full_text' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "full_text"
+                }
+              },
+              "repeated": true
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/qas",
+          "name": "qasper/qas",
+          "description": "Column 'qas' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/question",
+              "name": "qasper/qas/question",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "question"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/question_id",
+              "name": "qasper/qas/question_id",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "question_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/nlp_background",
+              "name": "qasper/qas/nlp_background",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "nlp_background"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/topic_background",
+              "name": "qasper/qas/topic_background",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "topic_background"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/paper_read",
+              "name": "qasper/qas/paper_read",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "paper_read"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/search_query",
+              "name": "qasper/qas/search_query",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "search_query"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/question_writer",
+              "name": "qasper/qas/question_writer",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "qas"
+                },
+                "transform": {
+                  "jsonPath": "question_writer"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/qas/answers",
+              "name": "qasper/qas/answers",
+              "description": "Column 'qas' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "qasper/qas/answers/answer",
+                  "name": "qasper/qas/answers/answer",
+                  "description": "Column 'qas' from the Hugging Face parquet file.",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/unanswerable",
+                      "name": "qasper/qas/answers/answer/unanswerable",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        },
+                        "transform": {
+                          "jsonPath": "unanswerable"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/extractive_spans",
+                      "name": "qasper/qas/answers/answer/extractive_spans",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        }
+                      },
+                      "repeated": true
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/yes_no",
+                      "name": "qasper/qas/answers/answer/yes_no",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Boolean",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        },
+                        "transform": {
+                          "jsonPath": "yes_no"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/free_form_answer",
+                      "name": "qasper/qas/answers/answer/free_form_answer",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        },
+                        "transform": {
+                          "jsonPath": "free_form_answer"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/evidence",
+                      "name": "qasper/qas/answers/answer/evidence",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        }
+                      },
+                      "repeated": true
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "qasper/qas/answers/answer/highlighted_evidence",
+                      "name": "qasper/qas/answers/answer/highlighted_evidence",
+                      "description": "Column 'qas' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-qasper"
+                        },
+                        "extract": {
+                          "column": "qas"
+                        }
+                      },
+                      "repeated": true
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "qasper/qas/answers/annotation_id",
+                  "name": "qasper/qas/answers/annotation_id",
+                  "description": "Column 'qas' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-qasper"
+                    },
+                    "extract": {
+                      "column": "qas"
+                    },
+                    "transform": {
+                      "jsonPath": "annotation_id"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "qasper/qas/answers/worker_id",
+                  "name": "qasper/qas/answers/worker_id",
+                  "description": "Column 'qas' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-qasper"
+                    },
+                    "extract": {
+                      "column": "qas"
+                    },
+                    "transform": {
+                      "jsonPath": "worker_id"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qasper/figures_and_tables",
+          "name": "qasper/figures_and_tables",
+          "description": "Column 'figures_and_tables' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/figures_and_tables/caption",
+              "name": "qasper/figures_and_tables/caption",
+              "description": "Column 'figures_and_tables' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "figures_and_tables"
+                },
+                "transform": {
+                  "jsonPath": "caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "qasper/figures_and_tables/file",
+              "name": "qasper/figures_and_tables/file",
+              "description": "Column 'figures_and_tables' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-qasper"
+                },
+                "extract": {
+                  "column": "figures_and_tables"
+                },
+                "transform": {
+                  "jsonPath": "file"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "qasper",
+  "description": "A dataset containing 1585 papers with 5049 information-seeking questions asked by regular readers of NLP papers, and answered by a separate set of NLP practitioners.",
+  "alternateName": [
+    "allenai/qasper",
+    "QASPER"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "question-answering",
+    "closed-domain-qa",
+    "expert-generated",
+    "expert-generated",
+    "monolingual",
+    "extended|s2orc",
+    "English",
+    "cc-by-4.0",
+    "1K - 10K",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:2105.03011",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://allenai.org/data/qasper",
+  "url": "https://huggingface.co/datasets/allenai/qasper",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

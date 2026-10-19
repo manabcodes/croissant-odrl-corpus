@@ -1,0 +1,537 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "nvidia/Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1 - 'default' subset\n\nAdditional information:\n- 2 skipped columns: expected_action, scenario",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/trajectory_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "trajectory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/responses_create_params",
+          "subField": [
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/responses_create_params/tools",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/responses_create_params/tools/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "responses_create_params"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tools"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/responses_create_params/tools/name",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "responses_create_params"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tools"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/responses_create_params/tools/description",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "responses_create_params"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tools"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                },
+                null,
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/responses_create_params/tools/strict",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "responses_create_params"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tools"
+                      },
+                      {
+                        "jsonPath": "strict"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/responses_create_params/parallel_tool_calls",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "responses_create_params"
+                },
+                "transform": {
+                  "jsonPath": "parallel_tool_calls"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/num_unique_actions",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "num_unique_actions"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/meta_info",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta_info/turn",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta_info"
+                },
+                "transform": {
+                  "jsonPath": "turn"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta_info/step",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta_info"
+                },
+                "transform": {
+                  "jsonPath": "step"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/meta_info/assistant_depth",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "meta_info"
+                },
+                "transform": {
+                  "jsonPath": "assistant_depth"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/qwen_235b_info",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/qwen_235b_info/rewards",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "qwen_235b_info"
+                },
+                "transform": {
+                  "jsonPath": "rewards"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/qwen_235b_info/reward_mean",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "qwen_235b_info"
+                },
+                "transform": {
+                  "jsonPath": "reward_mean"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/qwen_235b_info/reward_std",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "qwen_235b_info"
+                },
+                "transform": {
+                  "jsonPath": "reward_std"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/qwen_235b_info/reward_var",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "qwen_235b_info"
+                },
+                "transform": {
+                  "jsonPath": "reward_var"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/agent_ref",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent_ref/type_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "agent_ref"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/agent_ref/name_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "agent_ref"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pass_rate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pass_rate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pass_rate_total",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pass_rate_total"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pass_rate_passed",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pass_rate_passed"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1",
+  "description": "\n\t\n\t\t\n\t\tDataset Description:\n\t\n\nWe created an RL dataset for conversational tool-use by utilizing existing expert tool-use trajectories. We pose each assistant step of the trajectory as a separate behavior cloning problem where the policy model is incentivized to match the tool call choices of the expert model. Each trajectory includes the use of tools for authentication, data lookup, servicing (i.e. booking reservations, changing them, getting discounts, etc), and more across 838 different\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1.",
+  "alternateName": [
+    "nvidia/Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10K - 100K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Conversational-Tool-Use-Pivot-v1",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

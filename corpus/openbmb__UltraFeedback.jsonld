@@ -1,0 +1,663 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/openbmb/UltraFeedback/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "openbmb/UltraFeedback - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "name": "default/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/instruction",
+          "name": "default/instruction",
+          "description": "Column 'instruction' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/models",
+          "name": "default/models",
+          "description": "Column 'models' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "models"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/completions",
+          "name": "default/completions",
+          "description": "Column 'completions' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/annotations",
+              "name": "default/completions/annotations",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/completions/annotations/helpfulness",
+                  "name": "default/completions/annotations/helpfulness",
+                  "description": "Column 'completions' from the Hugging Face parquet file.",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/helpfulness/Rating",
+                      "name": "default/completions/annotations/helpfulness/Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/helpfulness/Rationale",
+                      "name": "default/completions/annotations/helpfulness/Rationale",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/helpfulness/Rationale For Rating",
+                      "name": "default/completions/annotations/helpfulness/Rationale For Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale For Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/helpfulness/Type",
+                      "name": "default/completions/annotations/helpfulness/Type",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        }
+                      },
+                      "repeated": true
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/completions/annotations/honesty",
+                  "name": "default/completions/annotations/honesty",
+                  "description": "Column 'completions' from the Hugging Face parquet file.",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/honesty/Rating",
+                      "name": "default/completions/annotations/honesty/Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/honesty/Rationale",
+                      "name": "default/completions/annotations/honesty/Rationale",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/completions/annotations/instruction_following",
+                  "name": "default/completions/annotations/instruction_following",
+                  "description": "Column 'completions' from the Hugging Face parquet file.",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/instruction_following/Rating",
+                      "name": "default/completions/annotations/instruction_following/Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/instruction_following/Rationale",
+                      "name": "default/completions/annotations/instruction_following/Rationale",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale"
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/completions/annotations/truthfulness",
+                  "name": "default/completions/annotations/truthfulness",
+                  "description": "Column 'completions' from the Hugging Face parquet file.",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/truthfulness/Rating",
+                      "name": "default/completions/annotations/truthfulness/Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/truthfulness/Rationale",
+                      "name": "default/completions/annotations/truthfulness/Rationale",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/truthfulness/Rationale For Rating",
+                      "name": "default/completions/annotations/truthfulness/Rationale For Rating",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        },
+                        "transform": {
+                          "jsonPath": "Rationale For Rating"
+                        }
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/completions/annotations/truthfulness/Type",
+                      "name": "default/completions/annotations/truthfulness/Type",
+                      "description": "Column 'completions' from the Hugging Face parquet file.",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "completions"
+                        }
+                      },
+                      "repeated": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/critique",
+              "name": "default/completions/critique",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "critique"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/custom_system_prompt",
+              "name": "default/completions/custom_system_prompt",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "custom_system_prompt"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/fine-grained_score",
+              "name": "default/completions/fine-grained_score",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "fine-grained_score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/model",
+              "name": "default/completions/model",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "model"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/overall_score",
+              "name": "default/completions/overall_score",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Float",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "overall_score"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/principle",
+              "name": "default/completions/principle",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "principle"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/completions/response",
+              "name": "default/completions/response",
+              "description": "Column 'completions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "completions"
+                },
+                "transform": {
+                  "jsonPath": "response"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/correct_answers",
+          "name": "default/correct_answers",
+          "description": "Column 'correct_answers' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "correct_answers"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/incorrect_answers",
+          "name": "default/incorrect_answers",
+          "description": "Column 'incorrect_answers' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "incorrect_answers"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "UltraFeedback",
+  "description": "\n\t\n\t\t\n\t\tIntroduction\n\t\n\n\nGitHub Repo\nUltraRM-13b\nUltraCM-13b\n\nUltraFeedback is a large-scale, fine-grained, diverse preference dataset, used for training powerful reward models and critic models. We collect about 64k prompts from diverse resources (including UltraChat, ShareGPT, Evol-Instruct, TruthfulQA, FalseQA, and FLAN). We then use these prompts to query multiple LLMs (see Table for model lists) and generate 4 different responses for each prompt, resulting in a total of 256k samples. \nTo\u2026 See the full description on the dataset page: https://huggingface.co/datasets/openbmb/UltraFeedback.",
+  "alternateName": [
+    "openbmb/UltraFeedback"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenBMB",
+    "url": "https://huggingface.co/openbmb"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "mit",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2310.01377",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/openbmb/UltraFeedback",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

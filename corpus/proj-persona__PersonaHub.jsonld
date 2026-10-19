@@ -1,0 +1,816 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/proj-persona/PersonaHub/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-instruction",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "instruction/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-knowledge",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "knowledge/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-math",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "math/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-npc",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "npc/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-persona",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "persona/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-reasoning",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "reasoning/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tool",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tool/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "instruction_splits/split_name"
+      },
+      "@id": "instruction_splits",
+      "name": "instruction_splits",
+      "description": "Splits for the instruction config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruction_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "instruction_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "instruction",
+      "description": "proj-persona/PersonaHub - 'instruction' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "instruction/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "instruction_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruction/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruction"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "knowledge_splits/split_name"
+      },
+      "@id": "knowledge_splits",
+      "name": "knowledge_splits",
+      "description": "Splits for the knowledge config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "knowledge_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "knowledge_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "knowledge",
+      "description": "proj-persona/PersonaHub - 'knowledge' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "knowledge/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-knowledge"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "knowledge/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "knowledge_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "knowledge/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-knowledge"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "knowledge/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-knowledge"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "knowledge/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-knowledge"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "math_splits/split_name"
+      },
+      "@id": "math_splits",
+      "name": "math_splits",
+      "description": "Splits for the math config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "math_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "math_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "math",
+      "description": "proj-persona/PersonaHub - 'math' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "math/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "math/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "math_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "math/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-math"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "npc_splits/split_name"
+      },
+      "@id": "npc_splits",
+      "name": "npc_splits",
+      "description": "Splits for the npc config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "npc_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "npc_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "npc",
+      "description": "proj-persona/PersonaHub - 'npc' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "npc/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-npc"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "npc/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "npc_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "npc/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-npc"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "npc/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-npc"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "npc/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-npc"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "persona_splits/split_name"
+      },
+      "@id": "persona_splits",
+      "name": "persona_splits",
+      "description": "Splits for the persona config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "persona_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "persona_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "persona",
+      "description": "proj-persona/PersonaHub - 'persona' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "persona/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-persona"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "persona/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "persona_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "persona/persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-persona"
+            },
+            "extract": {
+              "column": "persona"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "reasoning_splits/split_name"
+      },
+      "@id": "reasoning_splits",
+      "name": "reasoning_splits",
+      "description": "Splits for the reasoning config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reasoning_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "reasoning_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "reasoning",
+      "description": "proj-persona/PersonaHub - 'reasoning' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reasoning/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reasoning"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "reasoning/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "reasoning_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reasoning/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reasoning"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reasoning/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reasoning"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reasoning/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reasoning"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tool_splits/split_name"
+      },
+      "@id": "tool_splits",
+      "name": "tool_splits",
+      "description": "Splits for the tool config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tool_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tool_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tool",
+      "description": "proj-persona/PersonaHub - 'tool' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tool/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tool"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tool/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tool_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tool/input_persona",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tool"
+            },
+            "extract": {
+              "column": "input persona"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tool/synthesized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tool"
+            },
+            "extract": {
+              "column": "synthesized text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tool/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tool"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "PersonaHub",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tScaling Synthetic Data Creation with 1,000,000,000 Personas\n\t\n\nThis repo releases data introduced in our paper Scaling Synthetic Data Creation with 1,000,000,000 Personas:\nWe propose a novel persona-driven data synthesis methodology that leverages various perspectives within a large language model (LLM) to create diverse synthetic data. To fully exploit this methodology at scale, we introduce PERSONA HUB \u2013 a collection of 1 billion diverse personas automatically curated from web\u2026 See the full description on the dataset page: https://huggingface.co/datasets/proj-persona/PersonaHub.",
+  "alternateName": [
+    "proj-persona/PersonaHub"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Project Persona",
+    "url": "https://huggingface.co/proj-persona"
+  },
+  "keywords": [
+    "text-generation",
+    "text-classification",
+    "token-classification",
+    "fill-mask",
+    "table-question-answering",
+    "English",
+    "Chinese",
+    "cc-by-nc-sa-4.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2406.20094",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "Synthetic",
+    "text",
+    "math",
+    "reasoning",
+    "instruction",
+    "tool",
+    "persona"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/proj-persona/PersonaHub",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

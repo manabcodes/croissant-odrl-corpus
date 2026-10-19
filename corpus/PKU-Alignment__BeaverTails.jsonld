@@ -1,0 +1,520 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/PKU-Alignment/BeaverTails/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "330k_train"
+        },
+        {
+          "default_splits/split_name": "330k_test"
+        },
+        {
+          "default_splits/split_name": "30k_train"
+        },
+        {
+          "default_splits/split_name": "30k_test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "PKU-Alignment/BeaverTails - 'default' subset\n\nAdditional information:\n- 4 splits: 330k_train, 330k_test, 30k_train, 30k_test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(330k_train|330k_test|30k_train|30k_test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt",
+          "name": "default/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/response",
+          "name": "default/response",
+          "description": "Column 'response' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/category",
+          "name": "default/category",
+          "description": "Column 'category' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/animal_abuse",
+              "name": "default/category/animal_abuse",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "animal_abuse"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/child_abuse",
+              "name": "default/category/child_abuse",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "child_abuse"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/controversial_topics,politics",
+              "name": "default/category/controversial_topics,politics",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "controversial_topics,politics"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/discrimination,stereotype,injustice",
+              "name": "default/category/discrimination,stereotype,injustice",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "discrimination,stereotype,injustice"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/drug_abuse,weapons,banned_substance",
+              "name": "default/category/drug_abuse,weapons,banned_substance",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "drug_abuse,weapons,banned_substance"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/financial_crime,property_crime,theft",
+              "name": "default/category/financial_crime,property_crime,theft",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "financial_crime,property_crime,theft"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/hate_speech,offensive_language",
+              "name": "default/category/hate_speech,offensive_language",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "hate_speech,offensive_language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/misinformation_regarding_ethics,laws_and_safety",
+              "name": "default/category/misinformation_regarding_ethics,laws_and_safety",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "misinformation_regarding_ethics,laws_and_safety"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/non_violent_unethical_behavior",
+              "name": "default/category/non_violent_unethical_behavior",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "non_violent_unethical_behavior"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/privacy_violation",
+              "name": "default/category/privacy_violation",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "privacy_violation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/self_harm",
+              "name": "default/category/self_harm",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "self_harm"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/sexually_explicit,adult_content",
+              "name": "default/category/sexually_explicit,adult_content",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "sexually_explicit,adult_content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/terrorism,organized_crime",
+              "name": "default/category/terrorism,organized_crime",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "terrorism,organized_crime"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/category/violence,aiding_and_abetting,incitement",
+              "name": "default/category/violence,aiding_and_abetting,incitement",
+              "description": "Column 'category' from the Hugging Face parquet file.",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "category"
+                },
+                "transform": {
+                  "jsonPath": "violence,aiding_and_abetting,incitement"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_safe",
+          "name": "default/is_safe",
+          "description": "Column 'is_safe' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_safe"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "BeaverTails",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for BeaverTails\n\t\n\nBeaverTails is an AI safety-focused collection comprising a series of datasets.\nThis repository includes human-labeled data consisting of question-answer (QA) pairs, each identified with their corresponding harm categories.\nIt should be noted that a single QA pair can be associated with more than one category.\n\nThe 14 harm categories are defined as follows:\n\nAnimal Abuse: This involves any form of cruelty or harm inflicted on animals, including physical\u2026 See the full description on the dataset page: https://huggingface.co/datasets/PKU-Alignment/BeaverTails.",
+  "alternateName": [
+    "PKU-Alignment/BeaverTails"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "PKU-Alignment",
+    "url": "https://huggingface.co/PKU-Alignment"
+  },
+  "keywords": [
+    "text-classification",
+    "English",
+    "cc-by-nc-4.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2307.04657",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "safe",
+    "safety",
+    "ai-safety",
+    "moderation",
+    "rejection-sampling",
+    "llm",
+    "lm",
+    "human-feedback"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/PKU-Alignment/BeaverTails",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

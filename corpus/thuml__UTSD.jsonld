@@ -1,0 +1,705 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/thuml/UTSD/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-UTSD-12G",
+      "name": "parquet-files-for-config-UTSD-12G",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "UTSD-12G/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-UTSD-1G",
+      "name": "parquet-files-for-config-UTSD-1G",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "UTSD-1G/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-UTSD-2G",
+      "name": "parquet-files-for-config-UTSD-2G",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "UTSD-2G/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "thuml/UTSD - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/item_id",
+          "name": "default/item_id",
+          "description": "Column 'item_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "item_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/start",
+          "name": "default/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/end",
+          "name": "default/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/freq",
+          "name": "default/freq",
+          "description": "Column 'freq' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "freq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/target",
+          "name": "default/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "target"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "UTSD-12G_splits/split_name"
+      },
+      "@id": "UTSD-12G_splits",
+      "name": "UTSD-12G_splits",
+      "description": "Splits for the UTSD-12G config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "UTSD-12G_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "UTSD-12G",
+      "name": "UTSD-12G",
+      "description": "thuml/UTSD - 'UTSD-12G' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/split",
+          "name": "UTSD-12G/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "UTSD\\-12G/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "UTSD-12G_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/item_id",
+          "name": "UTSD-12G/item_id",
+          "description": "Column 'item_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "column": "item_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/start",
+          "name": "UTSD-12G/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/end",
+          "name": "UTSD-12G/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/freq",
+          "name": "UTSD-12G/freq",
+          "description": "Column 'freq' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "column": "freq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-12G/target",
+          "name": "UTSD-12G/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-12G"
+            },
+            "extract": {
+              "column": "target"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "UTSD-1G_splits/split_name"
+      },
+      "@id": "UTSD-1G_splits",
+      "name": "UTSD-1G_splits",
+      "description": "Splits for the UTSD-1G config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "UTSD-1G_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "UTSD-1G",
+      "name": "UTSD-1G",
+      "description": "thuml/UTSD - 'UTSD-1G' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/split",
+          "name": "UTSD-1G/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "UTSD\\-1G/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "UTSD-1G_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/item_id",
+          "name": "UTSD-1G/item_id",
+          "description": "Column 'item_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "column": "item_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/start",
+          "name": "UTSD-1G/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/end",
+          "name": "UTSD-1G/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/freq",
+          "name": "UTSD-1G/freq",
+          "description": "Column 'freq' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "column": "freq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-1G/target",
+          "name": "UTSD-1G/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-1G"
+            },
+            "extract": {
+              "column": "target"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "UTSD-2G_splits/split_name"
+      },
+      "@id": "UTSD-2G_splits",
+      "name": "UTSD-2G_splits",
+      "description": "Splits for the UTSD-2G config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "UTSD-2G_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "UTSD-2G",
+      "name": "UTSD-2G",
+      "description": "thuml/UTSD - 'UTSD-2G' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/split",
+          "name": "UTSD-2G/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "UTSD\\-2G/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "UTSD-2G_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/item_id",
+          "name": "UTSD-2G/item_id",
+          "description": "Column 'item_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "column": "item_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/start",
+          "name": "UTSD-2G/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/end",
+          "name": "UTSD-2G/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/freq",
+          "name": "UTSD-2G/freq",
+          "description": "Column 'freq' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "column": "freq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "UTSD-2G/target",
+          "name": "UTSD-2G/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-UTSD-2G"
+            },
+            "extract": {
+              "column": "target"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "UTSD",
+  "description": "\n\t\n\t\t\n\t\tUnified Time Series Dataset (UTSD)\n\t\n\n\n\t\n\t\t\n\t\tUpdates\n\t\n\n:triangular_flag_on_post: News (2024.10) We release the numpy format of UTSD. An easier and more efficient dataloader can be found here.\n\n\t\n\t\t\n\t\tIntroduction\n\t\n\nWe curate Unified Time Series Dataset (UTSD) that includes 7 domains with up to 1 billion time points with hierarchical four volumes to facilitate research of large models and pre-training in the field of time series.\n\n\n\n\nUnified Time Series Dataset (UTSD) is meticulously\u2026 See the full description on the dataset page: https://huggingface.co/datasets/thuml/UTSD.",
+  "alternateName": [
+    "thuml/UTSD",
+    "UTSD"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "THUML @ Tsinghua University",
+    "url": "https://huggingface.co/thuml"
+  },
+  "keywords": [
+    "time-series-forecasting",
+    "apache-2.0",
+    "100K - 1M",
+    "arrow",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Croissant",
+    "arxiv:2402.02368",
+    "arxiv:2105.06643",
+    "arxiv:1810.07758",
+    "arxiv:2310.14017",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "time series forecasting",
+    "time series analysis",
+    "time series"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/thuml/UTSD",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

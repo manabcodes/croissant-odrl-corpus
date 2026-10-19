@@ -1,0 +1,773 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/osunlp/AttributionBench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-full_data",
+      "name": "parquet-files-for-config-full_data",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "full_data/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-not_balanced",
+      "name": "parquet-files-for-config-not_balanced",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "not_balanced/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-overall_balanced",
+      "name": "parquet-files-for-config-overall_balanced",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "overall_balanced/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "full_data_splits/split_name"
+      },
+      "@id": "full_data_splits",
+      "name": "full_data_splits",
+      "description": "Splits for the full_data config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_data_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "full_data_splits/split_name": "train"
+        },
+        {
+          "full_data_splits/split_name": "dev"
+        },
+        {
+          "full_data_splits/split_name": "test"
+        },
+        {
+          "full_data_splits/split_name": "test_ood"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "full_data",
+      "name": "full_data",
+      "description": "osunlp/AttributionBench - 'full_data' subset\n\nAdditional information:\n- 4 splits: train, dev, test, test_ood\n- 1 skipped column: webpage_references",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/split",
+          "name": "full_data/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "full_data/(?:partial-)?(train|dev|test|test_ood)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "full_data_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/question",
+          "name": "full_data/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/claim",
+          "name": "full_data/claim",
+          "description": "Column 'claim' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "claim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/claim_raw_string",
+          "name": "full_data/claim_raw_string",
+          "description": "Column 'claim_raw_string' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "claim_raw_string"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/response",
+          "name": "full_data/response",
+          "description": "Column 'response' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/references",
+          "name": "full_data/references",
+          "description": "Column 'references' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "references"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/citation_links",
+          "name": "full_data/citation_links",
+          "description": "Column 'citation_links' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "citation_links"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/attribution_label",
+          "name": "full_data/attribution_label",
+          "description": "Column 'attribution_label' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "attribution_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/src_dataset",
+          "name": "full_data/src_dataset",
+          "description": "Column 'src_dataset' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "src_dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full_data/id",
+          "name": "full_data/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full_data"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "not_balanced_splits/split_name"
+      },
+      "@id": "not_balanced_splits",
+      "name": "not_balanced_splits",
+      "description": "Splits for the not_balanced config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "not_balanced_splits/split_name": "train"
+        },
+        {
+          "not_balanced_splits/split_name": "dev"
+        },
+        {
+          "not_balanced_splits/split_name": "test"
+        },
+        {
+          "not_balanced_splits/split_name": "test_ood"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "not_balanced",
+      "name": "not_balanced",
+      "description": "osunlp/AttributionBench - 'not_balanced' subset\n\nAdditional information:\n- 4 splits: train, dev, test, test_ood\n- 1 skipped column: webpage_references",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/split",
+          "name": "not_balanced/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "not_balanced/(?:partial-)?(train|dev|test|test_ood)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "not_balanced_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/question",
+          "name": "not_balanced/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/claim",
+          "name": "not_balanced/claim",
+          "description": "Column 'claim' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "claim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/claim_raw_string",
+          "name": "not_balanced/claim_raw_string",
+          "description": "Column 'claim_raw_string' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "claim_raw_string"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/response",
+          "name": "not_balanced/response",
+          "description": "Column 'response' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/references",
+          "name": "not_balanced/references",
+          "description": "Column 'references' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "references"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/citation_links",
+          "name": "not_balanced/citation_links",
+          "description": "Column 'citation_links' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "citation_links"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/attribution_label",
+          "name": "not_balanced/attribution_label",
+          "description": "Column 'attribution_label' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "attribution_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/src_dataset",
+          "name": "not_balanced/src_dataset",
+          "description": "Column 'src_dataset' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "src_dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "not_balanced/id",
+          "name": "not_balanced/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-not_balanced"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "overall_balanced_splits/split_name"
+      },
+      "@id": "overall_balanced_splits",
+      "name": "overall_balanced_splits",
+      "description": "Splits for the overall_balanced config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "overall_balanced_splits/split_name": "train"
+        },
+        {
+          "overall_balanced_splits/split_name": "dev"
+        },
+        {
+          "overall_balanced_splits/split_name": "test"
+        },
+        {
+          "overall_balanced_splits/split_name": "test_ood"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "overall_balanced",
+      "name": "overall_balanced",
+      "description": "osunlp/AttributionBench - 'overall_balanced' subset\n\nAdditional information:\n- 4 splits: train, dev, test, test_ood\n- 1 skipped column: webpage_references",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/split",
+          "name": "overall_balanced/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "overall_balanced/(?:partial-)?(train|dev|test|test_ood)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "overall_balanced_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/question",
+          "name": "overall_balanced/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/claim",
+          "name": "overall_balanced/claim",
+          "description": "Column 'claim' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "claim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/claim_raw_string",
+          "name": "overall_balanced/claim_raw_string",
+          "description": "Column 'claim_raw_string' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "claim_raw_string"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/response",
+          "name": "overall_balanced/response",
+          "description": "Column 'response' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/references",
+          "name": "overall_balanced/references",
+          "description": "Column 'references' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "references"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/citation_links",
+          "name": "overall_balanced/citation_links",
+          "description": "Column 'citation_links' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "citation_links"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/attribution_label",
+          "name": "overall_balanced/attribution_label",
+          "description": "Column 'attribution_label' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "attribution_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/src_dataset",
+          "name": "overall_balanced/src_dataset",
+          "description": "Column 'src_dataset' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "src_dataset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "overall_balanced/id",
+          "name": "overall_balanced/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-overall_balanced"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "AttributionBench",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for AttributionBench\n\t\n\n\nGithub repository: [Github]\nPaper: AttributionBench: How Hard is Automatic Attribution Evaluation?\nPoint of Contact: Yifei Li\n\n\n\t\n\t\t\n\t\tDataset Overview\n\t\n\nWe constructed this dataset from multiple existing data sources in a unified format, in order to create a unified and diverse testbed for evaluating advanced attribution evaluation systems. The dataset contains both in-domain training set and id-domain and out-of-domain test set.\n\n\t\n\t\t\n\t\tUsage\u2026 See the full description on the dataset page: https://huggingface.co/datasets/osunlp/AttributionBench.",
+  "alternateName": [
+    "osunlp/AttributionBench",
+    "AttributionBench"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OSU NLP Group",
+    "url": "https://huggingface.co/osunlp"
+  },
+  "keywords": [
+    "text-classification",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2402.15089",
+    "arxiv:2309.07852",
+    "arxiv:2212.08037",
+    "arxiv:2310.12150",
+    "arxiv:2307.16883",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/osunlp/AttributionBench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

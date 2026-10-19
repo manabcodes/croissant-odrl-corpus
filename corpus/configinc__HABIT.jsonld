@@ -1,0 +1,3814 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/configinc/HABIT/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-full",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "full/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sample",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sample/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "full_splits/split_name"
+      },
+      "@id": "full_splits",
+      "name": "full_splits",
+      "description": "Splits for the full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "full_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "full",
+      "description": "configinc/HABIT - 'full' subset\n\nAdditional information:\n- 2 skipped columns: robot1.policy_action, robot0.policy_action",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "full/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/is_intervention_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "is_intervention_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/frame_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "frame_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.joint_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.joint_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.joint_positions_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.joint_positions_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_velocity_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_velocity_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.joint_positions_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.joint_positions_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.delta_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.delta_action_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_accumulated",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.numerical_joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.numerical_joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/timestamp",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/observation.state",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "observation.state"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.delta_action_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/task_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "task_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.joint_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.joint_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_cartesian_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/human_role_subtask_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "human_role_subtask_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.delta_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_cartesian_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.numerical_joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.numerical_joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.numerical_joint_acceleration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.numerical_joint_acceleration"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.delta_action_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.teleop_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.teleop_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/action_tcd",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "action_tcd"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.teleop_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.teleop_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.delta_action_3_14",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_3_14"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.joint_positions_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.joint_positions_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.delta_action_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/is_high_jerk_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "is_high_jerk_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.cartesian_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/next.done",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "next.done"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_cartesian_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.cartesian_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.numerical_joint_acceleration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.numerical_joint_acceleration"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.observation.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.delta_action_3_14",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_3_14"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.cartesian_velocity_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.cartesian_velocity_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/is_error_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "is_error_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.target_cartesian_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/low_level_task_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "low_level_task_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.target_cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/episode_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "episode_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.joint_positions_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.joint_positions_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.cartesian_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.gripper_accumulated",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.observation.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot1.action.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/robot0.action.cartesian_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sample_splits/split_name"
+      },
+      "@id": "sample_splits",
+      "name": "sample_splits",
+      "description": "Splits for the sample config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sample_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sample",
+      "description": "configinc/HABIT - 'sample' subset\n\nAdditional information:\n- 2 skipped columns: robot1.policy_action, robot0.policy_action",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sample/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sample/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sample_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/timestamp",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/frame_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "frame_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/human_role_subtask_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "human_role_subtask_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.cartesian_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.delta_action_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.teleop_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.teleop_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/action_tcd",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "action_tcd"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/task_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "task_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.joint_positions_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.joint_positions_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.cartesian_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.cartesian_velocity_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/episode_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "episode_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.numerical_joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.numerical_joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.motor_torques_measured",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.motor_torques_measured"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.joint_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.joint_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_cartesian_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.delta_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/next.done",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "next.done"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/low_level_task_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "low_level_task_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_accumulated",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/is_intervention_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "is_intervention_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_cartesian_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_velocity_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.delta_action_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.joint_positions_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.joint_positions_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.delta_action_3_14",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.delta_action_3_14"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.delta_action_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/observation.state",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "observation.state"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.joint_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.joint_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/is_high_jerk_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "is_high_jerk_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.prev_gripper_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_gripper_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.joint_positions_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.joint_positions_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.delta_action_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.teleop_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.teleop_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.numerical_joint_acceleration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.numerical_joint_acceleration"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.joint_velocities",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_velocities"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.prev_controller_latency_ms",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.prev_controller_latency_ms"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.numerical_joint_acceleration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.numerical_joint_acceleration"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.cartesian_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.delta_action",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.cartesian_velocity_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.cartesian_velocity_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.cartesian_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_gripper_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.cartesian_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.cartesian_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.numerical_joint_velocity",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.numerical_joint_velocity"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_gripper_position_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_gripper_position_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_velocity_delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity_delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.delta_action_3_14",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.delta_action_3_14"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.gripper_position",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.gripper_position"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/is_error_segment",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "is_error_segment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_cartesian_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.joint_positions",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_positions"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.observation.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.observation.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.prev_joint_torques_computed_safened",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_joint_torques_computed_safened"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.cartesian_position_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.cartesian_position_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.observation.state.prev_command_successful",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.observation.state.prev_command_successful"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.target_cartesian_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.target_cartesian_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.gripper_velocity_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.gripper_velocity_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.gripper_accumulated",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.gripper_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.state.prev_joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.state.prev_joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.joint_positions_delta",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.joint_positions_delta"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot0.action.target_cartesian_position_accumulated",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot0.action.target_cartesian_position_accumulated"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sample/robot1.action.state.joint_torques_computed",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sample"
+            },
+            "extract": {
+              "column": "robot1.action.state.joint_torques_computed"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "HABIT",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tHABIT: Human-Aware Behavior and Interaction Training Dataset for Robot Manipulation\n\t\n\n\n\n\n\n\nTL;DR: HABIT is a large-scale robot demonstration dataset for human-present environments, designed to teach robot policies human-aware behaviors.\nKeywords: Robot Manipulation Dataset, Human-Robot Interaction, Vision-Language-Action Model\n\n\n\t\n\t\t\n\t\n\t\n\t\tOverview\n\t\n\nData-driven approaches have emerged as a promising direction for training robotic manipulation policies. Recent robot datasets have\u2026 See the full description on the dataset page: https://huggingface.co/datasets/configinc/HABIT.",
+  "alternateName": [
+    "configinc/HABIT",
+    "HABIT"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Config",
+    "url": "https://huggingface.co/configinc"
+  },
+  "keywords": [
+    "robotics",
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Time-series",
+    "Video",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "lerobot",
+    "arxiv:2606.31682",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "robot-manipulation-dataset",
+    "human-robot-interaction",
+    "vision-language-action-model",
+    "LeRobot"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/configinc/HABIT",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

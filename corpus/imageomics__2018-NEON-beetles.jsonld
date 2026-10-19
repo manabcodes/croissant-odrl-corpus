@@ -1,0 +1,1016 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/imageomics/2018-NEON-beetles/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-individual_specimens",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "individual_specimens/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-group_images",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "group_images/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-group_images_resized",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "group_images_resized/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-separate_segmented_splits",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "separate segmented splits/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "individual_specimens_splits/split_name"
+      },
+      "@id": "individual_specimens_splits",
+      "name": "individual_specimens_splits",
+      "description": "Splits for the individual_specimens config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "individual_specimens_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "individual_specimens",
+      "description": "imageomics/2018-NEON-beetles - 'individual_specimens' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "individual_specimens/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "individual_specimens_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/NEON_sampleID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "NEON_sampleID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/scientificName",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "scientificName"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/siteID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "siteID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/site_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "site_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/plotID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "plotID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/individualImageFilePath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "individualImageFilePath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "individual_specimens/groupImageFilePath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-individual_specimens"
+            },
+            "extract": {
+              "column": "groupImageFilePath"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "group_images_splits/split_name"
+      },
+      "@id": "group_images_splits",
+      "name": "group_images_splits",
+      "description": "Splits for the group_images config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "group_images_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "group_images",
+      "description": "imageomics/2018-NEON-beetles - 'group_images' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "group_images/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "group_images_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/pictureID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "pictureID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/scalebar",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "scalebar"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/cm_pix",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "cm_pix"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/individual",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "individual"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/structure",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "structure"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/lying_flat",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "lying_flat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/coords_pix",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "coords_pix"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/dist_pix",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "dist_pix"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/dist_cm",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "dist_cm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/scientificName",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "scientificName"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/NEON_sampleID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "NEON_sampleID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/siteID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "siteID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/site_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "site_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/plotID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "plotID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/user_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "user_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/workflowID",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "workflowID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/genus",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "genus"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/species",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "species"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/combinedID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "combinedID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/measureID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "measureID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/image_dim",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "image_dim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/resized_image_dim",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "resized_image_dim"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/coords_pix_scaled_up",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "coords_pix_scaled_up"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/md5",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "md5"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "group_images_resized_splits/split_name"
+      },
+      "@id": "group_images_resized_splits",
+      "name": "group_images_resized_splits",
+      "description": "Splits for the group_images_resized config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "group_images_resized_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "group_images_resized",
+      "description": "imageomics/2018-NEON-beetles - 'group_images_resized' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "group_images_resized/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "group_images_resized_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/pictureID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "pictureID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/scientificName",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "scientificName"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/genus",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "genus"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/species",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "species"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/NEON_sampleID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "NEON_sampleID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "group_images_resized/siteID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-group_images_resized"
+            },
+            "extract": {
+              "column": "siteID"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "separate_segmented_splits_splits/split_name"
+      },
+      "@id": "separate_segmented_splits_splits",
+      "name": "separate_segmented_splits_splits",
+      "description": "Splits for the separate_segmented_splits config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "separate_segmented_splits_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "separate_segmented_splits",
+      "description": "imageomics/2018-NEON-beetles - 'separate segmented splits' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "separate\\ segmented\\ splits/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "separate_segmented_splits_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/md5",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "md5"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/species",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "species"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "separate_segmented_splits/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-separate_segmented_splits"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "2018-NEON-beetles",
+  "identifier": "10.57967/hf/6890",
+  "description": "Collection of ethanol-preserved ground beetles (family Carabidae) collected from various NEON sites in 2018 and photographed in batches in 2022. This dataset contains both group and individual specimen images (individuals segmented from the group images). Elytra measurements of the beetle specimens (taken on the images) are also provided.",
+  "alternateName": [
+    "imageomics/2018-NEON-beetles",
+    "2018 NEON Ethanol-preserved Ground Beetles"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "HDR Imageomics Institute",
+    "url": "https://huggingface.co/imageomics"
+  },
+  "keywords": [
+    "image-classification",
+    "image-segmentation",
+    "English",
+    "cc-by-sa-4.0",
+    "10K - 100K",
+    "imagefolder",
+    "Image",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "doi:10.57967/hf/6890",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "biology",
+    "image",
+    "animals",
+    "CV",
+    "beetles",
+    "Carabidae",
+    "ground beetles",
+    "elytra",
+    "elytra width",
+    "elytra length",
+    "size"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/imageomics/2018-NEON-beetles",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

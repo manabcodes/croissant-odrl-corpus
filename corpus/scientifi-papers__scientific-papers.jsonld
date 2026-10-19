@@ -1,0 +1,844 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/scientifi-papers/scientific-papers/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-corex",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "corex/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-papers-2",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "papers-2/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-papers-3",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "papers-3/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pes2o",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pes2o/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "corex_splits/split_name"
+      },
+      "@id": "corex_splits",
+      "name": "corex_splits",
+      "description": "Splits for the corex config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corex_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "corex_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "corex",
+      "description": "scientifi-papers/scientific-papers - 'corex' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corex/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "corex/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "corex_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/raw_fulltext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "raw_fulltext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corex/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corex"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "papers-2_splits/split_name"
+      },
+      "@id": "papers-2_splits",
+      "name": "papers-2_splits",
+      "description": "Splits for the papers-2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "papers-2_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "papers-2",
+      "description": "scientifi-papers/scientific-papers - 'papers-2' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "papers\\-2/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "papers-2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/raw_fulltext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "raw_fulltext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-2/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-2"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "papers-3_splits/split_name"
+      },
+      "@id": "papers-3_splits",
+      "name": "papers-3_splits",
+      "description": "Splits for the papers-3 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "papers-3_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "papers-3",
+      "description": "scientifi-papers/scientific-papers - 'papers-3' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "papers\\-3/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "papers-3_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/raw_fulltext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "raw_fulltext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "papers-3/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-papers-3"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pes2o_splits/split_name"
+      },
+      "@id": "pes2o_splits",
+      "name": "pes2o_splits",
+      "description": "Splits for the pes2o config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pes2o_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pes2o",
+      "description": "scientifi-papers/scientific-papers - 'pes2o' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pes2o/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pes2o_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/paper_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "paper_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/authors",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "authors"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/year",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/venue",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "venue"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/raw_fulltext",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "raw_fulltext"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pes2o/text_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pes2o"
+            },
+            "extract": {
+              "column": "text_length"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "scientific-papers",
+  "description": "\n\t\n\t\t\n\t\tScientific Papers - Raw Full Text\n\t\n\n~57 million scientific papers with full text, extracted from multiple large-scale academic paper collections. This dataset provides raw full text suitable for pre-training, fine-tuning, or building search indices over scientific literature.\n\n\t\n\t\t\n\t\tSubsets\n\t\n\n\n\t\n\t\t\nSubset\nPapers\nSize\nSource\n\n\n\t\t\npapers-2\n~18.5M\n~358 GB\nS2ORC papers collection (untitled subset)\n\n\npapers-3\n~27.4M\n~198 GB\nS2ORC scientific-papers collection\n\n\npes2o\n~8.2M\n~106 GB\u2026 See the full description on the dataset page: https://huggingface.co/datasets/scientifi-papers/scientific-papers.",
+  "alternateName": [
+    "scientifi-papers/scientific-papers"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Puter",
+    "url": "https://huggingface.co/scientifi-papers"
+  },
+  "keywords": [
+    "text-generation",
+    "feature-extraction",
+    "English",
+    "multilingual",
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "science",
+    "papers",
+    "fulltext",
+    "scientific-papers"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/scientifi-papers/scientific-papers",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

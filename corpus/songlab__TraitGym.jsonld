@@ -1,0 +1,867 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/songlab/TraitGym/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-complex_traits",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "complex_traits/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-complex_traits_full",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "complex_traits_full/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mendelian_traits",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mendelian_traits/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mendelian_traits_full",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mendelian_traits_full/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "complex_traits_splits/split_name"
+      },
+      "@id": "complex_traits_splits",
+      "name": "complex_traits_splits",
+      "description": "Splits for the complex_traits config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "complex_traits_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "complex_traits",
+      "description": "songlab/TraitGym - 'complex_traits' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "complex_traits/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "complex_traits_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/chrom",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "chrom"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/pos",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "pos"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/ref",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "ref"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/alt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "alt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/pip",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "pip"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/trait",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "trait"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/label",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/maf",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "maf"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/ld_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "ld_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/consequence",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "consequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/tss_dist",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "tss_dist"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits/match_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits"
+            },
+            "extract": {
+              "column": "match_group"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "complex_traits_full_splits/split_name"
+      },
+      "@id": "complex_traits_full_splits",
+      "name": "complex_traits_full_splits",
+      "description": "Splits for the complex_traits_full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "complex_traits_full_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "complex_traits_full",
+      "description": "songlab/TraitGym - 'complex_traits_full' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "complex_traits_full/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "complex_traits_full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/chrom",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "chrom"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/pos",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "pos"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/ref",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "ref"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/alt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "alt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/pip",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "pip"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/trait",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "trait"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/label",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/maf",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "maf"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/ld_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "ld_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "complex_traits_full/consequence",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-complex_traits_full"
+            },
+            "extract": {
+              "column": "consequence"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mendelian_traits_splits/split_name"
+      },
+      "@id": "mendelian_traits_splits",
+      "name": "mendelian_traits_splits",
+      "description": "Splits for the mendelian_traits config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mendelian_traits_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mendelian_traits",
+      "description": "songlab/TraitGym - 'mendelian_traits' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mendelian_traits/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mendelian_traits_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/chrom",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "chrom"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/pos",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "pos"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/ref",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "ref"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/alt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "alt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/OMIM",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "OMIM"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/consequence",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "consequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/label",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/tss_dist",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "tss_dist"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits/match_group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits"
+            },
+            "extract": {
+              "column": "match_group"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mendelian_traits_full_splits/split_name"
+      },
+      "@id": "mendelian_traits_full_splits",
+      "name": "mendelian_traits_full_splits",
+      "description": "Splits for the mendelian_traits_full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mendelian_traits_full_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mendelian_traits_full",
+      "description": "songlab/TraitGym - 'mendelian_traits_full' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mendelian_traits_full/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mendelian_traits_full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/chrom",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "chrom"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/pos",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "pos"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/ref",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "ref"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/alt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "alt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/OMIM",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "OMIM"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/consequence",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "consequence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mendelian_traits_full/label",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mendelian_traits_full"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "TraitGym",
+  "description": "\n\t\n\t\t\n\t\t\ud83e\uddec TraitGym\n\t\n\nBenchmarking DNA Sequence Models for Causal Regulatory Variant Prediction in Human Genetics\n\ud83c\udfc6 Leaderboard: https://huggingface.co/spaces/songlab/TraitGym-leaderboard\n\n\t\n\t\t\n\t\t\u26a1\ufe0f Quick start\n\t\n\n\nLoad a datasetfrom datasets import load_dataset\n\ndataset = load_dataset(\"songlab/TraitGym\", \"mendelian_traits\", split=\"test\")\n\n\nExample notebook to run variant effect prediction with a gLM, runs in 5 min on Google Colab: TraitGym.ipynb \n\n\n\t\n\t\n\t\n\t\t\ud83e\udd17 Resources\u2026 See the full description on the dataset page: https://huggingface.co/datasets/songlab/TraitGym.",
+  "alternateName": [
+    "songlab/TraitGym"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Song Lab @ Cal",
+    "url": "https://huggingface.co/songlab"
+  },
+  "keywords": [
+    "mit",
+    "10M - 100M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "dna",
+    "variant-effect-prediction",
+    "biology",
+    "genomics"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/songlab/TraitGym",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

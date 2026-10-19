@@ -1,0 +1,634 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/dell-research-harvard/newswire/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "dell-research-harvard/newswire - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/article",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "article"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/byline",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "byline"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/dates",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "dates"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/newspaper_metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/newspaper_metadata/lccn",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "newspaper_metadata"
+                },
+                "transform": {
+                  "jsonPath": "lccn"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/newspaper_metadata/newspaper_city",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "newspaper_metadata"
+                },
+                "transform": {
+                  "jsonPath": "newspaper_city"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/newspaper_metadata/newspaper_state",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "newspaper_metadata"
+                },
+                "transform": {
+                  "jsonPath": "newspaper_state"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/newspaper_metadata/newspaper_title",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "newspaper_metadata"
+                },
+                "transform": {
+                  "jsonPath": "newspaper_title"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/antitrust",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "antitrust"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/civil_rights",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "civil_rights"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/crime",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "crime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/govt_regulation",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "govt_regulation"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/labor_movement",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "labor_movement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/politics",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "politics"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/protests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "protests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ca_topic",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "ca_topic"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ner_words",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "ner_words"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/ner_labels",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "ner_labels"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/wire_city",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "wire_city"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/wire_state",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "wire_state"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/wire_country",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "wire_country"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/wire_coordinates",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "wire_coordinates"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/wire_location_notes",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "wire_location_notes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/people_mentioned",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/people_mentioned/person_gender",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "people_mentioned"
+                },
+                "transform": {
+                  "jsonPath": "person_gender"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/people_mentioned/person_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "people_mentioned"
+                },
+                "transform": {
+                  "jsonPath": "person_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/people_mentioned/person_occupation",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "people_mentioned"
+                },
+                "transform": {
+                  "jsonPath": "person_occupation"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/people_mentioned/wikidata_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "people_mentioned"
+                },
+                "transform": {
+                  "jsonPath": "wikidata_id"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cleaned_article",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cleaned_article"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cluster_size",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cluster_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "newswire",
+  "identifier": "10.57967/hf/2423",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for NewsWire\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nNewsWire contains 2.7 million unique public domain U.S. news wire articles, written between 1878 and 1977. Locations in these articles are georeferenced, topics are tagged using customized neural topic classification, named entities are recognized, and individuals are disambiguated to Wikipedia using a novel entity disambiguation model.  \n\n\t\n\t\t\n\t\tLanguages\n\t\n\nEnglish (en)\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\nEach year in the dataset is\u2026 See the full description on the dataset page: https://huggingface.co/datasets/dell-research-harvard/newswire.",
+  "alternateName": [
+    "dell-research-harvard/newswire",
+    "NewsWire"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Dell Research Harvard",
+    "url": "https://huggingface.co/dell-research-harvard"
+  },
+  "keywords": [
+    "text-classification",
+    "text-generation",
+    "text-retrieval",
+    "summarization",
+    "question-answering",
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2406.09490",
+    "doi:10.57967/hf/2423",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "social science",
+    "economics",
+    "news",
+    "newspaper",
+    "large language modeling",
+    "nlp",
+    "lam"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://dell-research-harvard.github.io/",
+  "url": "https://huggingface.co/datasets/dell-research-harvard/newswire",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

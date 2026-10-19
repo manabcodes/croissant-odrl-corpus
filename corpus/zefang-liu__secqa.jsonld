@@ -1,0 +1,496 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/zefang-liu/secqa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-secqa_v1",
+      "name": "parquet-files-for-config-secqa_v1",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "secqa_v1/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-secqa_v2",
+      "name": "parquet-files-for-config-secqa_v2",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "secqa_v2/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "secqa_v1_splits/split_name"
+      },
+      "@id": "secqa_v1_splits",
+      "name": "secqa_v1_splits",
+      "description": "Splits for the secqa_v1 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "secqa_v1_splits/split_name": "dev"
+        },
+        {
+          "secqa_v1_splits/split_name": "val"
+        },
+        {
+          "secqa_v1_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "secqa_v1",
+      "name": "secqa_v1",
+      "description": "zefang-liu/secqa - 'secqa_v1' subset\n\nAdditional information:\n- 3 splits: dev, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/split",
+          "name": "secqa_v1/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "secqa_v1/(?:partial-)?(dev|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "secqa_v1_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/Question",
+          "name": "secqa_v1/Question",
+          "description": "Column 'Question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "Question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/A",
+          "name": "secqa_v1/A",
+          "description": "Column 'A' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "A"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/B",
+          "name": "secqa_v1/B",
+          "description": "Column 'B' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "B"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/C",
+          "name": "secqa_v1/C",
+          "description": "Column 'C' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "C"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/D",
+          "name": "secqa_v1/D",
+          "description": "Column 'D' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "D"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/Answer",
+          "name": "secqa_v1/Answer",
+          "description": "Column 'Answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "Answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v1/Explanation",
+          "name": "secqa_v1/Explanation",
+          "description": "Column 'Explanation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v1"
+            },
+            "extract": {
+              "column": "Explanation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "secqa_v2_splits/split_name"
+      },
+      "@id": "secqa_v2_splits",
+      "name": "secqa_v2_splits",
+      "description": "Splits for the secqa_v2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "secqa_v2_splits/split_name": "dev"
+        },
+        {
+          "secqa_v2_splits/split_name": "val"
+        },
+        {
+          "secqa_v2_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "secqa_v2",
+      "name": "secqa_v2",
+      "description": "zefang-liu/secqa - 'secqa_v2' subset\n\nAdditional information:\n- 3 splits: dev, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/split",
+          "name": "secqa_v2/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "secqa_v2/(?:partial-)?(dev|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "secqa_v2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/Question",
+          "name": "secqa_v2/Question",
+          "description": "Column 'Question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "Question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/A",
+          "name": "secqa_v2/A",
+          "description": "Column 'A' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "A"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/B",
+          "name": "secqa_v2/B",
+          "description": "Column 'B' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "B"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/C",
+          "name": "secqa_v2/C",
+          "description": "Column 'C' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "C"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/D",
+          "name": "secqa_v2/D",
+          "description": "Column 'D' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "D"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/Answer",
+          "name": "secqa_v2/Answer",
+          "description": "Column 'Answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "Answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "secqa_v2/Explanation",
+          "name": "secqa_v2/Explanation",
+          "description": "Column 'Explanation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-secqa_v2"
+            },
+            "extract": {
+              "column": "Explanation"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "secqa",
+  "description": "\n\t\n\t\t\n\t\tSecQA\n\t\n\n\n\nSecQA is a specialized dataset created for the evaluation of Large Language Models (LLMs) in the domain of computer security. \nIt consists of multiple-choice questions, generated using GPT-4 and the \nComputer Systems Security: Planning for Success textbook, \naimed at assessing the understanding and application of LLMs' knowledge in computer security.\n\n\t\n\t\t\n\t\tDataset Details\n\t\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\n\n\nSecQA is an innovative dataset designed to benchmark the\u2026 See the full description on the dataset page: https://huggingface.co/datasets/zefang-liu/secqa.",
+  "alternateName": [
+    "zefang-liu/secqa"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Zefang Liu",
+    "url": "https://huggingface.co/zefang-liu"
+  },
+  "keywords": [
+    "multiple-choice",
+    "English",
+    "cc-by-nc-sa-4.0",
+    "< 1K",
+    "csv",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2312.15838",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "security"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/zefang-liu/secqa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

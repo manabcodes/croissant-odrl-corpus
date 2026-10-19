@@ -1,0 +1,327 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/lmqg/qg_squad/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-qg_squad",
+      "name": "parquet-files-for-config-qg_squad",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "qg_squad/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "qg_squad_splits/split_name"
+      },
+      "@id": "qg_squad_splits",
+      "name": "qg_squad_splits",
+      "description": "Splits for the qg_squad config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "qg_squad_splits/split_name": "train"
+        },
+        {
+          "qg_squad_splits/split_name": "validation"
+        },
+        {
+          "qg_squad_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "qg_squad",
+      "name": "qg_squad",
+      "description": "lmqg/qg_squad - 'qg_squad' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/split",
+          "name": "qg_squad/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "qg_squad/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "qg_squad_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/answer",
+          "name": "qg_squad/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/paragraph_question",
+          "name": "qg_squad/paragraph_question",
+          "description": "Column 'paragraph_question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "paragraph_question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/question",
+          "name": "qg_squad/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/sentence",
+          "name": "qg_squad/sentence",
+          "description": "Column 'sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "sentence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/paragraph",
+          "name": "qg_squad/paragraph",
+          "description": "Column 'paragraph' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "paragraph"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/sentence_answer",
+          "name": "qg_squad/sentence_answer",
+          "description": "Column 'sentence_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "sentence_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/paragraph_answer",
+          "name": "qg_squad/paragraph_answer",
+          "description": "Column 'paragraph_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "paragraph_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "qg_squad/paragraph_sentence",
+          "name": "qg_squad/paragraph_sentence",
+          "description": "Column 'paragraph_sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-qg_squad"
+            },
+            "extract": {
+              "column": "paragraph_sentence"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "qg_squad",
+  "description": "[SQuAD](https://rajpurkar.github.io/SQuAD-explorer/) evaluation set for the question generation (QG) models. The split \nof test and development set follows the [\"Neural Question Generation\"](https://arxiv.org/abs/1705.00106) work and is \ncompatible with the [leader board](https://paperswithcode.com/sota/question-generation-on-squad11).",
+  "alternateName": [
+    "lmqg/qg_squad",
+    "SQuAD for question generation"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "LMQG",
+    "url": "https://huggingface.co/lmqg"
+  },
+  "keywords": [
+    "text-generation",
+    "language-modeling",
+    "monolingual",
+    "squad",
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:2210.03992",
+    "arxiv:1705.00106",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "question-generation"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/lmqg/qg_squad",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

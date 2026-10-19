@@ -1,0 +1,982 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ServiceNow-AI/EnterpriseOps-Gym/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-oracle",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "oracle/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plus_10_tools",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plus_10_tools/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plus_15_tools",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plus_15_tools/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plus_5_tools",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plus_5_tools/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "oracle_splits/split_name"
+      },
+      "@id": "oracle_splits",
+      "name": "oracle_splits",
+      "description": "Splits for the oracle config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "oracle_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "oracle_splits/split_name": "calendar"
+        },
+        {
+          "oracle_splits/split_name": "csm"
+        },
+        {
+          "oracle_splits/split_name": "drive"
+        },
+        {
+          "oracle_splits/split_name": "email"
+        },
+        {
+          "oracle_splits/split_name": "hr"
+        },
+        {
+          "oracle_splits/split_name": "hybrid"
+        },
+        {
+          "oracle_splits/split_name": "itsm"
+        },
+        {
+          "oracle_splits/split_name": "teams"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "oracle",
+      "description": "ServiceNow-AI/EnterpriseOps-Gym - 'oracle' subset\n\nAdditional information:\n- 8 splits: calendar, csm, drive, email, hr, hybrid, itsm, teams\n- 1 skipped column: restricted_tools",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "oracle/(?:partial-)?(calendar|csm|drive|email|hr|hybrid|itsm|teams)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "oracle_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/system_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "system_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/user_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "user_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/selected_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "selected_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/mcp_endpoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "mcp_endpoint"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/number_of_runs",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "number_of_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/reset_database_between_runs",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "reset_database_between_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/gym_servers_config",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "gym_servers_config"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "oracle/verifiers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-oracle"
+            },
+            "extract": {
+              "column": "verifiers"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "plus_10_tools_splits/split_name"
+      },
+      "@id": "plus_10_tools_splits",
+      "name": "plus_10_tools_splits",
+      "description": "Splits for the plus_10_tools config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "plus_10_tools_splits/split_name": "calendar"
+        },
+        {
+          "plus_10_tools_splits/split_name": "csm"
+        },
+        {
+          "plus_10_tools_splits/split_name": "drive"
+        },
+        {
+          "plus_10_tools_splits/split_name": "email"
+        },
+        {
+          "plus_10_tools_splits/split_name": "hr"
+        },
+        {
+          "plus_10_tools_splits/split_name": "hybrid"
+        },
+        {
+          "plus_10_tools_splits/split_name": "itsm"
+        },
+        {
+          "plus_10_tools_splits/split_name": "teams"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "plus_10_tools",
+      "description": "ServiceNow-AI/EnterpriseOps-Gym - 'plus_10_tools' subset\n\nAdditional information:\n- 8 splits: calendar, csm, drive, email, hr, hybrid, itsm, teams\n- 1 skipped column: restricted_tools",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plus_10_tools/(?:partial-)?(calendar|csm|drive|email|hr|hybrid|itsm|teams)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "plus_10_tools_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/system_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "system_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/user_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "user_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/selected_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "selected_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/mcp_endpoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "mcp_endpoint"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/number_of_runs",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "number_of_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/reset_database_between_runs",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "reset_database_between_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/gym_servers_config",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "gym_servers_config"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_10_tools/verifiers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_10_tools"
+            },
+            "extract": {
+              "column": "verifiers"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "plus_15_tools_splits/split_name"
+      },
+      "@id": "plus_15_tools_splits",
+      "name": "plus_15_tools_splits",
+      "description": "Splits for the plus_15_tools config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "plus_15_tools_splits/split_name": "calendar"
+        },
+        {
+          "plus_15_tools_splits/split_name": "csm"
+        },
+        {
+          "plus_15_tools_splits/split_name": "drive"
+        },
+        {
+          "plus_15_tools_splits/split_name": "email"
+        },
+        {
+          "plus_15_tools_splits/split_name": "hr"
+        },
+        {
+          "plus_15_tools_splits/split_name": "hybrid"
+        },
+        {
+          "plus_15_tools_splits/split_name": "itsm"
+        },
+        {
+          "plus_15_tools_splits/split_name": "teams"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "plus_15_tools",
+      "description": "ServiceNow-AI/EnterpriseOps-Gym - 'plus_15_tools' subset\n\nAdditional information:\n- 8 splits: calendar, csm, drive, email, hr, hybrid, itsm, teams\n- 1 skipped column: restricted_tools",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plus_15_tools/(?:partial-)?(calendar|csm|drive|email|hr|hybrid|itsm|teams)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "plus_15_tools_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/system_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "system_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/user_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "user_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/selected_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "selected_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/mcp_endpoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "mcp_endpoint"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/number_of_runs",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "number_of_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/reset_database_between_runs",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "reset_database_between_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/gym_servers_config",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "gym_servers_config"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_15_tools/verifiers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_15_tools"
+            },
+            "extract": {
+              "column": "verifiers"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "plus_5_tools_splits/split_name"
+      },
+      "@id": "plus_5_tools_splits",
+      "name": "plus_5_tools_splits",
+      "description": "Splits for the plus_5_tools config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "plus_5_tools_splits/split_name": "calendar"
+        },
+        {
+          "plus_5_tools_splits/split_name": "csm"
+        },
+        {
+          "plus_5_tools_splits/split_name": "drive"
+        },
+        {
+          "plus_5_tools_splits/split_name": "email"
+        },
+        {
+          "plus_5_tools_splits/split_name": "hr"
+        },
+        {
+          "plus_5_tools_splits/split_name": "hybrid"
+        },
+        {
+          "plus_5_tools_splits/split_name": "itsm"
+        },
+        {
+          "plus_5_tools_splits/split_name": "teams"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "plus_5_tools",
+      "description": "ServiceNow-AI/EnterpriseOps-Gym - 'plus_5_tools' subset\n\nAdditional information:\n- 8 splits: calendar, csm, drive, email, hr, hybrid, itsm, teams\n- 1 skipped column: restricted_tools",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plus_5_tools/(?:partial-)?(calendar|csm|drive|email|hr|hybrid|itsm|teams)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "plus_5_tools_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/system_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "system_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/user_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "user_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/selected_tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "selected_tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/mcp_endpoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "mcp_endpoint"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/number_of_runs",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "number_of_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/reset_database_between_runs",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "reset_database_between_runs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/gym_servers_config",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "gym_servers_config"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plus_5_tools/verifiers",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plus_5_tools"
+            },
+            "extract": {
+              "column": "verifiers"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "EnterpriseOps-Gym",
+  "description": "\n\n EnterpriseOps-Gym: Environments and Evaluations for Stateful Agentic Planning and Tool Use in Enterprise Settings\n\n\n  \n  \n  \n\n\nEnterpriseOps-Gym is a containerized, resettable enterprise simulation benchmark for evaluating LLM agents on stateful, multi-step planning and tool use across realistic enterprise workflows\n\n\n\n\n\t\n\t\t\n\t\tAbout\n\t\n\nEnterpriseOps-Gym is a large-scale benchmark for evaluating the agentic planning and tool-use capabilities of LLM agents across enterprise operations. It\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ServiceNow-AI/EnterpriseOps-Gym.",
+  "alternateName": [
+    "ServiceNow-AI/EnterpriseOps-Gym"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ServiceNow-AI",
+    "url": "https://huggingface.co/ServiceNow-AI"
+  },
+  "keywords": [
+    "apache-2.0",
+    "1K - 10K",
+    "parquet",
+    "optimized-parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2603.13594",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/ServiceNow-AI/EnterpriseOps-Gym",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

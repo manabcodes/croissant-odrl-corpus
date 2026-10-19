@@ -1,0 +1,892 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/shhdwi/olmocr-pre-rendered/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-arxiv_math",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "arxiv_math/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-headers_footers",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "headers_footers/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-multi_column",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "multi_column/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-old_scans",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "old_scans/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-old_scans_math",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "old_scans_math/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-tables",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "tables/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "arxiv_math_splits/split_name"
+      },
+      "@id": "arxiv_math_splits",
+      "name": "arxiv_math_splits",
+      "description": "Splits for the arxiv_math config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "arxiv_math_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "arxiv_math",
+      "description": "shhdwi/olmocr-pre-rendered - 'arxiv_math' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "arxiv_math/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "arxiv_math_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "arxiv_math/test_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-arxiv_math"
+            },
+            "extract": {
+              "column": "test_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "headers_footers_splits/split_name"
+      },
+      "@id": "headers_footers_splits",
+      "name": "headers_footers_splits",
+      "description": "Splits for the headers_footers config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "headers_footers_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "headers_footers",
+      "description": "shhdwi/olmocr-pre-rendered - 'headers_footers' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "headers_footers/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "headers_footers_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "headers_footers/test_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-headers_footers"
+            },
+            "extract": {
+              "column": "test_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "multi_column_splits/split_name"
+      },
+      "@id": "multi_column_splits",
+      "name": "multi_column_splits",
+      "description": "Splits for the multi_column config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "multi_column_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multi_column",
+      "description": "shhdwi/olmocr-pre-rendered - 'multi_column' subset\n\nAdditional information:\n- 1 skipped column: test_types",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multi_column"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "multi_column/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "multi_column_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multi_column"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multi_column"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multi_column"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multi_column/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multi_column"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "old_scans_splits/split_name"
+      },
+      "@id": "old_scans_splits",
+      "name": "old_scans_splits",
+      "description": "Splits for the old_scans config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "old_scans_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "old_scans",
+      "description": "shhdwi/olmocr-pre-rendered - 'old_scans' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "old_scans/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "old_scans_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans/test_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans"
+            },
+            "extract": {
+              "column": "test_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "old_scans_math_splits/split_name"
+      },
+      "@id": "old_scans_math_splits",
+      "name": "old_scans_math_splits",
+      "description": "Splits for the old_scans_math config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "old_scans_math_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "old_scans_math",
+      "description": "shhdwi/olmocr-pre-rendered - 'old_scans_math' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "old_scans_math/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "old_scans_math_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "old_scans_math/test_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-old_scans_math"
+            },
+            "extract": {
+              "column": "test_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "tables_splits/split_name"
+      },
+      "@id": "tables_splits",
+      "name": "tables_splits",
+      "description": "Splits for the tables config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tables_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "tables_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "tables",
+      "description": "shhdwi/olmocr-pre-rendered - 'tables' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "tables/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "tables/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "tables_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tables/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tables/pdf_stem",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "column": "pdf_stem"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tables/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tables/num_tests",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "column": "num_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "tables/test_types",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-tables"
+            },
+            "extract": {
+              "column": "test_types"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "olmocr-pre-rendered",
+  "description": "\n\t\n\t\t\n\t\tolmOCR-bench Pre-Rendered\n\t\n\nPre-rendered PNG images of the olmOCR-bench benchmark dataset, ready for zero-setup evaluation of any OCR / vision model.\n\n\t\n\t\t\n\t\tWhat This Is\n\t\n\nThe official olmOCR benchmark requires downloading 1,403 PDFs locally and rendering each page to a PNG image before sending it to a model. Every benchmark runner in the official repo does this same rendering step internally \u2014 see olmocr/data/renderpdf.py::render_pdf_to_base64png().\nThis dataset eliminates that\u2026 See the full description on the dataset page: https://huggingface.co/datasets/shhdwi/olmocr-pre-rendered.",
+  "alternateName": [
+    "shhdwi/olmocr-pre-rendered",
+    "olmOCR-bench Pre-Rendered"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Shrish",
+    "url": "https://huggingface.co/shhdwi"
+  },
+  "keywords": [
+    "English",
+    "odc-by",
+    "1K - 10K",
+    "imagefolder",
+    "Image",
+    "Text",
+    "Document",
+    "Datasets",
+    "Croissant",
+    "arxiv:2502.18443",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "ocr",
+    "benchmark",
+    "pdf",
+    "document-understanding"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/shhdwi/olmocr-pre-rendered",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

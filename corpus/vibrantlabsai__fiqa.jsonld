@@ -1,0 +1,536 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/vibrantlabsai/fiqa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-corpus",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "corpus/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-main",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "main/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ragas_eval",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ragas_eval/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ragas_eval_v3",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ragas_eval_v3/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "corpus_splits/split_name"
+      },
+      "@id": "corpus_splits",
+      "name": "corpus_splits",
+      "description": "Splits for the corpus config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "corpus_splits/split_name": "corpus"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "corpus",
+      "description": "vibrantlabsai/fiqa - 'corpus' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "corpus/(?:partial-)?(corpus)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "corpus_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/doc",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "doc"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "main_splits/split_name"
+      },
+      "@id": "main_splits",
+      "name": "main_splits",
+      "description": "Splits for the main config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "main_splits/split_name": "train"
+        },
+        {
+          "main_splits/split_name": "validation"
+        },
+        {
+          "main_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "main",
+      "description": "vibrantlabsai/fiqa - 'main' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "main/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "main_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/ground_truths",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "ground_truths"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ragas_eval_splits/split_name"
+      },
+      "@id": "ragas_eval_splits",
+      "name": "ragas_eval_splits",
+      "description": "Splits for the ragas_eval config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ragas_eval_splits/split_name": "baseline"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ragas_eval",
+      "description": "vibrantlabsai/fiqa - 'ragas_eval' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ragas_eval/(?:partial-)?(baseline)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ragas_eval_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval/ground_truths",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval"
+            },
+            "extract": {
+              "column": "ground_truths"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval/contexts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval"
+            },
+            "extract": {
+              "column": "contexts"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ragas_eval_v3_splits/split_name"
+      },
+      "@id": "ragas_eval_v3_splits",
+      "name": "ragas_eval_v3_splits",
+      "description": "Splits for the ragas_eval_v3 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ragas_eval_v3_splits/split_name": "baseline"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ragas_eval_v3",
+      "description": "vibrantlabsai/fiqa - 'ragas_eval_v3' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval_v3"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ragas_eval_v3/(?:partial-)?(baseline)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ragas_eval_v3_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3/user_input",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval_v3"
+            },
+            "extract": {
+              "column": "user_input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3/reference",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval_v3"
+            },
+            "extract": {
+              "column": "reference"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3/response",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval_v3"
+            },
+            "extract": {
+              "column": "response"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ragas_eval_v3/retrieved_contexts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ragas_eval_v3"
+            },
+            "extract": {
+              "column": "retrieved_contexts"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "fiqa",
+  "description": "\n\t\n\t\t\n\t\tFiQA Dataset for RAG Evaluation\n\t\n\nThe FiQA (Financial Opinion Mining and Question Answering) dataset reformatted specifically for evaluating Retrieval-Augmented Generation (RAG) systems. This dataset contains financial domain questions with ground truth answers and retrieved contexts, making it ideal for testing RAG pipelines on domain-specific content.\n\n\t\n\t\t\n\t\tRecommended Usage: ragas_eval_v3\n\t\n\nThe ragas_eval_v3 configuration is the primary and recommended way to use this dataset.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/vibrantlabsai/fiqa.",
+  "alternateName": [
+    "vibrantlabsai/fiqa"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Vibrant Labs",
+    "url": "https://huggingface.co/vibrantlabsai"
+  },
+  "keywords": [
+    "question-answering",
+    "English",
+    "cc-by-sa-4.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/vibrantlabsai/fiqa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

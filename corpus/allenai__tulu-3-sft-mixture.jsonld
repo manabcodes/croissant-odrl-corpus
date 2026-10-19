@@ -1,0 +1,344 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/tulu-3-sft-mixture/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "allenai/tulu-3-sft-mixture - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/messages/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/messages/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "tulu-3-sft-mixture",
+  "description": "\n\n\n\t\n\t\t\n\t\tTulu 3 SFT Mixture\n\t\n\nNote that this collection is licensed under ODC-BY-1.0 license; different licenses apply to subsets of the data. Some portions of the dataset are non-commercial. We present the mixture as a research artifact.\nThe Tulu 3 SFT mixture was used to train the Tulu 3 series of models.\nIt contains 939,344 samples from the following sets:\n\nCoCoNot (ODC-BY-1.0), 10,983 prompts (Brahman et al., 2024)\nFLAN v2 via ai2-adapt-dev/flan_v2_converted, 89,982 prompts (Longpre et\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/tulu-3-sft-mixture.",
+  "alternateName": [
+    "allenai/tulu-3-sft-mixture"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "other",
+    "crowdsourced",
+    "expert-generated",
+    "machine-generated",
+    "multilingual",
+    "allenai/coconot",
+    "ai2-adapt-dev/flan_v2_converted",
+    "HuggingFaceH4/no_robots",
+    "OpenAssistant/oasst1",
+    "allenai/tulu-3-personas-math",
+    "allenai/tulu-3-sft-personas-math-grade",
+    "allenai/tulu-3-sft-personas-code",
+    "allenai/tulu-3-personas-algebra",
+    "allenai/tulu-3-sft-personas-instruction-following",
+    "AI-MO/NuminaMath-TIR",
+    "allenai/wildguardmix",
+    "allenai/wildjailbreak",
+    "allenai/tulu-3-hard-coded",
+    "CohereForAI/aya_dataset",
+    "allenai/WildChat-1M",
+    "LipengCS/Table-GPT",
+    "allenai/SciRIFF",
+    "theblackcat102/evol-codealpaca-v1",
+    "Amharic",
+    "Standard Arabic",
+    "Moroccan Arabic",
+    "Najdi Arabic",
+    "Ta'izzi-Adeni Arabic",
+    "Egyptian Arabic",
+    "Levantine Arabic",
+    "Bengali",
+    "Cebuano",
+    "Danish",
+    "German",
+    "Modern Greek (1453-)",
+    "English",
+    "Basque",
+    "Filipino",
+    "Finnish",
+    "French",
+    "Irish",
+    "Gujarati",
+    "Haitian",
+    "Hausa",
+    "Hindi",
+    "Hungarian",
+    "Igbo",
+    "Indonesian",
+    "Italian",
+    "Javanese",
+    "Japanese",
+    "Kannada",
+    "Kirghiz",
+    "Korean",
+    "Kurdish",
+    "Lithuanian",
+    "Malayalam",
+    "Marathi",
+    "Malagasy",
+    "Malay (macrolanguage)",
+    "Burmese",
+    "Nepali (macrolanguage)",
+    "Dutch",
+    "Pedi",
+    "Nyanja",
+    "Panjabi",
+    "Iranian Persian",
+    "Polish",
+    "Portuguese",
+    "Pushto",
+    "Russian",
+    "Sinhala",
+    "Shona",
+    "Sindhi",
+    "Somali",
+    "Spanish",
+    "Albanian",
+    "Serbian",
+    "Sundanese",
+    "Swahili (macrolanguage)",
+    "Swedish",
+    "Tamil",
+    "Telugu",
+    "Thai",
+    "Turkish",
+    "Ukrainian",
+    "Urdu",
+    "Vietnamese",
+    "Wolof",
+    "Xhosa",
+    "Yoruba",
+    "Chinese",
+    "Zulu",
+    "odc-by",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/allenai/tulu-3-sft-mixture",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

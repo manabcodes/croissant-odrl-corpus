@@ -1,0 +1,360 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ahmedheakl/docatlas_instruct/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "ahmedheakl/docatlas_instruct - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/doctags",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "doctags"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/markdown",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "markdown"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "docatlas_instruct",
+  "description": "\n\t\n\t\t\n\t\tDocAtlas: Multilingual Document Understanding Across 80+ Languages\n\t\n\n\n  \n  \n  \n\n\nDocAtlas is a large-scale, high-fidelity multilingual OCR dataset covering 82 languages and 10 writing systems, built through model-free differential rendering. It provides precise structural annotations in a unified DocTag format encoding layout, text, and component types \u2014 without relying on any learned models for core annotation.This dataset powers the training of DocAtlas-DeepSeek, which achieves\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ahmedheakl/docatlas_instruct.",
+  "alternateName": [
+    "ahmedheakl/docatlas_instruct",
+    "DocAtlas Instruct"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Ahmed Heakl",
+    "url": "https://huggingface.co/ahmedheakl"
+  },
+  "keywords": [
+    "image-to-text",
+    "document-question-answering",
+    "Afrikaans",
+    "Amharic",
+    "Arabic",
+    "Azerbaijani",
+    "Bashkir",
+    "Belarusian",
+    "Bulgarian",
+    "Bengali",
+    "Bosnian",
+    "Catalan",
+    "Chechen",
+    "Cebuano",
+    "Central Kurdish",
+    "Czech",
+    "Welsh",
+    "Danish",
+    "German",
+    "Divehi",
+    "Greek",
+    "English",
+    "Esperanto",
+    "Spanish",
+    "Estonian",
+    "Basque",
+    "Persian",
+    "Finnish",
+    "French",
+    "Western Frisian",
+    "Irish",
+    "Galician",
+    "Gujarati",
+    "Hebrew",
+    "Hindi",
+    "Croatian",
+    "Hungarian",
+    "Armenian",
+    "Indonesian",
+    "Icelandic",
+    "Italian",
+    "Japanese",
+    "Javanese",
+    "Georgian",
+    "Kazakh",
+    "Khmer",
+    "Korean",
+    "Kurdish",
+    "Latin",
+    "Lithuanian",
+    "Latvian",
+    "Malagasy",
+    "Macedonian",
+    "Malayalam",
+    "Mongolian",
+    "Marathi",
+    "Malay",
+    "Maltese",
+    "Nepali",
+    "Dutch",
+    "Norwegian Nynorsk",
+    "Norwegian",
+    "Occitan",
+    "Panjabi",
+    "Polish",
+    "Western Panjabi",
+    "Pashto",
+    "Portuguese",
+    "Romanian",
+    "Russian",
+    "Sindhi",
+    "sh",
+    "Sinhala",
+    "Slovak",
+    "Slovenian",
+    "Albanian",
+    "Serbian",
+    "Swedish",
+    "Swahili",
+    "Tamil",
+    "Tajik",
+    "Thai",
+    "Tagalog",
+    "Turkish",
+    "Tatar",
+    "Uyghur",
+    "Ukrainian",
+    "Urdu",
+    "Uzbek",
+    "Vietnamese",
+    "Chinese",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "optimized-parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2605.12623",
+    "arxiv:2503.11576",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "ocr",
+    "multilingual",
+    "document-understanding",
+    "document-parsing",
+    "doctags"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/ahmedheakl/docatlas_instruct",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

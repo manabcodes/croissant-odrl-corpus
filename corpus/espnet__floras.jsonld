@@ -1,0 +1,494 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/espnet/floras/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-monolingual",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "monolingual/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-multilingual",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "multilingual/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "monolingual_splits/split_name"
+      },
+      "@id": "monolingual_splits",
+      "name": "monolingual_splits",
+      "description": "Splits for the monolingual config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "monolingual_splits/split_name": "train"
+        },
+        {
+          "monolingual_splits/split_name": "dev"
+        },
+        {
+          "monolingual_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "monolingual",
+      "description": "espnet/floras - 'monolingual' subset\n\nAdditional information:\n- 3 splits: train, dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "monolingual/(?:partial-)?(train|dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "monolingual_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/score",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 16000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monolingual/translation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monolingual"
+            },
+            "extract": {
+              "column": "translation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "multilingual_splits/split_name"
+      },
+      "@id": "multilingual_splits",
+      "name": "multilingual_splits",
+      "description": "Splits for the multilingual config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "multilingual_splits/split_name": "dev"
+        },
+        {
+          "multilingual_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "multilingual",
+      "description": "espnet/floras - 'multilingual' subset\n\nAdditional information:\n- 2 splits: dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "multilingual/(?:partial-)?(dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "multilingual_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/score",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 16000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/summary",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "summary"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "multilingual/translation",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-multilingual"
+            },
+            "extract": {
+              "column": "translation"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "floras",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tFLORAS\n\t\n\nFLORAS is a 50-language benchmark For LOng-form Recognition And Summarization of spoken language. \nThe goal of FLORAS is to create a more realistic benchmarking environment for speech recognition, translation, and summarization models. \nUnlike typical academic benchmarks like LibriSpeech and FLEURS that uses pre-segmented single-speaker read-speech, FLORAS tests the capabilities of models on raw long-form conversational audio, which can have one or many speakers.\nTo\u2026 See the full description on the dataset page: https://huggingface.co/datasets/espnet/floras.",
+  "alternateName": [
+    "espnet/floras"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ESPnet",
+    "url": "https://huggingface.co/espnet"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "translation",
+    "summarization",
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Dutch",
+    "Italian",
+    "Portuguese",
+    "Hungarian",
+    "Finnish",
+    "Greek",
+    "Catalan",
+    "Esperanto",
+    "Estonian",
+    "Danish",
+    "Latin",
+    "Swedish",
+    "Welsh",
+    "Galician",
+    "Russian",
+    "Polish",
+    "Ukrainian",
+    "Romanian",
+    "Czech",
+    "Slovenian",
+    "Slovak",
+    "Croatian",
+    "Bulgarian",
+    "Bosnian",
+    "Georgian",
+    "Turkish",
+    "Persian",
+    "Arabic",
+    "Uzbek",
+    "Azerbaijani",
+    "Kurdish",
+    "Kyrgyz",
+    "Hindi",
+    "Tamil",
+    "Urdu",
+    "Bengali",
+    "Indonesian",
+    "Vietnamese",
+    "Thai",
+    "M\u0101ori",
+    "Malay",
+    "Japanese",
+    "Chinese",
+    "cc-by-3.0",
+    "10K - 100K",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/espnet/floras",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

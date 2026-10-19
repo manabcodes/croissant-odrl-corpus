@@ -1,0 +1,670 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/UkrainianCatholicUniversity/rukopys/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-full",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "full/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "full_splits/split_name"
+      },
+      "@id": "full_splits",
+      "name": "full_splits",
+      "description": "Splits for the full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "full_splits/split_name": "train"
+        },
+        {
+          "full_splits/split_name": "silver"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "full",
+      "description": "UkrainianCatholicUniversity/rukopys - 'full' subset\n\nAdditional information:\n- 2 splits: train, silver",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "full/(?:partial-)?(train|silver)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/image_width",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "image_width"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/image_height",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "image_height"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/source_detail",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "source_detail"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/annotation_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "annotation_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/regions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "full/regions/bbox",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "bbox"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/regions/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/regions/language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/regions/legibility",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "legibility"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/regions/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/fund",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "fund"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/content_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "content_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/grade",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "grade"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/subject",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "subject"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/group",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "group"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_splits/split_name"
+      },
+      "@id": "test_splits",
+      "name": "test_splits",
+      "description": "Splits for the test config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test",
+      "description": "UkrainianCatholicUniversity/rukopys - 'test' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/image_width",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "image_width"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/image_height",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "image_height"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/source_detail",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "source_detail"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/annotation_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "annotation_source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/regions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "test/regions/bbox_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "bbox"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/regions/type_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/regions/language_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/regions/legibility_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "legibility"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/regions/text_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "regions"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "rukopys",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tRUKOPYS: Ukrainian Handwritten Text Recognition Dataset\n\t\n\nRUKOPYS (Ukrainian: \u0440\u0443\u043a\u043e\u043f\u0438\u0441 \u2014 manuscript) is the first large-scale open dataset for Ukrainian handwritten text recognition (HTR). It spans over a century of Ukrainian handwriting \u2014 from 1920s archival documents to present-day school homework \u2014 and is designed for end-to-end document understanding: region detection, type classification, and text transcription.\nUkrainian is among the largest Slavic languages (45M+ native\u2026 See the full description on the dataset page: https://huggingface.co/datasets/UkrainianCatholicUniversity/rukopys.",
+  "alternateName": [
+    "UkrainianCatholicUniversity/rukopys",
+    "RUKOPYS: Ukrainian Handwritten Text Recognition Dataset"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ukrainian Catholic University",
+    "url": "https://huggingface.co/UkrainianCatholicUniversity"
+  },
+  "keywords": [
+    "object-detection",
+    "image-to-text",
+    "Ukrainian",
+    "cc-by-4.0",
+    "10K - 100K",
+    "imagefolder",
+    "Image",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "handwriting-recognition",
+    "htr",
+    "ocr",
+    "bounding-box",
+    "ukrainian",
+    "document-analysis",
+    "cyrillic"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/UkrainianCatholicUniversity/rukopys",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

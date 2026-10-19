@@ -1,0 +1,1385 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/CSU-JPG/VisPrompt5M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-text2image",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "text2image/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-class2image",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "class2image/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-doodles_edit",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "doodles_edit/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-force_understand",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "force_understand/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-text_bbox_edit",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "text_bbox_edit/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-text_in_image_edit",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "text_in_image_edit/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-trajectory_understand",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "trajectory_understand/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-visual_marker_edit",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "visual_marker_edit/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "text2image_splits/split_name"
+      },
+      "@id": "text2image_splits",
+      "name": "text2image_splits",
+      "description": "Splits for the text2image config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text2image_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "text2image_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text2image",
+      "description": "CSU-JPG/VisPrompt5M - 'text2image' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "text2image/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "text2image_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text2image/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text2image"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "class2image_splits/split_name"
+      },
+      "@id": "class2image_splits",
+      "name": "class2image_splits",
+      "description": "Splits for the class2image config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "class2image_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "class2image_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "class2image",
+      "description": "CSU-JPG/VisPrompt5M - 'class2image' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "class2image/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "class2image_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "class2image/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-class2image"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "doodles_edit_splits/split_name"
+      },
+      "@id": "doodles_edit_splits",
+      "name": "doodles_edit_splits",
+      "description": "Splits for the doodles_edit config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "doodles_edit_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "doodles_edit",
+      "description": "CSU-JPG/VisPrompt5M - 'doodles_edit' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "doodles_edit/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "doodles_edit_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "doodles_edit/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-doodles_edit"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "force_understand_splits/split_name"
+      },
+      "@id": "force_understand_splits",
+      "name": "force_understand_splits",
+      "description": "Splits for the force_understand config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "force_understand_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "force_understand",
+      "description": "CSU-JPG/VisPrompt5M - 'force_understand' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "force_understand/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "force_understand_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "force_understand/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-force_understand"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "text_bbox_edit_splits/split_name"
+      },
+      "@id": "text_bbox_edit_splits",
+      "name": "text_bbox_edit_splits",
+      "description": "Splits for the text_bbox_edit config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "text_bbox_edit_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text_bbox_edit",
+      "description": "CSU-JPG/VisPrompt5M - 'text_bbox_edit' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "text_bbox_edit/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "text_bbox_edit_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_bbox_edit/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_bbox_edit"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "text_in_image_edit_splits/split_name"
+      },
+      "@id": "text_in_image_edit_splits",
+      "name": "text_in_image_edit_splits",
+      "description": "Splits for the text_in_image_edit config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "text_in_image_edit_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "text_in_image_edit",
+      "description": "CSU-JPG/VisPrompt5M - 'text_in_image_edit' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "text_in_image_edit/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "text_in_image_edit_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "text_in_image_edit/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-text_in_image_edit"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "trajectory_understand_splits/split_name"
+      },
+      "@id": "trajectory_understand_splits",
+      "name": "trajectory_understand_splits",
+      "description": "Splits for the trajectory_understand config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "trajectory_understand_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "trajectory_understand",
+      "description": "CSU-JPG/VisPrompt5M - 'trajectory_understand' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "trajectory_understand/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "trajectory_understand_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trajectory_understand/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-trajectory_understand"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "visual_marker_edit_splits/split_name"
+      },
+      "@id": "visual_marker_edit_splits",
+      "name": "visual_marker_edit_splits",
+      "description": "Splits for the visual_marker_edit config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "visual_marker_edit_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "visual_marker_edit",
+      "description": "CSU-JPG/VisPrompt5M - 'visual_marker_edit' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "visual_marker_edit/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "visual_marker_edit_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/pair_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "pair_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/subset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "subset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/input_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "input_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/output_relpath",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "output_relpath"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/input_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "input_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "visual_marker_edit/output_image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-visual_marker_edit"
+            },
+            "extract": {
+              "column": "output_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "VisPrompt5M",
+  "description": "\n  \n    FlowInOne: Unifying Multimodal Generation as \n    Image-in,\u00a0Image-out Flow Matching\n  \n  \n    TL;DR: The first vision-centric image-in, image-out image generation model.\n  \n  \n    \ud83c\udf10 Homepage | \n    \ud83d\udcbb Code | \n    \ud83d\udcc4 Paper | \n    \ud83d\udcc1 Dataset | \n    \ud83c\udf0f Benchmark | \n    \ud83e\udd17 Model\n\n\n\n\n\t\n\t\t\n\t\tVisPrompt5M\n\t\n\nThis dataset is the official training dataset for FlowInOne.\nVisPrompt5M is a large-scale image editing and generation dataset.Each sample contains an input image and an output image pair\u2026 See the full description on the dataset page: https://huggingface.co/datasets/CSU-JPG/VisPrompt5M.",
+  "alternateName": [
+    "CSU-JPG/VisPrompt5M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Jinpeng Group",
+    "url": "https://huggingface.co/CSU-JPG"
+  },
+  "keywords": [
+    "image-to-image",
+    "text-to-image",
+    "English",
+    "apache-2.0",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2604.06757",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/CSU-JPG/VisPrompt5M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

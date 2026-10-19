@@ -1,0 +1,485 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MU-NLPC/Calc-ape210k/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-original-splits",
+      "name": "parquet-files-for-config-original-splits",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "original-splits/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "test"
+        },
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "MU-NLPC/Calc-ape210k - 'default' subset\n\nAdditional information:\n- 3 splits: test, train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(test|train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "name": "default/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question",
+          "name": "default/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/question_chinese",
+          "name": "default/question_chinese",
+          "description": "Column 'question_chinese' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "question_chinese"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/chain",
+          "name": "default/chain",
+          "description": "Column 'chain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "chain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/result",
+          "name": "default/result",
+          "description": "Column 'result' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "result"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/result_float",
+          "name": "default/result_float",
+          "description": "Column 'result_float' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "result_float"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/equation",
+          "name": "default/equation",
+          "description": "Column 'equation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "equation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "original-splits_splits/split_name"
+      },
+      "@id": "original-splits_splits",
+      "name": "original-splits_splits",
+      "description": "Splits for the original-splits config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "original-splits_splits/split_name": "test"
+        },
+        {
+          "original-splits_splits/split_name": "train"
+        },
+        {
+          "original-splits_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "original-splits",
+      "name": "original-splits",
+      "description": "MU-NLPC/Calc-ape210k - 'original-splits' subset\n\nAdditional information:\n- 3 splits: test, train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/split",
+          "name": "original-splits/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "original\\-splits/(?:partial-)?(test|train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "original-splits_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/id",
+          "name": "original-splits/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/question",
+          "name": "original-splits/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/question_chinese",
+          "name": "original-splits/question_chinese",
+          "description": "Column 'question_chinese' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "question_chinese"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/chain",
+          "name": "original-splits/chain",
+          "description": "Column 'chain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "chain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/result",
+          "name": "original-splits/result",
+          "description": "Column 'result' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "result"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/result_float",
+          "name": "original-splits/result_float",
+          "description": "Column 'result_float' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "result_float"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "original-splits/equation",
+          "name": "original-splits/equation",
+          "description": "Column 'equation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-original-splits"
+            },
+            "extract": {
+              "column": "equation"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "Calc-ape210k",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Calc-ape210k\n\t\n\n\n\t\n\t\t\n\t\tSummary\n\t\n\nThis dataset is an instance of Ape210K dataset, converted to a simple HTML-like language that can be easily parsed (e.g. by BeautifulSoup). The data contains 3 types of tags:\n\ngadget: A tag whose content is intended to be evaluated by calling an external tool (sympy-based calculator in this case)\noutput: An output of the external tool\nresult: The final answer to the mathematical problem (a number)\n\n\n\t\n\t\t\n\t\n\t\n\t\tSupported Tasks\n\t\n\nThe\u2026 See the full description on the dataset page: https://huggingface.co/datasets/MU-NLPC/Calc-ape210k.",
+  "alternateName": [
+    "MU-NLPC/Calc-ape210k"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NLP Centre, Faculty of Informatics, Masaryk University",
+    "url": "https://huggingface.co/MU-NLPC"
+  },
+  "keywords": [
+    "mit",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2305.15017",
+    "arxiv:2009.11506",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/MU-NLPC/Calc-ape210k",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

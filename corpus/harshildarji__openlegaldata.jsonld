@@ -1,0 +1,492 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/harshildarji/openlegaldata/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-cases",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "cases/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "cases_splits/split_name"
+      },
+      "@id": "cases_splits",
+      "name": "cases_splits",
+      "description": "Splits for the cases config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cases_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "cases_splits/split_name": "main"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "cases",
+      "description": "harshildarji/openlegaldata - 'cases' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "cases/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "cases/(?:partial-)?(main)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "cases_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/file_number",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "file_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "slug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/ecli",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "ecli"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/court",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/slug",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "slug"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/city",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "city"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/state",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "state"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/jurisdiction",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "jurisdiction"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/court/level_of_appeal",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "court"
+                },
+                "transform": {
+                  "jsonPath": "level_of_appeal"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/tenor",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "tenor"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/tatbestand",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "tatbestand"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/entscheidungsgr_nde",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "entscheidungsgr\u00fcnde"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/references",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "cases/references/law",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "references"
+                },
+                "transform": {
+                  "jsonPath": "law"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "cases/references/case",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-cases"
+                },
+                "extract": {
+                  "column": "references"
+                },
+                "transform": {
+                  "jsonPath": "case"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "cases/rechtsmittelbelehrung",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-cases"
+            },
+            "extract": {
+              "column": "rechtsmittelbelehrung"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "openlegaldata",
+  "description": "Clean Open Legal Data\n\n   \n       Overview |\n       Dataset Structure  |\n       Key Fields  |\n       Example Entry |\n       Using the Dataset with Python |\n       Citation |\n       License\n   \n\n\n\n\t\n\t\t\n\t\n\t\n\t\tOverview\n\t\n\nThis dataset is a comprehensive collection of open legal case records in JSONL format. It comprises 423,941 cases extracted and processed from the Open Legal Data dump dump-20260520 and represents an independent, cleaned derivative of that source data. The dataset is designed\u2026 See the full description on the dataset page: https://huggingface.co/datasets/harshildarji/openlegaldata.",
+  "alternateName": [
+    "harshildarji/openlegaldata",
+    "Clean Open Legal Data"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Harshil",
+    "url": "https://huggingface.co/harshildarji"
+  },
+  "keywords": [
+    "text-classification",
+    "text-generation",
+    "German",
+    "odbl",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2601.01449",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "legal"
+  ],
+  "license": "https://choosealicense.com/licenses/odbl/",
+  "url": "https://huggingface.co/datasets/harshildarji/openlegaldata",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Open Database License v1.0 (ODbL)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

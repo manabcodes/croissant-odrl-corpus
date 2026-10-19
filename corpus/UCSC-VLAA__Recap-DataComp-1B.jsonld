@@ -1,0 +1,575 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/UCSC-VLAA/Recap-DataComp-1B/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-condition_diverse_topk",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "condition_diverse_topk/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "preview"
+        },
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "UCSC-VLAA/Recap-DataComp-1B - 'default' subset\n\nAdditional information:\n- 2 splits: preview, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(preview|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/re_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "re_caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/org_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "org_caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/key",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/re_clip_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "re_clip_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/org_clip_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "org_clip_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/re_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "re_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/org_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "org_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/re_gpt4v_score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "re_gpt4v_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/org_gpt4v_score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "org_gpt4v_score"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "condition_diverse_topk_splits/split_name"
+      },
+      "@id": "condition_diverse_topk_splits",
+      "name": "condition_diverse_topk_splits",
+      "description": "Splits for the condition_diverse_topk config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "condition_diverse_topk_splits/split_name": "preview"
+        },
+        {
+          "condition_diverse_topk_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "condition_diverse_topk",
+      "description": "UCSC-VLAA/Recap-DataComp-1B - 'condition_diverse_topk' subset\n\nAdditional information:\n- 2 splits: preview, train",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "condition_diverse_topk/(?:partial-)?(preview|train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "condition_diverse_topk_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/org_caption",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "org_caption"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/key",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "key"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_clip_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_clip_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/org_clip_score",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "org_clip_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/org_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "org_length"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_gpt4v_score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_gpt4v_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/org_gpt4v_score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "org_gpt4v_score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_caption_condition_diverse_topk",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_caption_condition_diverse_topk"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "condition_diverse_topk/re_condition_length",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-condition_diverse_topk"
+            },
+            "extract": {
+              "column": "re_condition_length"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Recap-DataComp-1B",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for Recap-DataComp-1B\n\t\n\n\n\nRecap-DataComp-1B is a large-scale image-text dataset that has been recaptioned using an advanced LLaVA-1.5-LLaMA3-8B model to enhance the alignment and detail of textual descriptions.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Details\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Description\n\t\n\n\nOur paper aims to bridge this community effort, leveraging the powerful and open-sourced LLaMA-3, a GPT-4 level LLM.\nOur recaptioning pipeline is simple: first, we fine-tune a LLaMA-3-8B powered\u2026 See the full description on the dataset page: https://huggingface.co/datasets/UCSC-VLAA/Recap-DataComp-1B.",
+  "alternateName": [
+    "UCSC-VLAA/Recap-DataComp-1B"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "UCSC-VLAA",
+    "url": "https://huggingface.co/UCSC-VLAA"
+  },
+  "keywords": [
+    "zero-shot-classification",
+    "text-retrieval",
+    "image-to-text",
+    "text-to-image",
+    "cc-by-4.0",
+    "1B - 10B",
+    "parquet",
+    "Image",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2406.08478",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/UCSC-VLAA/Recap-DataComp-1B",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

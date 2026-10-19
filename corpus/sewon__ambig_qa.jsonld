@@ -1,0 +1,637 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/sewon/ambig_qa/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-full",
+      "name": "parquet-files-for-config-full",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "full/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-light",
+      "name": "parquet-files-for-config-light",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "light/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "full_splits/split_name"
+      },
+      "@id": "full_splits",
+      "name": "full_splits",
+      "description": "Splits for the full config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "full_splits/split_name": "train"
+        },
+        {
+          "full_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "full",
+      "name": "full",
+      "description": "sewon/ambig_qa - 'full' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "full/split",
+          "name": "full/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "full/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "full_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/id",
+          "name": "full/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/question",
+          "name": "full/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/annotations",
+          "name": "full/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "full/annotations/type",
+              "name": "full/annotations/type",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/annotations/answer",
+              "name": "full/annotations/answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "annotations"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/annotations/qaPairs",
+              "name": "full/annotations/qaPairs",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "full/annotations/qaPairs/question",
+                  "name": "full/annotations/qaPairs/question",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-full"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "question"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "full/annotations/qaPairs/answer",
+                  "name": "full/annotations/qaPairs/answer",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-full"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    }
+                  },
+                  "repeated": true
+                }
+              ],
+              "repeated": true
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/viewed_doc_titles",
+          "name": "full/viewed_doc_titles",
+          "description": "Column 'viewed_doc_titles' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "viewed_doc_titles"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/used_queries",
+          "name": "full/used_queries",
+          "description": "Column 'used_queries' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "full/used_queries/query",
+              "name": "full/used_queries/query",
+              "description": "Column 'used_queries' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-full"
+                },
+                "extract": {
+                  "column": "used_queries"
+                },
+                "transform": {
+                  "jsonPath": "query"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "full/used_queries/results",
+              "name": "full/used_queries/results",
+              "description": "Column 'used_queries' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "full/used_queries/results/title",
+                  "name": "full/used_queries/results/title",
+                  "description": "Column 'used_queries' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-full"
+                    },
+                    "extract": {
+                      "column": "used_queries"
+                    },
+                    "transform": {
+                      "jsonPath": "title"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "full/used_queries/results/snippet",
+                  "name": "full/used_queries/results/snippet",
+                  "description": "Column 'used_queries' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-full"
+                    },
+                    "extract": {
+                      "column": "used_queries"
+                    },
+                    "transform": {
+                      "jsonPath": "snippet"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/nq_answer",
+          "name": "full/nq_answer",
+          "description": "Column 'nq_answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "nq_answer"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "full/nq_doc_title",
+          "name": "full/nq_doc_title",
+          "description": "Column 'nq_doc_title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-full"
+            },
+            "extract": {
+              "column": "nq_doc_title"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "light_splits/split_name"
+      },
+      "@id": "light_splits",
+      "name": "light_splits",
+      "description": "Splits for the light config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "light_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "light_splits/split_name": "train"
+        },
+        {
+          "light_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "light",
+      "name": "light",
+      "description": "sewon/ambig_qa - 'light' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "light/split",
+          "name": "light/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-light"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "light/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "light_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "light/id",
+          "name": "light/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-light"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "light/question",
+          "name": "light/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-light"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "light/annotations",
+          "name": "light/annotations",
+          "description": "Column 'annotations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "light/annotations/type",
+              "name": "light/annotations/type",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-light"
+                },
+                "extract": {
+                  "column": "annotations"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "light/annotations/answer",
+              "name": "light/annotations/answer",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-light"
+                },
+                "extract": {
+                  "column": "annotations"
+                }
+              },
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "light/annotations/qaPairs",
+              "name": "light/annotations/qaPairs",
+              "description": "Column 'annotations' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "light/annotations/qaPairs/question",
+                  "name": "light/annotations/qaPairs/question",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-light"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    },
+                    "transform": {
+                      "jsonPath": "question"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "light/annotations/qaPairs/answer",
+                  "name": "light/annotations/qaPairs/answer",
+                  "description": "Column 'annotations' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-light"
+                    },
+                    "extract": {
+                      "column": "annotations"
+                    }
+                  },
+                  "repeated": true
+                }
+              ],
+              "repeated": true
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ambig_qa",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for AmbigQA: Answering Ambiguous Open-domain Questions\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nAmbigNQ, a dataset covering 14,042 questions from NQ-open, an existing open-domain QA benchmark. We find that over half of the questions in NQ-open are ambiguous. The types of ambiguity are diverse and sometimes subtle, many of which are only apparent after examining evidence provided by a very large text corpus.  AMBIGNQ, a dataset with\n14,042 annotations on NQ-OPEN questions containing\u2026 See the full description on the dataset page: https://huggingface.co/datasets/sewon/ambig_qa.",
+  "alternateName": [
+    "sewon/ambig_qa",
+    "AmbigQA: Answering Ambiguous Open-domain Questions"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Sewon Min",
+    "url": "https://huggingface.co/sewon"
+  },
+  "keywords": [
+    "question-answering",
+    "open-domain-qa",
+    "crowdsourced",
+    "found",
+    "monolingual",
+    "extended|natural_questions",
+    "original",
+    "English",
+    "cc-by-sa-3.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2004.10645",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-3.0/",
+  "url": "https://huggingface.co/datasets/sewon/ambig_qa",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

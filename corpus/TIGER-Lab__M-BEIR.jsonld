@@ -1,0 +1,332 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/TIGER-Lab/M-BEIR/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-query",
+      "name": "parquet-files-for-config-query",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "query/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "query_splits/split_name"
+      },
+      "@id": "query_splits",
+      "name": "query_splits",
+      "description": "Splits for the query config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "query_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "query_splits/split_name": "train"
+        },
+        {
+          "query_splits/split_name": "union_train"
+        },
+        {
+          "query_splits/split_name": "val"
+        },
+        {
+          "query_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "query",
+      "name": "query",
+      "description": "TIGER-Lab/M-BEIR - 'query' subset\n\nAdditional information:\n- 4 splits: train, union_train, val, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "query/split",
+          "name": "query/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "query/(?:partial-)?(train|union_train|val|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "query_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/qid",
+          "name": "query/qid",
+          "description": "Column 'qid' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/query_txt",
+          "name": "query/query_txt",
+          "description": "Column 'query_txt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "query_txt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/query_img_path",
+          "name": "query/query_img_path",
+          "description": "Column 'query_img_path' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "query_img_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/query_modality",
+          "name": "query/query_modality",
+          "description": "Column 'query_modality' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "query_modality"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/query_src_content",
+          "name": "query/query_src_content",
+          "description": "Column 'query_src_content' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "query_src_content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/pos_cand_list",
+          "name": "query/pos_cand_list",
+          "description": "Column 'pos_cand_list' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "pos_cand_list"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/neg_cand_list",
+          "name": "query/neg_cand_list",
+          "description": "Column 'neg_cand_list' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "neg_cand_list"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "query/task_id",
+          "name": "query/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-query"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "M-BEIR",
+  "description": "\n\t\n\t\t\n\t\tUniIR: Training and Benchmarking Universal Multimodal Information Retrievers (ECCV 2024)\n\t\n\n\ud83c\udf10 Homepage | \ud83e\udd17 Model(UniIR Checkpoints) | \ud83e\udd17 Paper | \ud83d\udcd6 arXiv  | GitHub\nHow to download the M-BEIR Dataset\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83d\udd14News\n\t\n\n\n\ud83d\udd25[2023-12-21]: Our M-BEIR Benchmark is now available for use.\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nM-BEIR, the Multimodal BEnchmark for Instructed Retrieval, is a comprehensive large-scale retrieval benchmark designed to train and evaluate unified multimodal retrieval\u2026 See the full description on the dataset page: https://huggingface.co/datasets/TIGER-Lab/M-BEIR.",
+  "alternateName": [
+    "TIGER-Lab/M-BEIR",
+    "M-BEIR"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "TIGER-Lab",
+    "url": "https://huggingface.co/TIGER-Lab"
+  },
+  "keywords": [
+    "text-retrieval",
+    "text-to-image",
+    "image-to-text",
+    "visual-question-answering",
+    "English",
+    "mit",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "arxiv:2311.17136",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/TIGER-Lab/M-BEIR",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

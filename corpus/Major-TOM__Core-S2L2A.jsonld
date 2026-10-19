@@ -1,0 +1,649 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Major-TOM/Core-S2L2A/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-metadata",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "metadata/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "Major-TOM/Core-S2L2A - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/product_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "product_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/grid_cell",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "grid_cell"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/product_datetime",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "product_datetime"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/thumbnail",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "thumbnail"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B01",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B01"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B02",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B02"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B03",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B03"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B04",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B04"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B05",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B05"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B06",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B06"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B07",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B07"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B08",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B08"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B8A",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B8A"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B09",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B09"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B11",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B11"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/B12",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "B12"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cloud_mask",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cloud_mask"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "metadata_splits/split_name"
+      },
+      "@id": "metadata_splits",
+      "name": "metadata_splits",
+      "description": "Splits for the metadata config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "metadata_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "metadata_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "metadata",
+      "description": "Major-TOM/Core-S2L2A - 'metadata' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "metadata/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "metadata_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/grid_cell",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "grid_cell"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/grid_row_u",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "grid_row_u"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/grid_col_r",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "grid_col_r"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/product_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "product_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/cloud_cover",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "cloud_cover"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/nodata",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "nodata"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/centre_lat",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "centre_lat"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/centre_lon",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "centre_lon"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/crs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "crs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/parquet_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "parquet_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "metadata/parquet_row",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-metadata"
+            },
+            "extract": {
+              "column": "parquet_row"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Core-S2L2A",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tCore-S2L2A\n\t\n\nContains a global coverage of Sentinel-2 (Level 2A) patches, each of size 1,068 x 1,068 pixels.\n\n\t\n\t\t\nSource\nSensing Type\nNumber of Patches\nPatch Size\nTotal Pixels\n\n\n\t\t\nSentinel-2 Level-2A\nOptical Multispectral\n2,245,886\n1,068 x 1,068 (10 m)\n> 2.564 Trillion\n\n\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tContent\n\t\n\n\n\t\n\t\t\nColumn\nDetails\nResolution\n\n\n\t\t\nB01\nCoastal aerosol, 442.7 nm (S2A), 442.3 nm (S2B)\n60m\n\n\nB02\nBlue, 492.4 nm (S2A), 492.1 nm (S2B)\n10m\n\n\nB03\nGreen, 559.8 nm (S2A), 559.0 nm (S2B)\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Major-TOM/Core-S2L2A.",
+  "alternateName": [
+    "Major-TOM/Core-S2L2A"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Major TOM",
+    "url": "https://huggingface.co/Major-TOM"
+  },
+  "keywords": [
+    "cc-by-sa-4.0",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Tabular",
+    "Text",
+    "Geospatial",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2402.12095",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "earth-observation",
+    "remote-sensing",
+    "sentinel-2",
+    "multi-spectral",
+    "satellite",
+    "geospatial"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/Major-TOM/Core-S2L2A",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

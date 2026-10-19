@@ -1,0 +1,726 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/colin/PrimeVul/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-paired",
+      "name": "parquet-files-for-config-paired",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "paired/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "validation"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "colin/PrimeVul - 'default' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/idx",
+          "name": "default/idx",
+          "description": "Column 'idx' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/project",
+          "name": "default/project",
+          "description": "Column 'project' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "project"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/commit_id",
+          "name": "default/commit_id",
+          "description": "Column 'commit_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "commit_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/project_url",
+          "name": "default/project_url",
+          "description": "Column 'project_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "project_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/commit_url",
+          "name": "default/commit_url",
+          "description": "Column 'commit_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "commit_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/commit_message",
+          "name": "default/commit_message",
+          "description": "Column 'commit_message' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "commit_message"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/target",
+          "name": "default/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "target"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/func",
+          "name": "default/func",
+          "description": "Column 'func' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "func"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/func_hash",
+          "name": "default/func_hash",
+          "description": "Column 'func_hash' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "func_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/file_name",
+          "name": "default/file_name",
+          "description": "Column 'file_name' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "file_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/file_hash",
+          "name": "default/file_hash",
+          "description": "Column 'file_hash' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cwe",
+          "name": "default/cwe",
+          "description": "Column 'cwe' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cwe"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cve",
+          "name": "default/cve",
+          "description": "Column 'cve' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cve"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cve_desc",
+          "name": "default/cve_desc",
+          "description": "Column 'cve_desc' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cve_desc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/nvd_url",
+          "name": "default/nvd_url",
+          "description": "Column 'nvd_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "nvd_url"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "paired_splits/split_name"
+      },
+      "@id": "paired_splits",
+      "name": "paired_splits",
+      "description": "Splits for the paired config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "paired_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "paired_splits/split_name": "train"
+        },
+        {
+          "paired_splits/split_name": "validation"
+        },
+        {
+          "paired_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "paired",
+      "name": "paired",
+      "description": "colin/PrimeVul - 'paired' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "paired/split",
+          "name": "paired/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "paired/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "paired_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/idx",
+          "name": "paired/idx",
+          "description": "Column 'idx' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "idx"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/project",
+          "name": "paired/project",
+          "description": "Column 'project' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "project"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/commit_id",
+          "name": "paired/commit_id",
+          "description": "Column 'commit_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "commit_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/project_url",
+          "name": "paired/project_url",
+          "description": "Column 'project_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "project_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/commit_url",
+          "name": "paired/commit_url",
+          "description": "Column 'commit_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "commit_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/commit_message",
+          "name": "paired/commit_message",
+          "description": "Column 'commit_message' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "commit_message"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/target",
+          "name": "paired/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "target"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/func",
+          "name": "paired/func",
+          "description": "Column 'func' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "func"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/func_hash",
+          "name": "paired/func_hash",
+          "description": "Column 'func_hash' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "func_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/file_name",
+          "name": "paired/file_name",
+          "description": "Column 'file_name' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "file_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/file_hash",
+          "name": "paired/file_hash",
+          "description": "Column 'file_hash' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "file_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/cwe",
+          "name": "paired/cwe",
+          "description": "Column 'cwe' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "cwe"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/cve",
+          "name": "paired/cve",
+          "description": "Column 'cve' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "cve"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/cve_desc",
+          "name": "paired/cve_desc",
+          "description": "Column 'cve_desc' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "cve_desc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paired/nvd_url",
+          "name": "paired/nvd_url",
+          "description": "Column 'nvd_url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paired"
+            },
+            "extract": {
+              "column": "nvd_url"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "PrimeVul",
+  "description": "\n\t\n\t\t\n\t\tPrimeVul\n\t\n\nMirror of the PrimeVul dataset.\n",
+  "alternateName": [
+    "colin/PrimeVul"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Colin",
+    "url": "https://huggingface.co/colin"
+  },
+  "keywords": [
+    "mit",
+    "100K - 1M",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/colin/PrimeVul",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,465 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/liamdugan/raid/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-raid",
+      "name": "parquet-files-for-config-raid",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "raid/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-raid_test",
+      "name": "parquet-files-for-config-raid_test",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "raid_test/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "raid_splits/split_name"
+      },
+      "@id": "raid_splits",
+      "name": "raid_splits",
+      "description": "Splits for the raid config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raid_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "raid_splits/split_name": "train"
+        },
+        {
+          "raid_splits/split_name": "extra"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "raid",
+      "name": "raid",
+      "description": "liamdugan/raid - 'raid' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, extra",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raid/split",
+          "name": "raid/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "raid/(?:partial-)?(train|extra)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "raid_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/id",
+          "name": "raid/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/adv_source_id",
+          "name": "raid/adv_source_id",
+          "description": "Column 'adv_source_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "adv_source_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/source_id",
+          "name": "raid/source_id",
+          "description": "Column 'source_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/model",
+          "name": "raid/model",
+          "description": "Column 'model' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/decoding",
+          "name": "raid/decoding",
+          "description": "Column 'decoding' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "decoding"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/repetition_penalty",
+          "name": "raid/repetition_penalty",
+          "description": "Column 'repetition_penalty' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "repetition_penalty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/attack",
+          "name": "raid/attack",
+          "description": "Column 'attack' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "attack"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/domain",
+          "name": "raid/domain",
+          "description": "Column 'domain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/title",
+          "name": "raid/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/prompt",
+          "name": "raid/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid/generation",
+          "name": "raid/generation",
+          "description": "Column 'generation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid"
+            },
+            "extract": {
+              "column": "generation"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "raid_test_splits/split_name"
+      },
+      "@id": "raid_test_splits",
+      "name": "raid_test_splits",
+      "description": "Splits for the raid_test config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raid_test_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "raid_test_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "raid_test",
+      "name": "raid_test",
+      "description": "liamdugan/raid - 'raid_test' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "raid_test/split",
+          "name": "raid_test/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid_test"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "raid_test/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "raid_test_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid_test/id",
+          "name": "raid_test/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid_test"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "raid_test/generation",
+          "name": "raid_test/generation",
+          "description": "Column 'generation' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-raid_test"
+            },
+            "extract": {
+              "column": "generation"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "raid",
+  "description": "\n\ud83d\udea8 RAID: A Shared Benchmark for Robust Evaluation of Machine-Generated Text Detectors \ud83d\udea8\n\ud83c\udf10 Website, \ud83d\udda5\ufe0f Github, \ud83d\udcdd Paper\n\n\nRAID is the largest & most comprehensive dataset for evaluating AI-generated text detectors. \nIt contains over 10 million documents spanning 11 LLMs, 11 genres, 4 decoding strategies, and 12 adversarial attacks. \nIt is designed to be the go-to location for trustworthy third-party evaluation of both open-source and closed-source generated text detectors.\n\n\t\n\t\t\n\t\n\t\n\t\tLoad\u2026 See the full description on the dataset page: https://huggingface.co/datasets/liamdugan/raid.",
+  "alternateName": [
+    "liamdugan/raid",
+    "RAID"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Liam Dugan",
+    "url": "https://huggingface.co/liamdugan"
+  },
+  "keywords": [
+    "text-classification",
+    "English",
+    "Czech",
+    "German",
+    "mit",
+    "1M - 10M",
+    "csv",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2405.07940",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/liamdugan/raid",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

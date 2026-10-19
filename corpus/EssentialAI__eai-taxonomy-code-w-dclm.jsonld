@@ -1,0 +1,2678 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/EssentialAI/eai-taxonomy-code-w-dclm/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "EssentialAI/eai-taxonomy-code-w-dclm - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/url",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/source_domain",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "source_domain"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/snapshot_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "snapshot_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/warc_metadata",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/Content-Length",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "Content-Length"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/Content-Type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "Content-Type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Block-Digest",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Block-Digest"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Concurrent-To",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Concurrent-To"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Date",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Date"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-IP-Address",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-IP-Address"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Identified-Payload-Type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Identified-Payload-Type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Payload-Digest",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Payload-Digest"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Record-ID",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Record-ID"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Target-URI",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Target-URI"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Truncated",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Truncated"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/metadata/warc_metadata/WARC-Warcinfo-ID",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "warc_metadata"
+                      },
+                      {
+                        "jsonPath": "WARC-Warcinfo-ID"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/metadata/warc_info",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "warc_info"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/line_start_n_end_idx",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/line_start_n_end_idx/line_start_idx",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "line_start_n_end_idx"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/line_start_n_end_idx/line_end_idx",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "line_start_n_end_idx"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/quality_signals",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/quality_signals/red_pajama_v2",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/ccnet_original_length",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "ccnet_original_length"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/ccnet_original_nlines",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "ccnet_original_nlines"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_curly_bracket",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_curly_bracket"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_ldnoobw_words",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_ldnoobw_words"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_lorem_ipsum",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_lorem_ipsum"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_stop_word_fraction",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_stop_word_fraction"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_ut1_blacklist",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_ut1_blacklist"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_all_caps_words",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_all_caps_words"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_lines_end_with_ellipsis",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_lines_end_with_ellipsis"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_no_alph_words",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_no_alph_words"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_unique_words",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_unique_words"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_mean_word_length",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_mean_word_length"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_num_sentences",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_num_sentences"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_symbol_to_word_ratio",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_symbol_to_word_ratio"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_unigram_entropy",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_unigram_entropy"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_word_count",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_word_count"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_10grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_10grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_5grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_5grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_6grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_6grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_7grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_7grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_8grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_8grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_dupe_9grams",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_dupe_9grams"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_top_2gram",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_top_2gram"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_top_3gram",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_top_3gram"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_frac_chars_top_4gram",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_frac_chars_top_4gram"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_books_importance",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_books_importance"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_books_importance_length_correction",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_books_importance_length_correction"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_openwebtext_importance",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_openwebtext_importance"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_openwebtext_importance_length_correction",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_openwebtext_importance_length_correction"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_wikipedia_importance",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_wikipedia_importance"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/red_pajama_v2/rps_doc_wikipedia_importance_length_correction",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "red_pajama_v2"
+                      },
+                      {
+                        "jsonPath": "rps_doc_wikipedia_importance_length_correction"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/quality_signals/fasttext",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/dclm",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "dclm"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/english",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "english"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/fineweb_edu_approx",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "fineweb_edu_approx"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/eai_general_math",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "eai_general_math"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/eai_open_web_math",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "eai_open_web_math"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/quality_signals/fasttext/eai_web_code",
+                  "dataType": "cr:Float32",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "quality_signals"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "fasttext"
+                      },
+                      {
+                        "jsonPath": "eai_web_code"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/eai_taxonomy",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/free_decimal_correspondence",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/free_decimal_correspondence/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/free_decimal_correspondence/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "free_decimal_correspondence"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/free_decimal_correspondence/primary/labels",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/primary/labels/level_1",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "primary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_1"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/primary/labels/level_2",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "primary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_2"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/primary/labels/level_3",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "primary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_3"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "free_decimal_correspondence"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary/labels",
+                      "subField": [
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary/labels/level_1",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "secondary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_1"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary/labels/level_2",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "secondary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_2"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "@type": "cr:Field",
+                          "@id": "default/eai_taxonomy/free_decimal_correspondence/secondary/labels/level_3",
+                          "dataType": "sc:Text",
+                          "source": {
+                            "fileSet": {
+                              "@id": "parquet-files-for-config-default"
+                            },
+                            "extract": {
+                              "column": "eai_taxonomy"
+                            },
+                            "transform": [
+                              {
+                                "jsonPath": "free_decimal_correspondence"
+                              },
+                              {
+                                "jsonPath": "secondary"
+                              },
+                              {
+                                "jsonPath": "labels"
+                              },
+                              {
+                                "jsonPath": "level_3"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/bloom_cognitive_process",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/bloom_cognitive_process/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_cognitive_process/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_cognitive_process"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_cognitive_process/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_cognitive_process"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/bloom_cognitive_process/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_cognitive_process/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_cognitive_process"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_cognitive_process/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_cognitive_process"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/bloom_knowledge_domain",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/bloom_knowledge_domain/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_knowledge_domain/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_knowledge_domain"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_knowledge_domain/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_knowledge_domain"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/bloom_knowledge_domain/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_knowledge_domain/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_knowledge_domain"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/bloom_knowledge_domain/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "bloom_knowledge_domain"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/document_type_v1",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/document_type_v1/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v1/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v1"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v1/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v1"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/document_type_v1/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v1/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v1"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v1/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v1"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/extraction_artifacts",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/extraction_artifacts/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/extraction_artifacts/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "extraction_artifacts"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/extraction_artifacts/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "extraction_artifacts"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/extraction_artifacts/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/extraction_artifacts/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "extraction_artifacts"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/extraction_artifacts/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "extraction_artifacts"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/missing_content",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/missing_content/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/missing_content/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "missing_content"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/missing_content/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "missing_content"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/missing_content/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/missing_content/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "missing_content"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/missing_content/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "missing_content"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/document_type_v2",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/document_type_v2/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v2/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v2"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v2/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v2"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/document_type_v2/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v2/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v2"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/document_type_v2/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "document_type_v2"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/reasoning_depth",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/reasoning_depth/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/reasoning_depth/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "reasoning_depth"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/reasoning_depth/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "reasoning_depth"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/reasoning_depth/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/reasoning_depth/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "reasoning_depth"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/reasoning_depth/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "reasoning_depth"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/technical_correctness",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/technical_correctness/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/technical_correctness/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "technical_correctness"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/technical_correctness/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "technical_correctness"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/technical_correctness/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/technical_correctness/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "technical_correctness"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/technical_correctness/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "technical_correctness"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/eai_taxonomy/education_level",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/education_level/primary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/education_level/primary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "education_level"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/education_level/primary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "education_level"
+                          },
+                          {
+                            "jsonPath": "primary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/eai_taxonomy/education_level/secondary",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/education_level/secondary/code",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "education_level"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "code"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "default/eai_taxonomy/education_level/secondary/label",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-default"
+                        },
+                        "extract": {
+                          "column": "eai_taxonomy"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "education_level"
+                          },
+                          {
+                            "jsonPath": "secondary"
+                          },
+                          {
+                            "jsonPath": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/pid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "pid"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "eai-taxonomy-code-w-dclm",
+  "description": "\n\t\n\t\t\n\t\t\ud83d\udcbb EAI-Taxonomy Code w/ DCLM\n\t\n\n\ud83c\udfc6 Website  |  \ud83d\udda5\ufe0f Code  |  \ud83d\udcd6 Paper\nA  564 billion token dataset of high-quality code curated from web data using taxonomy-based filtering.\n\n\t\n\t\t\n\t\t\ud83c\udfaf Dataset Overview\n\t\n\nThis dataset is part of the Essential-Web project, which introduces a new paradigm for dataset curation using expressive metadata and simple semantic filters. Unlike traditional code datasets that require complex domain-specific pipelines, our approach leverages a 12-category taxonomy\u2026 See the full description on the dataset page: https://huggingface.co/datasets/EssentialAI/eai-taxonomy-code-w-dclm.",
+  "alternateName": [
+    "EssentialAI/eai-taxonomy-code-w-dclm"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Essential AI",
+    "url": "https://huggingface.co/EssentialAI"
+  },
+  "keywords": [
+    "text-generation",
+    "odc-by",
+    "100M - 1B",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2506.14111",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/EssentialAI/eai-taxonomy-code-w-dclm",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

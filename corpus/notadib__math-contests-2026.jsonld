@@ -1,0 +1,1069 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/notadib/math-contests-2026/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-all_problems",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "all_problems/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-all_solutions",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "all_solutions/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hard_hints",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hard_hints/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hard_outlines",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hard_outlines/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hard_problems",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hard_problems/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hard_solutions",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hard_solutions/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "all_problems_splits/split_name"
+      },
+      "@id": "all_problems_splits",
+      "name": "all_problems_splits",
+      "description": "Splits for the all_problems config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "all_problems_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "all_problems",
+      "description": "notadib/math-contests-2026 - 'all_problems' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "all_problems/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "all_problems_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/statement",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "statement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/country",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "country"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/difficulty_rating",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "difficulty_rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/difficulty_level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "difficulty_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_problems/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_problems"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "all_solutions_splits/split_name"
+      },
+      "@id": "all_solutions_splits",
+      "name": "all_solutions_splits",
+      "description": "Splits for the all_solutions config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "all_solutions_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "all_solutions",
+      "description": "notadib/math-contests-2026 - 'all_solutions' subset\n\nAdditional information:\n- 1 skipped column: reference_solutions",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_solutions"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "all_solutions/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "all_solutions_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_solutions"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/statement",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_solutions"
+            },
+            "extract": {
+              "column": "statement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_solutions"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/reference_answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_solutions"
+            },
+            "extract": {
+              "column": "reference_answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_solutions/reference_answer_audit",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "all_solutions/reference_answer_audit/status",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-all_solutions"
+                },
+                "extract": {
+                  "column": "reference_answer_audit"
+                },
+                "transform": {
+                  "jsonPath": "status"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "all_solutions/reference_answer_audit/note",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-all_solutions"
+                },
+                "extract": {
+                  "column": "reference_answer_audit"
+                },
+                "transform": {
+                  "jsonPath": "note"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hard_hints_splits/split_name"
+      },
+      "@id": "hard_hints_splits",
+      "name": "hard_hints_splits",
+      "description": "Splits for the hard_hints config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_hints_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hard_hints_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hard_hints",
+      "description": "notadib/math-contests-2026 - 'hard_hints' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_hints/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_hints"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hard_hints/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hard_hints_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_hints/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_hints"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_hints/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_hints"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_hints/hint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_hints"
+            },
+            "extract": {
+              "column": "hint"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hard_outlines_splits/split_name"
+      },
+      "@id": "hard_outlines_splits",
+      "name": "hard_outlines_splits",
+      "description": "Splits for the hard_outlines config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_outlines_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hard_outlines_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hard_outlines",
+      "description": "notadib/math-contests-2026 - 'hard_outlines' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_outlines/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_outlines"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hard_outlines/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hard_outlines_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_outlines/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_outlines"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_outlines/steps",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "hard_outlines/steps/step",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-hard_outlines"
+                },
+                "extract": {
+                  "column": "steps"
+                },
+                "transform": {
+                  "jsonPath": "step"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_outlines/note",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_outlines"
+            },
+            "extract": {
+              "column": "note"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hard_problems_splits/split_name"
+      },
+      "@id": "hard_problems_splits",
+      "name": "hard_problems_splits",
+      "description": "Splits for the hard_problems config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hard_problems_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hard_problems",
+      "description": "notadib/math-contests-2026 - 'hard_problems' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hard_problems/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hard_problems_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/statement",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "statement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/country",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "country"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/year",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/difficulty_level",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "difficulty_level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_problems/answer_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_problems"
+            },
+            "extract": {
+              "column": "answer_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hard_solutions_splits/split_name"
+      },
+      "@id": "hard_solutions_splits",
+      "name": "hard_solutions_splits",
+      "description": "Splits for the hard_solutions config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_solutions_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hard_solutions_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hard_solutions",
+      "description": "notadib/math-contests-2026 - 'hard_solutions' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hard_solutions/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_solutions"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hard_solutions/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hard_solutions_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_solutions/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_solutions"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_solutions/statement",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hard_solutions"
+            },
+            "extract": {
+              "column": "statement"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hard_solutions/reference_solutions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "hard_solutions/reference_solutions/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-hard_solutions"
+                },
+                "extract": {
+                  "column": "reference_solutions"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "hard_solutions/reference_solutions/solution",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-hard_solutions"
+                },
+                "extract": {
+                  "column": "reference_solutions"
+                },
+                "transform": {
+                  "jsonPath": "solution"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "hard_solutions/reference_solutions/source_url",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-hard_solutions"
+                },
+                "extract": {
+                  "column": "reference_solutions"
+                },
+                "transform": {
+                  "jsonPath": "source_url"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "hard_solutions/reference_solutions/note_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-hard_solutions"
+                },
+                "extract": {
+                  "column": "reference_solutions"
+                },
+                "transform": {
+                  "jsonPath": "note"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "math-contests-2026",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tMath Contests 2026 (\ud83d\udd17 notadib/math-contests-2026)\n\t\n\n197 problems from national olympiads and team-selection tests held January 2026 and onward \u2014 a held-out benchmark for math reasoning, sourced after the contests ran but before solutions were widely propagated, so they should not appear in any current LLM training data.\nExcluded: any contest held in 2025 \u2014 BMO Round 1 (Nov 2025), USA TSTST, USA TST (Dec 2025) and Bundeswettbewerb Mathematik (Dec 2025) \u2014 kept strictly to events\u2026 See the full description on the dataset page: https://huggingface.co/datasets/notadib/math-contests-2026.",
+  "alternateName": [
+    "notadib/math-contests-2026",
+    "Math Contests 2026"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Adib",
+    "url": "https://huggingface.co/notadib"
+  },
+  "keywords": [
+    "English",
+    "cc-by-4.0",
+    "< 1K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "mathematics",
+    "olympiad",
+    "reasoning",
+    "theorem-proving"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/notadib/math-contests-2026",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

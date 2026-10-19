@@ -1,0 +1,621 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ellendan/a-share-prices/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-main_data",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "main_data/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "main_data_splits/split_name"
+      },
+      "@id": "main_data_splits",
+      "name": "main_data_splits",
+      "description": "Splits for the main_data config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main_data_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "main_data_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "main_data",
+      "description": "ellendan/a-share-prices - 'main_data' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "main_data/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "main_data_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/code",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "code"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/open",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "open"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/high",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "high"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/low",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "low"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/close",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "close"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/prev_close",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "prev_close"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/quote_rate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "quote_rate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/volume",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "volume"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/turnover",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "turnover"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/high_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "high_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/low_limit",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "low_limit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/turnover_rate",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "turnover_rate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/turnover_rate_f",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "turnover_rate_f"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/volume_ratio",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "volume_ratio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/pe",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "pe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/pe_ttm",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "pe_ttm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/pb",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "pb"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/ps",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "ps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/ps_ttm",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "ps_ttm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/dv_ratio",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "dv_ratio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/dv_ttm",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "dv_ttm"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/total_share",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "total_share"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/float_share",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "float_share"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/free_share",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "free_share"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/total_mv",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "total_mv"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/circ_mv",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "circ_mv"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/area",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "area"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/industry",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "industry"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/market",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "market"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/exchange",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "exchange"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main_data/list_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main_data"
+            },
+            "extract": {
+              "column": "list_date"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "a-share-prices",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for a-share-prices\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThis is a daily candlestick dataset of A-share \u4e3b\u677f market, covering the period Since January 1, 2005.\nIt is primarily intended for historical market data research and does not guarantee the frequency of updates for new data.\nYou can see the latest updated date in the file .last_update_date.\nIt consists in two files all-prices.csv and calendar.csv.\n\nall-prices.csv is the primary data file(Attention: the prices are \u4e0d\u590d\u6743\u4ef7).\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ellendan/a-share-prices.",
+  "alternateName": [
+    "ellendan/a-share-prices"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "EllenDan",
+    "url": "https://huggingface.co/ellendan"
+  },
+  "keywords": [
+    "mit",
+    "10M - 100M",
+    "csv",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/ellendan/a-share-prices",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

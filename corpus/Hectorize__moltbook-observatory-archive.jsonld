@@ -1,0 +1,1115 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Hectorize/moltbook-observatory-archive/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-posts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "posts/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-agents",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "agents/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-comments",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "comments/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-snapshots",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "snapshots/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-submolts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "submolts/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-word_frequency",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "word_frequency/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "posts_splits/split_name"
+      },
+      "@id": "posts_splits",
+      "name": "posts_splits",
+      "description": "Splits for the posts config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "posts_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "posts_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "posts",
+      "description": "Hectorize/moltbook-observatory-archive - 'posts' subset\n\nAdditional information:\n- 2 skipped columns: created_at, fetched_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "posts/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "posts/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "posts_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/agent_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "agent_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/agent_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "agent_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/submolt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "submolt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/content",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/comment_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "comment_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/is_pinned",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "is_pinned"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "posts/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-posts"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "agents_splits/split_name"
+      },
+      "@id": "agents_splits",
+      "name": "agents_splits",
+      "description": "Splits for the agents config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "agents_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "agents_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "agents",
+      "description": "Hectorize/moltbook-observatory-archive - 'agents' subset\n\nAdditional information:\n- 3 skipped columns: first_seen_at, last_seen_at, created_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "agents/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "agents/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "agents_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/karma",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "karma"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/follower_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "follower_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/following_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "following_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/is_claimed",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "is_claimed"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/owner_x_handle",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "owner_x_handle"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/avatar_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "avatar_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "agents/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-agents"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "comments_splits/split_name"
+      },
+      "@id": "comments_splits",
+      "name": "comments_splits",
+      "description": "Splits for the comments config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "comments_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "comments_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "comments",
+      "description": "Hectorize/moltbook-observatory-archive - 'comments' subset\n\nAdditional information:\n- 2 skipped columns: created_at, fetched_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "comments/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "comments/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "comments_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/post_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "post_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/agent_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "agent_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/agent_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "agent_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/parent_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "parent_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/content",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "content"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/score",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "score"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "comments/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-comments"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "snapshots_splits/split_name"
+      },
+      "@id": "snapshots_splits",
+      "name": "snapshots_splits",
+      "description": "Splits for the snapshots config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "snapshots_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "snapshots",
+      "description": "Hectorize/moltbook-observatory-archive - 'snapshots' subset\n\nAdditional information:\n- 1 skipped column: timestamp",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "snapshots/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "snapshots_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/total_agents",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "total_agents"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/total_posts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "total_posts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/total_comments",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "total_comments"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/active_agents_24h",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "active_agents_24h"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/avg_sentiment",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "avg_sentiment"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/top_words",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "top_words"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "snapshots/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-snapshots"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "submolts_splits/split_name"
+      },
+      "@id": "submolts_splits",
+      "name": "submolts_splits",
+      "description": "Splits for the submolts config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "submolts_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "submolts_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "submolts",
+      "description": "Hectorize/moltbook-observatory-archive - 'submolts' subset\n\nAdditional information:\n- 2 skipped columns: created_at, first_seen_at",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "submolts/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "submolts_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/display_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "display_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/subscriber_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "subscriber_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/post_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "post_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/avatar_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "avatar_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/banner_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "banner_url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "submolts/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-submolts"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "word_frequency_splits/split_name"
+      },
+      "@id": "word_frequency_splits",
+      "name": "word_frequency_splits",
+      "description": "Splits for the word_frequency config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "word_frequency_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "word_frequency_splits/split_name": "archive"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "word_frequency",
+      "description": "Hectorize/moltbook-observatory-archive - 'word_frequency' subset\n\nAdditional information:\n- 1 skipped column: hour",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "word_frequency/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-word_frequency"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "word_frequency/(?:partial-)?(archive)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "word_frequency_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "word_frequency/word",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-word_frequency"
+            },
+            "extract": {
+              "column": "word"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "word_frequency/count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-word_frequency"
+            },
+            "extract": {
+              "column": "count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "word_frequency/dump_date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-word_frequency"
+            },
+            "extract": {
+              "column": "dump_date"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "moltbook-observatory-archive",
+  "description": "\n\t\n\t\t\n\t\tObservatory Dataset\n\t\n\nThis dataset is an incremental export of a SQLite observatory database, published as\ndate-partitioned Parquet files for efficient browsing and querying on Hugging Face. \nFor example, you can filter data by wildcards on date:\nds = load_dataset(\n    \"SimulaMet/moltbook-observatory-archive\",\n    \"posts\",\n    data_files=\"data/posts/2026-01-2*.parquet\",  # 20\u201329\n    split=\"train\"\n)\n\nEach SQLite table is exposed as a separate dataset subset. Use dropdown above the\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Hectorize/moltbook-observatory-archive.",
+  "alternateName": [
+    "Hectorize/moltbook-observatory-archive",
+    "moltbook-observatory-archive"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Bailly",
+    "url": "https://huggingface.co/Hectorize"
+  },
+  "keywords": [
+    "English",
+    "mit",
+    "1M - 10M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "moltbook",
+    "archive"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/Hectorize/moltbook-observatory-archive",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

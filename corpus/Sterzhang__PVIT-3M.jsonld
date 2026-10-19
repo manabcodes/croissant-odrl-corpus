@@ -1,0 +1,262 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Sterzhang/PVIT-3M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-PVIT-3M",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "PVIT-3M/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "PVIT-3M_splits/split_name"
+      },
+      "@id": "PVIT-3M_splits",
+      "name": "PVIT-3M_splits",
+      "description": "Splits for the PVIT-3M config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "PVIT-3M_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "PVIT-3M_splits/split_name": "all_data"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "PVIT-3M",
+      "description": "Sterzhang/PVIT-3M - 'PVIT-3M' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "PVIT-3M/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PVIT-3M"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "PVIT\\-3M/(?:partial-)?(all_data)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "PVIT-3M_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PVIT-3M/image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PVIT-3M"
+            },
+            "extract": {
+              "column": "image"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PVIT-3M/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "PVIT-3M/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PVIT-3M"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "PVIT-3M/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PVIT-3M"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PVIT-3M/type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PVIT-3M"
+            },
+            "extract": {
+              "column": "type"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "PVIT-3M",
+  "description": "\n\t\n\t\t\n\t\tPVIT-3M\n\t\n\nThe paper titled \"Personalized Visual Instruction Tuning\" introduces a novel dataset called PVIT-3M. This dataset is specifically designed for tuning MLLMs in the context of personalized visual instruction tasks. The dataset consists of 3 million image-text pairs that aim to improve MLLMs' abilities to generate responses based on personalized visual inputs, making them more tailored and adaptable to individual user needs and preferences.\nHere\u2019s the PVIT-3M statistics:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Sterzhang/PVIT-3M.",
+  "alternateName": [
+    "Sterzhang/PVIT-3M",
+    "personalized visual instruction tuning"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jianshu Zhang",
+    "url": "https://huggingface.co/Sterzhang"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "image-text-to-text",
+    "English",
+    "apache-2.0",
+    "1M - 10M",
+    "json",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2410.07113",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "multi-modal",
+    "personalized"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/Sterzhang/PVIT-3M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

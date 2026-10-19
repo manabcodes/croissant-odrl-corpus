@@ -1,0 +1,792 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/open-r1/codeforces-submissions/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-selected_accepted",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "selected_accepted/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-selected_incorrect",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "selected_incorrect/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "open-r1/codeforces-submissions - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/submission_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "submission_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/contestId",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "contestId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem_index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/programmingLanguage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "programmingLanguage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/verdict",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "verdict"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/testset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "testset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/passedTestCount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "passedTestCount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/timeConsumedMillis",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "timeConsumedMillis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/memoryConsumedBytes",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "memoryConsumedBytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/creationTimeSeconds",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "creationTimeSeconds"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "selected_accepted_splits/split_name"
+      },
+      "@id": "selected_accepted_splits",
+      "name": "selected_accepted_splits",
+      "description": "Splits for the selected_accepted config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "selected_accepted_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "selected_accepted",
+      "description": "open-r1/codeforces-submissions - 'selected_accepted' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "selected_accepted/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "selected_accepted_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/submission_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "submission_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/contestId",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "contestId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/problem_index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "problem_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/programmingLanguage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "programmingLanguage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/verdict",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "verdict"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/testset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "testset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/passedTestCount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "passedTestCount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/timeConsumedMillis",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "timeConsumedMillis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/memoryConsumedBytes",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "memoryConsumedBytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/creationTimeSeconds",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "creationTimeSeconds"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_accepted/og_source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_accepted"
+            },
+            "extract": {
+              "column": "og_source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "selected_incorrect_splits/split_name"
+      },
+      "@id": "selected_incorrect_splits",
+      "name": "selected_incorrect_splits",
+      "description": "Splits for the selected_incorrect config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "selected_incorrect_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "selected_incorrect",
+      "description": "open-r1/codeforces-submissions - 'selected_incorrect' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "selected_incorrect/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "selected_incorrect_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/submission_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "submission_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/contestId",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "contestId"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/problem_index",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "problem_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/programmingLanguage",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "programmingLanguage"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/verdict",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "verdict"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/testset",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "testset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/passedTestCount",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "passedTestCount"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/timeConsumedMillis",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "timeConsumedMillis"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/memoryConsumedBytes",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "memoryConsumedBytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/creationTimeSeconds",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "creationTimeSeconds"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "selected_incorrect/problem_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-selected_incorrect"
+            },
+            "extract": {
+              "column": "problem_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "codeforces-submissions",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for CodeForces-Submissions\n\t\n\n\n\t\n\t\t\n\t\tDataset description\n\t\n\nCodeForces is one of the most popular websites among competitive programmers, hosting regular contests where participants must solve challenging algorithmic optimization problems. The challenging nature of these problems makes them an interesting dataset to improve and test models\u2019 code reasoning capabilities.\nThis dataset includes millions of real user (human) code submissions to the CodeForces website.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/open-r1/codeforces-submissions.",
+  "alternateName": [
+    "open-r1/codeforces-submissions",
+    "CodeForces Submissions"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Open R1",
+    "url": "https://huggingface.co/open-r1"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/open-r1/codeforces-submissions",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

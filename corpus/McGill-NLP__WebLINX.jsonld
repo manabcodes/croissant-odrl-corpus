@@ -1,0 +1,540 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/McGill-NLP/WebLINX/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-chat",
+      "name": "parquet-files-for-config-chat",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "chat/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-reranking",
+      "name": "parquet-files-for-config-reranking",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "reranking/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "chat_splits/split_name"
+      },
+      "@id": "chat_splits",
+      "name": "chat_splits",
+      "description": "Splits for the chat config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "chat_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "chat_splits/split_name": "train"
+        },
+        {
+          "chat_splits/split_name": "validation"
+        },
+        {
+          "chat_splits/split_name": "test"
+        },
+        {
+          "chat_splits/split_name": "test_iid"
+        },
+        {
+          "chat_splits/split_name": "test_geo"
+        },
+        {
+          "chat_splits/split_name": "test_vis"
+        },
+        {
+          "chat_splits/split_name": "test_cat"
+        },
+        {
+          "chat_splits/split_name": "test_web"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "chat",
+      "name": "chat",
+      "description": "McGill-NLP/WebLINX - 'chat' subset\n\nAdditional information:\n- 8 splits: train, validation, test, test_iid, test_geo, test_vis, test_cat, test_web",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "chat/split",
+          "name": "chat/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "chat/(?:partial-)?(train|validation|test|test_iid|test_geo|test_vis|test_cat|test_web)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "chat_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/demo",
+          "name": "chat/demo",
+          "description": "Column 'demo' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "demo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/turn",
+          "name": "chat/turn",
+          "description": "Column 'turn' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "turn"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/action",
+          "name": "chat/action",
+          "description": "Column 'action' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "action"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/action_history",
+          "name": "chat/action_history",
+          "description": "Column 'action_history' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "action_history"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/utterances",
+          "name": "chat/utterances",
+          "description": "Column 'utterances' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "utterances"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/candidates",
+          "name": "chat/candidates",
+          "description": "Column 'candidates' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "candidates"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/clean_html",
+          "name": "chat/clean_html",
+          "description": "Column 'clean_html' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "clean_html"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "chat/viewport",
+          "name": "chat/viewport",
+          "description": "Column 'viewport' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-chat"
+            },
+            "extract": {
+              "column": "viewport"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "reranking_splits/split_name"
+      },
+      "@id": "reranking_splits",
+      "name": "reranking_splits",
+      "description": "Splits for the reranking config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reranking_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "reranking_splits/split_name": "validation"
+        },
+        {
+          "reranking_splits/split_name": "test"
+        },
+        {
+          "reranking_splits/split_name": "test_iid"
+        },
+        {
+          "reranking_splits/split_name": "test_geo"
+        },
+        {
+          "reranking_splits/split_name": "test_vis"
+        },
+        {
+          "reranking_splits/split_name": "test_web"
+        },
+        {
+          "reranking_splits/split_name": "test_cat"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "reranking",
+      "name": "reranking",
+      "description": "McGill-NLP/WebLINX - 'reranking' subset\n\nAdditional information:\n- 7 splits: validation, test, test_iid, test_geo, test_vis, test_web, test_cat",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/split",
+          "name": "reranking/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reranking"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "reranking/(?:partial-)?(validation|test|test_iid|test_geo|test_vis|test_web|test_cat)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "reranking_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/query_id",
+          "name": "reranking/query_id",
+          "description": "Column 'query_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reranking"
+            },
+            "extract": {
+              "column": "query_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/query",
+          "name": "reranking/query",
+          "description": "Column 'query' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reranking"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/positive",
+          "name": "reranking/positive",
+          "description": "Column 'positive' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reranking"
+            },
+            "extract": {
+              "column": "positive"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/negative",
+          "name": "reranking/negative",
+          "description": "Column 'negative' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-reranking"
+            },
+            "extract": {
+              "column": "negative"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "reranking/query_dict",
+          "name": "reranking/query_dict",
+          "description": "Column 'query_dict' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "reranking/query_dict/role",
+              "name": "reranking/query_dict/role",
+              "description": "Column 'query_dict' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-reranking"
+                },
+                "extract": {
+                  "column": "query_dict"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "reranking/query_dict/content",
+              "name": "reranking/query_dict/content",
+              "description": "Column 'query_dict' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-reranking"
+                },
+                "extract": {
+                  "column": "query_dict"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "WebLINX",
+  "description": "\n  WebLINX: Real-World Website Navigation with Multi-Turn Dialogue\n  Xing Han L\u00f9*, Zden\u011bk Kasner*, Siva Reddy\n\n\n\n\n\n\n\t\n\t\t\n\ud83d\udcbeCode\n\ud83d\udcc4Paper\n\ud83c\udf10Website\n\ud83d\udcd3Colab\n\n\n\t\t\n\ud83e\udd16Models\ud83d\udcbbExplorer\n\ud83d\udc26Tweets\n\ud83c\udfc6Leaderboard\n\n\n\t\n\n\n    \n    Your browser does not support the video tag.\n\n\n\n\n[!IMPORTANT]\nWebLINX is now available as a benchmark through BrowserGym, allowing you to access demonstration steps in the same way you would access a web agent environment like WebArena or MiniWoB. This also allows you to run agents\u2026 See the full description on the dataset page: https://huggingface.co/datasets/McGill-NLP/WebLINX.",
+  "alternateName": [
+    "McGill-NLP/WebLINX",
+    "weblinx"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "McGill NLP Group",
+    "url": "https://huggingface.co/McGill-NLP"
+  },
+  "keywords": [
+    "image-to-text",
+    "text-generation",
+    "sentence-similarity",
+    "English",
+    "cc-by-nc-sa-4.0",
+    "10K - 100K",
+    "Text",
+    "arxiv:2402.05930",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "image-to-text",
+    "vision",
+    "convAI"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/McGill-NLP/WebLINX",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

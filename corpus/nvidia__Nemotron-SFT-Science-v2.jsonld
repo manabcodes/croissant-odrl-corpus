@@ -1,0 +1,1184 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/Nemotron-SFT-Science-v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-rqa",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "rqa/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-so",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "so/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-syn_mcq",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "syn_mcq/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-vendor",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "vendor/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "rqa_splits/split_name"
+      },
+      "@id": "rqa_splits",
+      "name": "rqa_splits",
+      "description": "Splits for the rqa config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "rqa_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "rqa_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "rqa",
+      "description": "nvidia/Nemotron-SFT-Science-v2 - 'rqa' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: messages",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rqa"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "rqa/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "rqa_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/uuid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rqa"
+            },
+            "extract": {
+              "column": "uuid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/tools",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/tools/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-rqa"
+                },
+                "extract": {
+                  "column": "tools"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/tools/function",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "rqa/tools/function/name",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-rqa"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "rqa/tools/function/description",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-rqa"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "rqa/tools/function/parameters",
+                  "subField": [
+                    null,
+                    {
+                      "@type": "cr:Field",
+                      "@id": "rqa/tools/function/parameters/required",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-rqa"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "required"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "rqa/tools/function/parameters/type_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-rqa"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rqa"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/used_in",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-rqa"
+            },
+            "extract": {
+              "column": "used_in"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "rqa/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/metadata/topic",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-rqa"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "topic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/metadata/subtopic",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-rqa"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "subtopic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/metadata/question_format",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-rqa"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "rqa/metadata/generation_model",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-rqa"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "generation_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "so_splits/split_name"
+      },
+      "@id": "so_splits",
+      "name": "so_splits",
+      "description": "Splits for the so config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "so_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "so_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "so",
+      "description": "nvidia/Nemotron-SFT-Science-v2 - 'so' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: messages",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "so/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-so"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "so/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "so_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "so/uuid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-so"
+            },
+            "extract": {
+              "column": "uuid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "so/tools",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "so/tools/type_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "tools"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/tools/function_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "so/tools/function_0/name_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-so"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "name"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "so/tools/function_0/description_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-so"
+                    },
+                    "extract": {
+                      "column": "tools"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "function"
+                      },
+                      {
+                        "jsonPath": "description"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "so/tools/function_0/parameters_0",
+                  "subField": [
+                    null,
+                    {
+                      "@type": "cr:Field",
+                      "@id": "so/tools/function_0/parameters_0/required_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-so"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "required"
+                          }
+                        ]
+                      },
+                      "isArray": true,
+                      "arrayShape": "-1"
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "so/tools/function_0/parameters_0/type_0_0_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-so"
+                        },
+                        "extract": {
+                          "column": "tools"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "parameters"
+                          },
+                          {
+                            "jsonPath": "type"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "so/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-so"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "so/used_in",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-so"
+            },
+            "extract": {
+              "column": "used_in"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "so/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/topic_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "topic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/subtopic_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "subtopic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/question_format_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/generation_model_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "generation_model"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/QuestionLink",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "QuestionLink"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/QuestionOwnerLink",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "QuestionOwnerLink"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/QuestionOwnerName",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "QuestionOwnerName"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/AnswerOwnerLink",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "AnswerOwnerLink"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "so/metadata/AnswerOwnerName",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-so"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "AnswerOwnerName"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "syn_mcq_splits/split_name"
+      },
+      "@id": "syn_mcq_splits",
+      "name": "syn_mcq_splits",
+      "description": "Splits for the syn_mcq config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "syn_mcq_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "syn_mcq",
+      "description": "nvidia/Nemotron-SFT-Science-v2 - 'syn_mcq' subset (first 5GB)\n\nAdditional information:\n- 2 skipped columns: messages, tools",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-syn_mcq"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "syn_mcq/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "syn_mcq_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq/uuid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-syn_mcq"
+            },
+            "extract": {
+              "column": "uuid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-syn_mcq"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq/used_in",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-syn_mcq"
+            },
+            "extract": {
+              "column": "used_in"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "syn_mcq/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "syn_mcq/metadata/topic_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-syn_mcq"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "topic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "syn_mcq/metadata/subtopic_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-syn_mcq"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "subtopic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "syn_mcq/metadata/question_format_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-syn_mcq"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "syn_mcq/metadata/generation_model_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-syn_mcq"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "generation_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "vendor_splits/split_name"
+      },
+      "@id": "vendor_splits",
+      "name": "vendor_splits",
+      "description": "Splits for the vendor config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "vendor_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "vendor_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "vendor",
+      "description": "nvidia/Nemotron-SFT-Science-v2 - 'vendor' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: messages",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vendor"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "vendor/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "vendor_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/uuid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vendor"
+            },
+            "extract": {
+              "column": "uuid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vendor"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vendor"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/used_in",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-vendor"
+            },
+            "extract": {
+              "column": "used_in"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "vendor/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "vendor/metadata/topic_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-vendor"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "topic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "vendor/metadata/subtopic_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-vendor"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "subtopic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "vendor/metadata/question_format_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-vendor"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "question_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "vendor/metadata/generation_model_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-vendor"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "generation_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Nemotron-SFT-Science-v2",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Description:\n\t\n\nNemotron-Science-v2 is a science reasoning dataset with synthetic (synthetic MCQ, RQA) and non-synthetic vendor problems and LLM-generated solutions. It comprises three domains (Physics, Biology, and Chemistry), two question formats (multiple-choice questions [MCQ] and open questions [OpenQ]), and three generation setups: chain-of-thought (CoT) reasoning without tools, Python tool usage, and search tools usage with the Tavily API.\nThe solutions were\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/Nemotron-SFT-Science-v2.",
+  "alternateName": [
+    "nvidia/Nemotron-SFT-Science-v2",
+    "Nemotron Science Data"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "text-generation",
+    "English",
+    "cc-by-sa-4.0",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "physics",
+    "biology",
+    "chemistry",
+    "stem",
+    "science",
+    "text",
+    "blend",
+    "Nemotron_3_Ultra",
+    "supervised-fine-tuning"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/Nemotron-SFT-Science-v2",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

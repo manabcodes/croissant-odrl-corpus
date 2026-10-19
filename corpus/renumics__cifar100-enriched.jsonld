@@ -1,0 +1,413 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/renumics/cifar100-enriched/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-enriched",
+      "name": "parquet-files-for-config-enriched",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "enriched/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "enriched_splits/split_name"
+      },
+      "@id": "enriched_splits",
+      "name": "enriched_splits",
+      "description": "Splits for the enriched config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "enriched_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "enriched_splits/split_name": "train"
+        },
+        {
+          "enriched_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "enriched",
+      "name": "enriched",
+      "description": "renumics/cifar100-enriched - 'enriched' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/split",
+          "name": "enriched/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "enriched/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "enriched_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/image",
+          "name": "enriched/image",
+          "description": "Column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/full_image",
+          "name": "enriched/full_image",
+          "description": "Image column 'full_image' from the Hugging Face parquet file.",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "full_image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/fine_label",
+          "name": "enriched/fine_label",
+          "description": "ClassLabel column 'fine_label' from the Hugging Face parquet file.\nLabels:\napple (0), aquarium_fish (1), baby (2), bear (3), beaver (4), bed (5), bee (6), beetle (7), bicycle (8), bottle (9), bowl (10), boy (11), bridge (12), bus (13), butterfly (14), camel (15), can (16), castle (17), caterpillar (18), cattle (19), chair (20), chimpanzee (21), clock (22), cloud (23), cockroach (24), couch (25), cra (26), crocodile (27), cup (28), dinosaur (29), dolphin (30), elephant (31), flatfish (32), forest (33), fox (34), girl (35), hamster (36), house (37), kangaroo (38), keyboard (39), lamp (40), lawn_mower (41), leopard (42), lion (43), lizard (44), lobster (45), man (46), maple_tree (47), motorcycle (48), mountain (49), mouse (50), mushroom (51), oak_tree (52), orange (53), orchid (54), otter (55), palm_tree (56), pear (57), pickup_truck (58), pine_tree (59), plain (60), plate (61), poppy (62), porcupine (63), possum (64), rabbit (65), raccoon (66), ray (67), road (68), rocket (69), rose (70), sea (71), seal (72), shark (73), shrew (74), skunk (75), skyscraper (76), snail (77), snake (78), spider (79), squirrel (80), streetcar (81), sunflower (82), sweet_pepper (83), table (84), tank (85), telephone (86), television (87), tiger (88), tractor (89), train (90), trout (91), tulip (92), turtle (93), wardrobe (94), whale (95), willow_tree (96), wolf (97), woman (98), worm (99)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "fine_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/coarse_label",
+          "name": "enriched/coarse_label",
+          "description": "ClassLabel column 'coarse_label' from the Hugging Face parquet file.\nLabels:\naquatic_mammals (0), fish (1), flowers (2), food_containers (3), fruit_and_vegetables (4), household_electrical_devices (5), household_furniture (6), insects (7), large_carnivores (8), large_man-made_outdoor_things (9), large_natural_outdoor_scenes (10), large_omnivores_and_herbivores (11), medium_mammals (12), non-insect_invertebrates (13), people (14), reptiles (15), small_mammals (16), trees (17), vehicles_1 (18), vehicles_2 (19)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "coarse_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/fine_label_str",
+          "name": "enriched/fine_label_str",
+          "description": "Column 'fine_label_str' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "fine_label_str"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/coarse_label_str",
+          "name": "enriched/coarse_label_str",
+          "description": "Column 'coarse_label_str' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "coarse_label_str"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/fine_label_prediction",
+          "name": "enriched/fine_label_prediction",
+          "description": "ClassLabel column 'fine_label_prediction' from the Hugging Face parquet file.\nLabels:\napple (0), aquarium_fish (1), baby (2), bear (3), beaver (4), bed (5), bee (6), beetle (7), bicycle (8), bottle (9), bowl (10), boy (11), bridge (12), bus (13), butterfly (14), camel (15), can (16), castle (17), caterpillar (18), cattle (19), chair (20), chimpanzee (21), clock (22), cloud (23), cockroach (24), couch (25), cra (26), crocodile (27), cup (28), dinosaur (29), dolphin (30), elephant (31), flatfish (32), forest (33), fox (34), girl (35), hamster (36), house (37), kangaroo (38), keyboard (39), lamp (40), lawn_mower (41), leopard (42), lion (43), lizard (44), lobster (45), man (46), maple_tree (47), motorcycle (48), mountain (49), mouse (50), mushroom (51), oak_tree (52), orange (53), orchid (54), otter (55), palm_tree (56), pear (57), pickup_truck (58), pine_tree (59), plain (60), plate (61), poppy (62), porcupine (63), possum (64), rabbit (65), raccoon (66), ray (67), road (68), rocket (69), rose (70), sea (71), seal (72), shark (73), shrew (74), skunk (75), skyscraper (76), snail (77), snake (78), spider (79), squirrel (80), streetcar (81), sunflower (82), sweet_pepper (83), table (84), tank (85), telephone (86), television (87), tiger (88), tractor (89), train (90), trout (91), tulip (92), turtle (93), wardrobe (94), whale (95), willow_tree (96), wolf (97), woman (98), worm (99)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "fine_label_prediction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/fine_label_prediction_str",
+          "name": "enriched/fine_label_prediction_str",
+          "description": "Column 'fine_label_prediction_str' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "fine_label_prediction_str"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/fine_label_prediction_error",
+          "name": "enriched/fine_label_prediction_error",
+          "description": "Column 'fine_label_prediction_error' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "fine_label_prediction_error"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/split",
+          "name": "enriched/split",
+          "description": "Column 'split' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/embedding",
+          "name": "enriched/embedding",
+          "description": "Column 'embedding' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "embedding"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/probabilities",
+          "name": "enriched/probabilities",
+          "description": "Column 'probabilities' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "probabilities"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "enriched/embedding_reduced",
+          "name": "enriched/embedding_reduced",
+          "description": "Column 'embedding_reduced' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-enriched"
+            },
+            "extract": {
+              "column": "embedding_reduced"
+            }
+          },
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "cifar100-enriched",
+  "description": "The CIFAR-100 dataset consists of 60000 32x32 colour images in 100 classes, with 600 images\nper class. There are 500 training images and 100 testing images per class. There are 50000 training images and 10000 test images. The 100 classes are grouped into 20 superclasses.\nThere are two labels per image - fine label (actual class) and coarse label (superclass).",
+  "alternateName": [
+    "renumics/cifar100-enriched",
+    "CIFAR-100"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Renumics",
+    "url": "https://huggingface.co/renumics"
+  },
+  "keywords": [
+    "image-classification",
+    "crowdsourced",
+    "found",
+    "monolingual",
+    "extended|other-80-Million-Tiny-Images",
+    "English",
+    "mit",
+    "10K - 100K",
+    "Image",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "image classification",
+    "cifar-100",
+    "cifar-100-enriched",
+    "embeddings",
+    "enhanced",
+    "spotlight",
+    "renumics"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "sameAs": "https://renumics.com/?hf-dataset-card=cifar100-enriched",
+  "url": "https://huggingface.co/datasets/renumics/cifar100-enriched",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

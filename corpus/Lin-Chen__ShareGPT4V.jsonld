@@ -1,0 +1,416 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Lin-Chen/ShareGPT4V/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ShareGPT4V",
+      "name": "parquet-files-for-config-ShareGPT4V",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ShareGPT4V/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ShareGPT4V-PT",
+      "name": "parquet-files-for-config-ShareGPT4V-PT",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ShareGPT4V-PT/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ShareGPT4V_splits/split_name"
+      },
+      "@id": "ShareGPT4V_splits",
+      "name": "ShareGPT4V_splits",
+      "description": "Splits for the ShareGPT4V config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ShareGPT4V_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ShareGPT4V",
+      "name": "ShareGPT4V",
+      "description": "Lin-Chen/ShareGPT4V - 'ShareGPT4V' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V/split",
+          "name": "ShareGPT4V/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ShareGPT4V/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ShareGPT4V_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V/id",
+          "name": "ShareGPT4V/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V/image",
+          "name": "ShareGPT4V/image",
+          "description": "Column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V"
+            },
+            "extract": {
+              "column": "image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V/conversations",
+          "name": "ShareGPT4V/conversations",
+          "description": "Column 'conversations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4V/conversations/from",
+              "name": "ShareGPT4V/conversations/from",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4V"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4V/conversations/value",
+              "name": "ShareGPT4V/conversations/value",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4V"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ShareGPT4V-PT_splits/split_name"
+      },
+      "@id": "ShareGPT4V-PT_splits",
+      "name": "ShareGPT4V-PT_splits",
+      "description": "Splits for the ShareGPT4V-PT config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V-PT_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ShareGPT4V-PT_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ShareGPT4V-PT",
+      "name": "ShareGPT4V-PT",
+      "description": "Lin-Chen/ShareGPT4V - 'ShareGPT4V-PT' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V-PT/split",
+          "name": "ShareGPT4V-PT/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V-PT"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ShareGPT4V\\-PT/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ShareGPT4V-PT_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V-PT/id",
+          "name": "ShareGPT4V-PT/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V-PT"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V-PT/image",
+          "name": "ShareGPT4V-PT/image",
+          "description": "Column 'image' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4V-PT"
+            },
+            "extract": {
+              "column": "image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4V-PT/conversations",
+          "name": "ShareGPT4V-PT/conversations",
+          "description": "Column 'conversations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4V-PT/conversations/from",
+              "name": "ShareGPT4V-PT/conversations/from",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4V-PT"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4V-PT/conversations/value",
+              "name": "ShareGPT4V-PT/conversations/value",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4V-PT"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ShareGPT4V",
+  "description": "\n\t\n\t\t\n\t\tNews\n\t\n\n[2024/5/8] We released ShareGPT4Video, a large-scale video-caption dataset, with 40K captions annotated by GPT4V and 4.8M captions annotated by our ShareCaptioner-Video. The total videos last with 300 hours and 3000 hours separately!\n\n\t\n\t\t\n\t\tShareGPT4V 1.2M Dataset Card\n\t\n\n\n\t\n\t\t\n\t\tDataset details\n\t\n\nDataset type:\nShareGPT4V Captions 1.2M is a set of GPT4-Vision-powered multi-modal captions data.\nIt is constructed to enhance modality alignment and fine-grained visual concept\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Lin-Chen/ShareGPT4V.",
+  "alternateName": [
+    "Lin-Chen/ShareGPT4V",
+    "ShareGPT4V Captions 1.2M Dataset Card"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Lin Chen",
+    "url": "https://huggingface.co/Lin-Chen"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "question-answering",
+    "English",
+    "cc-by-nc-4.0",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2311.12793",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/Lin-Chen/ShareGPT4V",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

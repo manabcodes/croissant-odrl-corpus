@@ -1,0 +1,616 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/McGill-NLP/stereoset/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-intersentence",
+      "name": "parquet-files-for-config-intersentence",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "intersentence/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-intrasentence",
+      "name": "parquet-files-for-config-intrasentence",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "intrasentence/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "intersentence_splits/split_name"
+      },
+      "@id": "intersentence_splits",
+      "name": "intersentence_splits",
+      "description": "Splits for the intersentence config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "intersentence_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "intersentence",
+      "name": "intersentence",
+      "description": "McGill-NLP/stereoset - 'intersentence' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/split",
+          "name": "intersentence/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intersentence"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "intersentence/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "intersentence_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/id",
+          "name": "intersentence/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intersentence"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/target",
+          "name": "intersentence/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intersentence"
+            },
+            "extract": {
+              "column": "target"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/bias_type",
+          "name": "intersentence/bias_type",
+          "description": "Column 'bias_type' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intersentence"
+            },
+            "extract": {
+              "column": "bias_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/context",
+          "name": "intersentence/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intersentence"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intersentence/sentences",
+          "name": "intersentence/sentences",
+          "description": "Column 'sentences' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "intersentence/sentences/sentence",
+              "name": "intersentence/sentences/sentence",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intersentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "sentence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intersentence/sentences/id",
+              "name": "intersentence/sentences/id",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intersentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intersentence/sentences/labels",
+              "name": "intersentence/sentences/labels",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "intersentence/sentences/labels/label",
+                  "name": "intersentence/sentences/labels/label",
+                  "description": "ClassLabel column 'sentences' from the Hugging Face parquet file.\nLabels:\nanti-stereotype (0), stereotype (1), unrelated (2), related (3)",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-intersentence"
+                    },
+                    "extract": {
+                      "column": "sentences"
+                    },
+                    "transform": {
+                      "jsonPath": "label"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "intersentence/sentences/labels/human_id",
+                  "name": "intersentence/sentences/labels/human_id",
+                  "description": "Column 'sentences' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-intersentence"
+                    },
+                    "extract": {
+                      "column": "sentences"
+                    },
+                    "transform": {
+                      "jsonPath": "human_id"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intersentence/sentences/gold_label",
+              "name": "intersentence/sentences/gold_label",
+              "description": "ClassLabel column 'sentences' from the Hugging Face parquet file.\nLabels:\nanti-stereotype (0), stereotype (1), unrelated (2)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intersentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "gold_label"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "intrasentence_splits/split_name"
+      },
+      "@id": "intrasentence_splits",
+      "name": "intrasentence_splits",
+      "description": "Splits for the intrasentence config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "intrasentence_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "intrasentence",
+      "name": "intrasentence",
+      "description": "McGill-NLP/stereoset - 'intrasentence' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/split",
+          "name": "intrasentence/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intrasentence"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "intrasentence/(?:partial-)?(validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "intrasentence_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/id",
+          "name": "intrasentence/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intrasentence"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/target",
+          "name": "intrasentence/target",
+          "description": "Column 'target' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intrasentence"
+            },
+            "extract": {
+              "column": "target"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/bias_type",
+          "name": "intrasentence/bias_type",
+          "description": "Column 'bias_type' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intrasentence"
+            },
+            "extract": {
+              "column": "bias_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/context",
+          "name": "intrasentence/context",
+          "description": "Column 'context' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-intrasentence"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "intrasentence/sentences",
+          "name": "intrasentence/sentences",
+          "description": "Column 'sentences' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "intrasentence/sentences/sentence",
+              "name": "intrasentence/sentences/sentence",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intrasentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "sentence"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intrasentence/sentences/id",
+              "name": "intrasentence/sentences/id",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intrasentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intrasentence/sentences/labels",
+              "name": "intrasentence/sentences/labels",
+              "description": "Column 'sentences' from the Hugging Face parquet file.",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "intrasentence/sentences/labels/label",
+                  "name": "intrasentence/sentences/labels/label",
+                  "description": "ClassLabel column 'sentences' from the Hugging Face parquet file.\nLabels:\nanti-stereotype (0), stereotype (1), unrelated (2), related (3)",
+                  "dataType": "sc:Integer",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-intrasentence"
+                    },
+                    "extract": {
+                      "column": "sentences"
+                    },
+                    "transform": {
+                      "jsonPath": "label"
+                    }
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "intrasentence/sentences/labels/human_id",
+                  "name": "intrasentence/sentences/labels/human_id",
+                  "description": "Column 'sentences' from the Hugging Face parquet file.",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-intrasentence"
+                    },
+                    "extract": {
+                      "column": "sentences"
+                    },
+                    "transform": {
+                      "jsonPath": "human_id"
+                    }
+                  }
+                }
+              ],
+              "repeated": true
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "intrasentence/sentences/gold_label",
+              "name": "intrasentence/sentences/gold_label",
+              "description": "ClassLabel column 'sentences' from the Hugging Face parquet file.\nLabels:\nanti-stereotype (0), stereotype (1), unrelated (2)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-intrasentence"
+                },
+                "extract": {
+                  "column": "sentences"
+                },
+                "transform": {
+                  "jsonPath": "gold_label"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "stereoset",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for StereoSet\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nStereoSet is a dataset that measures stereotype bias in language models. StereoSet consists of 17,000 sentences that measures model preferences across gender, race, religion, and profession.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\n\nmultiple-choice question answering\n\n\n\t\n\t\t\n\t\tLanguages\n\t\n\n\nEnglish (en)\n\n\n\t\n\t\t\n\t\tDataset Structure\n\t\n\n\n\t\n\t\t\n\t\tData Instances\n\t\n\n#intersentence\n{'bias_type': 'race', 'context': 'Many people live in\u2026 See the full description on the dataset page: https://huggingface.co/datasets/McGill-NLP/stereoset.",
+  "alternateName": [
+    "McGill-NLP/stereoset",
+    "StereoSet"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "McGill NLP Group",
+    "url": "https://huggingface.co/McGill-NLP"
+  },
+  "keywords": [
+    "text-classification",
+    "crowdsourced",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-4.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2004.09456",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "stereotype-detection"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "sameAs": "https://stereoset.mit.edu/",
+  "url": "https://huggingface.co/datasets/McGill-NLP/stereoset",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

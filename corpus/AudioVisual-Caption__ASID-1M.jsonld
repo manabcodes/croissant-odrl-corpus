@@ -1,0 +1,478 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/AudioVisual-Caption/ASID-1M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-all_attributes",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "all_attributes/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-single_attribute",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "single_attribute/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "all_attributes_splits/split_name"
+      },
+      "@id": "all_attributes_splits",
+      "name": "all_attributes_splits",
+      "description": "Splits for the all_attributes config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_attributes_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "all_attributes_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "all_attributes",
+      "description": "AudioVisual-Caption/ASID-1M - 'all_attributes' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_attributes/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_attributes"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "all_attributes/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "all_attributes_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_attributes/videos",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all_attributes"
+            },
+            "extract": {
+              "column": "videos"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all_attributes/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "all_attributes/messages/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-all_attributes"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "all_attributes/messages/content",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "all_attributes/messages/content/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-all_attributes"
+                    },
+                    "extract": {
+                      "column": "messages"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "content"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "all_attributes/messages/content/text",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-all_attributes"
+                    },
+                    "extract": {
+                      "column": "messages"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "content"
+                      },
+                      {
+                        "jsonPath": "text"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "single_attribute_splits/split_name"
+      },
+      "@id": "single_attribute_splits",
+      "name": "single_attribute_splits",
+      "description": "Splits for the single_attribute config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "single_attribute_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "single_attribute_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "single_attribute",
+      "description": "AudioVisual-Caption/ASID-1M - 'single_attribute' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "single_attribute/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-single_attribute"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "single_attribute/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "single_attribute_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "single_attribute/videos",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-single_attribute"
+            },
+            "extract": {
+              "column": "videos"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "single_attribute/messages",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "single_attribute/messages/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-single_attribute"
+                },
+                "extract": {
+                  "column": "messages"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "single_attribute/messages/content_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "single_attribute/messages/content_0/type_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-single_attribute"
+                    },
+                    "extract": {
+                      "column": "messages"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "content"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "single_attribute/messages/content_0/text_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-single_attribute"
+                    },
+                    "extract": {
+                      "column": "messages"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "content"
+                      },
+                      {
+                        "jsonPath": "text"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "single_attribute/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "single_attribute/meta/video_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-single_attribute"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "video_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "single_attribute/meta/attr_keys",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-single_attribute"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "attr_keys"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "ASID-1M",
+  "description": "\n\t\n\t\t\n\t\tASID-1M: Attribute-Structured and Quality-Verified Audiovisual Instructions\n\t\n\n[\ud83c\udfe0 Homepage] [\ud83d\udcd6 Arxiv Paper] [\ud83e\udd17 Models & Datasets] [\ud83d\udcbb Code]\n\n\t\n\t\t\n\t\tIntroduction\n\t\n\nWe introduce ASID-1M, a large-scale audiovisual instruction dataset built to support universal video understanding with fine-grained, controllable supervision.\nMost existing video-instruction data represents complex audiovisual content as a single, monolithic caption. This often leads to incomplete coverage (missing audio\u2026 See the full description on the dataset page: https://huggingface.co/datasets/AudioVisual-Caption/ASID-1M.",
+  "alternateName": [
+    "AudioVisual-Caption/ASID-1M",
+    "ASID-1M"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ASID-Caption",
+    "url": "https://huggingface.co/AudioVisual-Caption"
+  },
+  "keywords": [
+    "image-text-to-text",
+    "English",
+    "cc-by-2.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2602.13013",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "caption",
+    "audiovisual",
+    "instruction-tuning",
+    "attribute-structured",
+    "quality-verified",
+    "video-understanding"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-2.0/",
+  "url": "https://huggingface.co/datasets/AudioVisual-Caption/ASID-1M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

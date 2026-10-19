@@ -1,0 +1,916 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/cgeorgiaw/animal-sounds/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-birds",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "birds/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dogs",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dogs/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-egyptian_fruit_bat",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "egyptian_fruit_bat/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-egyptian_fruit_bat_extended",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "egyptian_fruit_bat_extended/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-giant_otter",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "giant_otter/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-macaque",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "macaque/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-orca",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "orca/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-zebra_finch",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "zebra_finch/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "birds_splits/split_name"
+      },
+      "@id": "birds_splits",
+      "name": "birds_splits",
+      "description": "Splits for the birds config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "birds_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "birds_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "birds",
+      "description": "cgeorgiaw/animal-sounds - 'birds' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "birds/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-birds"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "birds/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "birds_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "birds/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-birds"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dogs_splits/split_name"
+      },
+      "@id": "dogs_splits",
+      "name": "dogs_splits",
+      "description": "Splits for the dogs config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dogs_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dogs_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dogs",
+      "description": "cgeorgiaw/animal-sounds - 'dogs' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dogs/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dogs_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/context",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "context"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/age",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "age"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/weight",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "weight"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/sex",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "sex"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dogs/breed",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dogs"
+            },
+            "extract": {
+              "column": "breed"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "egyptian_fruit_bat_splits/split_name"
+      },
+      "@id": "egyptian_fruit_bat_splits",
+      "name": "egyptian_fruit_bat_splits",
+      "description": "Splits for the egyptian_fruit_bat config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "egyptian_fruit_bat_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "egyptian_fruit_bat",
+      "description": "cgeorgiaw/animal-sounds - 'egyptian_fruit_bat' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-egyptian_fruit_bat"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "egyptian_fruit_bat/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "egyptian_fruit_bat_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat/emitter",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-egyptian_fruit_bat"
+            },
+            "extract": {
+              "column": "emitter"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "egyptian_fruit_bat_extended_splits/split_name"
+      },
+      "@id": "egyptian_fruit_bat_extended_splits",
+      "name": "egyptian_fruit_bat_extended_splits",
+      "description": "Splits for the egyptian_fruit_bat_extended config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat_extended_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "egyptian_fruit_bat_extended_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "egyptian_fruit_bat_extended",
+      "description": "cgeorgiaw/animal-sounds - 'egyptian_fruit_bat_extended' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat_extended/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-egyptian_fruit_bat_extended"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "egyptian_fruit_bat_extended/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "egyptian_fruit_bat_extended_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "egyptian_fruit_bat_extended/emitter",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-egyptian_fruit_bat_extended"
+            },
+            "extract": {
+              "column": "emitter"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "giant_otter_splits/split_name"
+      },
+      "@id": "giant_otter_splits",
+      "name": "giant_otter_splits",
+      "description": "Splits for the giant_otter config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "giant_otter_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "giant_otter",
+      "description": "cgeorgiaw/animal-sounds - 'giant_otter' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "giant_otter/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "giant_otter_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/waveform",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "waveform"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/sampling_rate",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "sampling rate"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/file_length__s_",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "file length (s)"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/file_length__frames_",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "file length (frames)"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/start_frame",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "start frame"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "giant_otter/end_frame",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-giant_otter"
+            },
+            "extract": {
+              "column": "end frame"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "macaque_splits/split_name"
+      },
+      "@id": "macaque_splits",
+      "name": "macaque_splits",
+      "description": "Splits for the macaque config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "macaque_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "macaque_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "macaque",
+      "description": "cgeorgiaw/animal-sounds - 'macaque' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "macaque/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-macaque"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "macaque/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "macaque_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "macaque/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-macaque"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "macaque/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-macaque"
+            },
+            "extract": {
+              "column": "split"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "orca_splits/split_name"
+      },
+      "@id": "orca_splits",
+      "name": "orca_splits",
+      "description": "Splits for the orca config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orca_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "orca_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "orca",
+      "description": "cgeorgiaw/animal-sounds - 'orca' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orca/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orca"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "orca/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "orca_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orca/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orca"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "zebra_finch_splits/split_name"
+      },
+      "@id": "zebra_finch_splits",
+      "name": "zebra_finch_splits",
+      "description": "Splits for the zebra_finch config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "zebra_finch_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "zebra_finch",
+      "description": "cgeorgiaw/animal-sounds - 'zebra_finch' subset (first 5GB)\n\nAdditional information:\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "zebra_finch/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "zebra_finch_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/adult",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "column": "adult"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/date_recorded",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "column": "date_recorded"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/call_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "column": "call_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "zebra_finch/rendition_num",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-zebra_finch"
+            },
+            "extract": {
+              "column": "rendition_num"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "animal-sounds",
+  "description": "A collection of audio recordings for various animal vocalizations, including birds, dogs, Egyptian fruit bats, giant otters, macaques, orcas, and zebra finches. Useful for training and evaluating models in bioacoustics, species classification, and sound event detection.\n",
+  "alternateName": [
+    "cgeorgiaw/animal-sounds",
+    "Animal Sounds Collection"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Georgia Channing",
+    "url": "https://huggingface.co/cgeorgiaw"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "10K - 100K",
+    "soundfolder",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/cgeorgiaw/animal-sounds",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

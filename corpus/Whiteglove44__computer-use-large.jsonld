@@ -1,0 +1,583 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Whiteglove44/computer-use-large/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-autocad",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "autocad/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-excel",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "excel/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-photoshop",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "photoshop/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-salesforce",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "salesforce/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "autocad_splits/split_name"
+      },
+      "@id": "autocad_splits",
+      "name": "autocad_splits",
+      "description": "Splits for the autocad config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "autocad_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "autocad_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "autocad",
+      "description": "Whiteglove44/computer-use-large - 'autocad' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "autocad/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-autocad"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "autocad/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "autocad_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "autocad/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-autocad"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "autocad/num_segments",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-autocad"
+            },
+            "extract": {
+              "column": "num_segments"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "autocad/trimmed_duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-autocad"
+            },
+            "extract": {
+              "column": "trimmed_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "autocad/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-autocad"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "excel_splits/split_name"
+      },
+      "@id": "excel_splits",
+      "name": "excel_splits",
+      "description": "Splits for the excel config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "excel_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "excel_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "excel",
+      "description": "Whiteglove44/computer-use-large - 'excel' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "excel/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-excel"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "excel/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "excel_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "excel/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-excel"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "excel/num_segments",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-excel"
+            },
+            "extract": {
+              "column": "num_segments"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "excel/trimmed_duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-excel"
+            },
+            "extract": {
+              "column": "trimmed_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "excel/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-excel"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "photoshop_splits/split_name"
+      },
+      "@id": "photoshop_splits",
+      "name": "photoshop_splits",
+      "description": "Splits for the photoshop config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "photoshop_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "photoshop",
+      "description": "Whiteglove44/computer-use-large - 'photoshop' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-photoshop"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "photoshop/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "photoshop_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-photoshop"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop/num_segments",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-photoshop"
+            },
+            "extract": {
+              "column": "num_segments"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop/trimmed_duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-photoshop"
+            },
+            "extract": {
+              "column": "trimmed_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "photoshop/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-photoshop"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "salesforce_splits/split_name"
+      },
+      "@id": "salesforce_splits",
+      "name": "salesforce_splits",
+      "description": "Splits for the salesforce config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "salesforce_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "salesforce",
+      "description": "Whiteglove44/computer-use-large - 'salesforce' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-salesforce"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "salesforce/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "salesforce_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-salesforce"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce/num_segments",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-salesforce"
+            },
+            "extract": {
+              "column": "num_segments"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce/trimmed_duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-salesforce"
+            },
+            "extract": {
+              "column": "trimmed_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "salesforce/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-salesforce"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "computer-use-large",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tComputer Use Large\n\t\n\nA large-scale dataset of 48,478 screen recording videos (~12,300 hours) of professional software being used, sourced from the internet. All videos have been trimmed to remove non-screen-recording content (intros, outros, talking heads, transitions) and audio has been stripped.\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\n\n\t\n\t\t\nCategory\nVideos\nHours\n\n\n\t\t\nAutoCAD\n10,059\n2,149\n\n\nBlender\n11,493\n3,624\n\n\nExcel\n8,111\n2,002\n\n\nPhotoshop\n10,704\n2,060\n\n\nSalesforce\n7,807\n2,336\n\n\nVS\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Whiteglove44/computer-use-large.",
+  "alternateName": [
+    "Whiteglove44/computer-use-large"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jason Ghoe",
+    "url": "https://huggingface.co/Whiteglove44"
+  },
+  "keywords": [
+    "video-classification",
+    "robotics",
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "Tabular",
+    "Text",
+    "Video",
+    "Datasets",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "screen-recording",
+    "computer-use",
+    "software-tutorials",
+    "gui",
+    "desktop"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/Whiteglove44/computer-use-large",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

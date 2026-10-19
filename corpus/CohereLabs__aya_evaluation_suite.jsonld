@@ -1,0 +1,641 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/CohereLabs/aya_evaluation_suite/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-aya_human_annotated",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "aya_human_annotated/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dolly_human_edited",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dolly_human_edited/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dolly_machine_translated",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dolly_machine_translated/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "aya_human_annotated_splits/split_name"
+      },
+      "@id": "aya_human_annotated_splits",
+      "name": "aya_human_annotated_splits",
+      "description": "Splits for the aya_human_annotated config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "aya_human_annotated_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "aya_human_annotated",
+      "description": "CohereLabs/aya_evaluation_suite - 'aya_human_annotated' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "aya_human_annotated/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "aya_human_annotated_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/targets",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "column": "targets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aya_human_annotated/script",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-aya_human_annotated"
+            },
+            "extract": {
+              "column": "script"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dolly_human_edited_splits/split_name"
+      },
+      "@id": "dolly_human_edited_splits",
+      "name": "dolly_human_edited_splits",
+      "description": "Splits for the dolly_human_edited config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dolly_human_edited_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dolly_human_edited",
+      "description": "CohereLabs/aya_evaluation_suite - 'dolly_human_edited' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dolly_human_edited/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dolly_human_edited_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/targets",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "targets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/script",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "script"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_human_edited/source_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_human_edited"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dolly_machine_translated_splits/split_name"
+      },
+      "@id": "dolly_machine_translated_splits",
+      "name": "dolly_machine_translated_splits",
+      "description": "Splits for the dolly_machine_translated config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dolly_machine_translated_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dolly_machine_translated",
+      "description": "CohereLabs/aya_evaluation_suite - 'dolly_machine_translated' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dolly_machine_translated/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dolly_machine_translated_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/inputs",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "inputs"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/targets",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "targets"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/script",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "script"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dolly_machine_translated/source_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dolly_machine_translated"
+            },
+            "extract": {
+              "column": "source_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "aya_evaluation_suite",
+  "description": "\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nAya Evaluation Suite contains a total of 26,750 open-ended conversation-style prompts to evaluate multilingual open-ended generation quality.To strike a balance between language coverage and the quality that comes with human curation, we create an evaluation suite that includes:\n\nhuman-curated examples in 7 languages (tur, eng, yor, arb, zho, por, tel) \u2192 aya-human-annotated.\nmachine-translations of handpicked examples into 101 languages \u2192 dolly-machine-translated.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/CohereLabs/aya_evaluation_suite.",
+  "alternateName": [
+    "CohereLabs/aya_evaluation_suite",
+    "Aya Evaluation Suite"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Cohere Labs",
+    "url": "https://huggingface.co/CohereLabs"
+  },
+  "keywords": [
+    "text-generation",
+    "crowdsourced",
+    "expert-generated",
+    "machine-generated",
+    "multilingual",
+    "original",
+    "extended",
+    "Afrikaans",
+    "Albanian",
+    "Amharic",
+    "Arabic",
+    "Azerbaijani",
+    "Belarusian",
+    "Bengali",
+    "Bulgarian",
+    "Catalan",
+    "Cebuano",
+    "Czech",
+    "Kurdish",
+    "Welsh",
+    "Danish",
+    "German",
+    "Modern Greek (1453-)",
+    "English",
+    "Esperanto",
+    "Estonian",
+    "Basque",
+    "Finnish",
+    "French",
+    "Scottish Gaelic",
+    "Irish",
+    "Galician",
+    "Gujarati",
+    "Haitian",
+    "Hausa",
+    "Hebrew",
+    "Hindi",
+    "Hungarian",
+    "Armenian",
+    "Igbo",
+    "Indonesian",
+    "Icelandic",
+    "Italian",
+    "Javanese",
+    "Japanese",
+    "Kannada",
+    "Georgian",
+    "Kazakh",
+    "Mongolian",
+    "Khmer",
+    "Kirghiz",
+    "Korean",
+    "Lao",
+    "Lithuanian",
+    "Luxembourgish",
+    "Latvian",
+    "Malayalam",
+    "Marathi",
+    "Macedonian",
+    "Maltese",
+    "Maori",
+    "Burmese",
+    "Dutch",
+    "Norwegian",
+    "Nepali (macrolanguage)",
+    "Southern Sotho",
+    "Pushto",
+    "Iranian Persian",
+    "Malagasy",
+    "Polish",
+    "Portuguese",
+    "Romanian",
+    "Russian",
+    "Sinhala",
+    "Slovak",
+    "Slovenian",
+    "Samoan",
+    "Shona",
+    "Sindhi",
+    "Somali",
+    "Spanish",
+    "Serbian",
+    "Sundanese",
+    "Swedish",
+    "Swahili (macrolanguage)",
+    "Tamil",
+    "Telugu",
+    "Tajik",
+    "Thai",
+    "Turkish",
+    "Ukrainian",
+    "Urdu",
+    "Uzbek",
+    "Vietnamese",
+    "Xhosa",
+    "Yiddish",
+    "Yoruba",
+    "Chinese",
+    "Malay (macrolanguage)",
+    "Zulu",
+    "Achinese",
+    "Banjar",
+    "Kashmiri",
+    "Kanuri",
+    "Minangkabau",
+    "Manipuri",
+    "Tamasheq",
+    "Pedi",
+    "apache-2.0",
+    "10K - 100K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2402.06619",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/CohereLabs/aya_evaluation_suite",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,982 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Cnam-LMSSC/vibravox/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-speech_clean",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "speech_clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-speech_noisy",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "speech_noisy/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-speechless_clean",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "speechless_clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-speechless_noisy",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "speechless_noisy/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "speech_clean_splits/split_name"
+      },
+      "@id": "speech_clean_splits",
+      "name": "speech_clean_splits",
+      "description": "Splits for the speech_clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "speech_clean_splits/split_name": "train"
+        },
+        {
+          "speech_clean_splits/split_name": "validation"
+        },
+        {
+          "speech_clean_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "speech_clean",
+      "description": "Cnam-LMSSC/vibravox - 'speech_clean' subset (first 5GB)\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "speech_clean/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "speech_clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.headset_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.headset_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.forehead_accelerometer",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.forehead_accelerometer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.soft_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.soft_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.rigid_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.rigid_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.temple_vibration_pickup",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.temple_vibration_pickup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/audio.throat_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "audio.throat_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/sentence_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "sentence_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/raw_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "raw_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/normalized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "normalized_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_clean/phonemized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_clean"
+            },
+            "extract": {
+              "column": "phonemized_text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "speech_noisy_splits/split_name"
+      },
+      "@id": "speech_noisy_splits",
+      "name": "speech_noisy_splits",
+      "description": "Splits for the speech_noisy config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "speech_noisy_splits/split_name": "train"
+        },
+        {
+          "speech_noisy_splits/split_name": "validation"
+        },
+        {
+          "speech_noisy_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "speech_noisy",
+      "description": "Cnam-LMSSC/vibravox - 'speech_noisy' subset (first 5GB)\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "speech_noisy/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "speech_noisy_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.headset_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.headset_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.forehead_accelerometer",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.forehead_accelerometer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.soft_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.soft_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.rigid_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.rigid_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.temple_vibration_pickup",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.temple_vibration_pickup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/audio.throat_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "audio.throat_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/sentence_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "sentence_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/raw_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "raw_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/normalized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "normalized_text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speech_noisy/phonemized_text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speech_noisy"
+            },
+            "extract": {
+              "column": "phonemized_text"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "speechless_clean_splits/split_name"
+      },
+      "@id": "speechless_clean_splits",
+      "name": "speechless_clean_splits",
+      "description": "Splits for the speechless_clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "speechless_clean_splits/split_name": "train"
+        },
+        {
+          "speechless_clean_splits/split_name": "validation"
+        },
+        {
+          "speechless_clean_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "speechless_clean",
+      "description": "Cnam-LMSSC/vibravox - 'speechless_clean' subset (first 5GB)\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "speechless_clean/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "speechless_clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.headset_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.headset_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.forehead_accelerometer",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.forehead_accelerometer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.soft_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.soft_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.rigid_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.rigid_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.temple_vibration_pickup",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.temple_vibration_pickup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/audio.throat_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "audio.throat_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_clean/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_clean"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "speechless_noisy_splits/split_name"
+      },
+      "@id": "speechless_noisy_splits",
+      "name": "speechless_noisy_splits",
+      "description": "Splits for the speechless_noisy config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "speechless_noisy_splits/split_name": "train"
+        },
+        {
+          "speechless_noisy_splits/split_name": "validation"
+        },
+        {
+          "speechless_noisy_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "speechless_noisy",
+      "description": "Cnam-LMSSC/vibravox - 'speechless_noisy' subset (first 5GB)\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "speechless_noisy/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "speechless_noisy_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.headset_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.headset_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.forehead_accelerometer",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.forehead_accelerometer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.soft_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.soft_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.rigid_in_ear_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.rigid_in_ear_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.temple_vibration_pickup",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.temple_vibration_pickup"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/audio.throat_microphone",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "audio.throat_microphone"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/gender",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "gender"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "speechless_noisy/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-speechless_noisy"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "vibravox",
+  "identifier": "10.57967/hf/2727",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for VibraVox\n\t\n\n\n  \n\n\n\n\ud83d\udc40 While waiting for the TooBigContentError issue to be resolved by the HuggingFace team, you can explore the dataset viewer of vibravox-test\nwhich has exactly the same architecture.\n\n\t\n\t\t\n\t\n\t\n\t\tDATASET SUMMARY\n\t\n\nThe VibraVox dataset is a general purpose audio dataset of french speech captured with body-conduction transducers.\nThis dataset can be used for various audio machine learning tasks :\n\nAutomatic Speech Recognition (ASR) (Speech-to-Text\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Cnam-LMSSC/vibravox.",
+  "alternateName": [
+    "Cnam-LMSSC/vibravox",
+    "Vibravox"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Laboratoire de M\u00e9canique des Structures et des Syst\u00e8mes Coupl\u00e9s",
+    "url": "https://huggingface.co/Cnam-LMSSC"
+  },
+  "keywords": [
+    "audio-to-audio",
+    "automatic-speech-recognition",
+    "audio-classification",
+    "text-to-speech",
+    "speaker-identification",
+    "expert-generated",
+    "crowdsourced",
+    "expert-generated",
+    "monolingual",
+    "French",
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:2407.11828",
+    "arxiv:2006.11477",
+    "arxiv:2303.10008",
+    "arxiv:2401.08342",
+    "doi:10.57967/hf/2727",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/Cnam-LMSSC/vibravox",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

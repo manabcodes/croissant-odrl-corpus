@@ -1,0 +1,1069 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/SZLHOLDINGS/a11oy-verifiable-corpus/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-formulas",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "formulas/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-lake",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "lake/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-receipts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "receipts/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-theorems",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "theorems/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "formulas_splits/split_name"
+      },
+      "@id": "formulas_splits",
+      "name": "formulas_splits",
+      "description": "Splits for the formulas config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "formulas_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "formulas_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "formulas",
+      "description": "SZLHOLDINGS/a11oy-verifiable-corpus - 'formulas' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "formulas/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "formulas_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/payload",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/asset",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "asset"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/callable",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "callable"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/doctrine",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "doctrine"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/note",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "note"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/proof_status",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "proof_status"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/schema",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "schema"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "formulas/payload/source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-formulas"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "formulas/ts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-formulas"
+            },
+            "extract": {
+              "column": "ts"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "lake_splits/split_name"
+      },
+      "@id": "lake_splits",
+      "name": "lake_splits",
+      "description": "Splits for the lake config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "lake_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "lake_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "lake",
+      "description": "SZLHOLDINGS/a11oy-verifiable-corpus - 'lake' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "lake/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "lake/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "lake_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/payload",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "payload"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "lake/ts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-lake"
+            },
+            "extract": {
+              "column": "ts"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "receipts_splits/split_name"
+      },
+      "@id": "receipts_splits",
+      "name": "receipts_splits",
+      "description": "Splits for the receipts config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "receipts_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "receipts_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "receipts",
+      "description": "SZLHOLDINGS/a11oy-verifiable-corpus - 'receipts' subset\n\nAdditional information:\n- 1 skipped column: payload",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "receipts/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "receipts_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/ts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "ts"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "theorems_splits/split_name"
+      },
+      "@id": "theorems_splits",
+      "name": "theorems_splits",
+      "description": "Splits for the theorems config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "theorems_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "theorems_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "theorems",
+      "description": "SZLHOLDINGS/a11oy-verifiable-corpus - 'theorems' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "theorems/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "theorems_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/payload",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/asset_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "asset"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/content_sha256",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "content_sha256"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/honesty",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "honesty"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/kind_detail",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "kind_detail"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/markdown",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "markdown"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/schema_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "schema"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/source_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/source_url",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-theorems"
+                },
+                "extract": {
+                  "column": "payload"
+                },
+                "transform": {
+                  "jsonPath": "source_url"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "theorems/payload/summary",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/asserts_conjecture1_false",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "asserts_conjecture1_false"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/asserts_conjecture1_open",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "asserts_conjecture1_open"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/asserts_locked_count_eight",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "asserts_locked_count_eight"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/asserts_theoremU_conditional",
+                  "dataType": "sc:Boolean",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "asserts_theoremU_conditional"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/doctrine_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "doctrine"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/lean_files",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "lean_files"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "theorems/payload/summary/theorem_entries",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-theorems"
+                    },
+                    "extract": {
+                      "column": "payload"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "summary"
+                      },
+                      {
+                        "jsonPath": "theorem_entries"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "theorems/ts",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-theorems"
+            },
+            "extract": {
+              "column": "ts"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "a11oy-verifiable-corpus",
+  "description": "\n\n  \n  \n  \n  \n\nPart of the SZL Holdings governed estate \u2014 claims are designed to carry checkable receipts. Verification proves integrity & origin, never accuracy or performance.\n\n\n\n\n\n\n\n\n\n\n\n\n\t\n\t\t\n\t\n\t\n\t\ta11oy \u2014 Verifiable Corpus  \u00b7  verify it yourself\n\t\n\nThis dataset publishes a11oy's signed receipts and proof surface so that\nanyone can independently verify them \u2014 no trust in SZL Holdings required.\nEvery receipt here carries the full cryptographic material needed to check its\nsignature offline;\u2026 See the full description on the dataset page: https://huggingface.co/datasets/SZLHOLDINGS/a11oy-verifiable-corpus.",
+  "alternateName": [
+    "SZLHOLDINGS/a11oy-verifiable-corpus",
+    "a11oy Verifiable Corpus"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "SZL Holdings",
+    "url": "https://huggingface.co/SZLHOLDINGS"
+  },
+  "keywords": [
+    "other",
+    "English",
+    "apache-2.0",
+    "< 1K",
+    "Text",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "provenance",
+    "attestation",
+    "dsse",
+    "sigstore",
+    "cosign",
+    "formal-verification",
+    "lean4",
+    "verify-it-yourself",
+    "doi:10.5281/zenodo.19944926"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/SZLHOLDINGS/a11oy-verifiable-corpus",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

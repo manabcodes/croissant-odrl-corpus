@@ -1,0 +1,206 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ssr-xembodiment/xrobotwin_data/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "ssr-xembodiment/xrobotwin_data - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/video",
+          "dataType": "sc:VideoObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "xrobotwin_data",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tXRoboTwin \u8de8\u672c\u4f53\u64cd\u4f5c\u6570\u636e\u96c6\n\t\n\n\u57fa\u4e8e RoboTwin \u4eff\u771f\u73af\u5883\u91c7\u96c6\u7684\u591a\u4efb\u52a1\u3001\u591a\u672c\u4f53\u4e13\u5bb6\u6f14\u793a\u6570\u636e,\n\u7528\u4e8e\u8de8\u672c\u4f53\u6a21\u4eff\u5b66\u4e60 / \u7b56\u7565\u8bad\u7ec3\uff08\u5982 LBM\uff09\u3002\n\n\t\n\t\t\n\t\n\t\n\t\t\u76ee\u5f55\u7ed3\u6784\uff08\u957f\u671f\u53ef\u6269\u5c55\uff09\n\t\n\n\u6570\u636e\u6309\u6279\u6b21\uff08batch\uff09\u2192 \u4efb\u52a1\uff08task\uff09\u2192 \u672c\u4f53\u7ec4\uff08embodiment group\uff09\u4e09\u7ea7\u7ec4\u7ec7,\u65b0\u6279\u6b21/\u65b0\u4efb\u52a1\u540c\u6784\u5e76\u5217\u3001\u4e92\u4e0d\u8986\u76d6:\n<batch>/                              # \u4e00\u6b21\u91c7\u96c6\u8bbe\u7f6e\u7684\u5feb\u7167,\u5982 train300\n\u2514\u2500\u2500 <task>/<embodiment>_clean_<N>/    # N = \u6bcf\u7ec4\u6210\u529f\u6f14\u793a\u6761\u6570\n    \u251c\u2500\u2500 data/episode*.hdf5            # \u8bad\u7ec3\u6570\u636e(\u4e3b)\uff1aRGB(head+wrist) + qpos + endpose\n    \u251c\u2500\u2500 video/episode*.mp4            # \u9884\u89c8\u89c6\u9891\n    \u251c\u2500\u2500 _traj_data/episode*.pkl       # \u89c4\u5212\u8f68\u8ff9\u7f13\u5b58\n    \u251c\u2500\u2500 scene_info.json\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ssr-xembodiment/xrobotwin_data.",
+  "alternateName": [
+    "ssr-xembodiment/xrobotwin_data",
+    "XRoboTwin Cross-Embodiment Manipulation Data"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ssr-xembodiment",
+    "url": "https://huggingface.co/ssr-xembodiment"
+  },
+  "keywords": [
+    "robotics",
+    "apache-2.0",
+    "10K - 100K",
+    "Video",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "robotics",
+    "manipulation",
+    "cross-embodiment",
+    "RoboTwin",
+    "imitation-learning"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/ssr-xembodiment/xrobotwin_data",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

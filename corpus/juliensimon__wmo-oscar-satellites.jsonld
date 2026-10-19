@@ -1,0 +1,759 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/juliensimon/wmo-oscar-satellites/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-satellites",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "satellites/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-instruments",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "instruments/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "satellites_splits/split_name"
+      },
+      "@id": "satellites_splits",
+      "name": "satellites_splits",
+      "description": "Splits for the satellites config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "satellites_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "satellites_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "satellites",
+      "description": "juliensimon/wmo-oscar-satellites - 'satellites' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "satellites/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "satellites_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/acronym",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "acronym"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/programme",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "programme"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/lead_agency",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "lead_agency"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/status",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "status"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/orbit_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "orbit_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/orbit_type_abbr",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "orbit_type_abbr"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/launch_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "launch_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/eol_date",
+          "dataType": "sc:DateTime",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "eol_date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/launch_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "launch_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/launch_month",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "launch_month"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/launch_day",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "launch_day"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/eol_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "eol_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/eol_month",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "eol_month"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/eol_day",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "eol_day"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/mass_kg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "mass_kg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/dry_mass_kg",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "dry_mass_kg"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/power_w",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "power_w"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/altitude_km",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "altitude_km"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/longitude",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "longitude"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/inclination",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "inclination"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/equator_crossing_time",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "equator_crossing_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/ascending_descending",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "ascending_descending"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/wigos_station_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "wigos_station_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/instrument_acronyms",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "instrument_acronyms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/instrument_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "instrument_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "satellites/slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-satellites"
+            },
+            "extract": {
+              "column": "slug"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "instruments_splits/split_name"
+      },
+      "@id": "instruments_splits",
+      "name": "instruments_splits",
+      "description": "Splits for the instruments config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruments_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "instruments_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "instruments",
+      "description": "juliensimon/wmo-oscar-satellites - 'instruments' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "instruments/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "instruments_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/acronym",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "acronym"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/full_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "full_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/agency",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "agency"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/classification",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "classification"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/satellite_acronyms",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "satellite_acronyms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/satellite_count",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "satellite_count"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/earliest_launch_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "earliest_launch_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/latest_eol_year",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "latest_eol_year"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "instruments/slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-instruments"
+            },
+            "extract": {
+              "column": "slug"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "wmo-oscar-satellites",
+  "description": "International Earth observation satellite database from WMO OSCAR. 1,025 satellites and 1,230 instruments from 81 space agencies worldwide.",
+  "alternateName": [
+    "juliensimon/wmo-oscar-satellites",
+    "WMO OSCAR Satellite Database"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Julien Simon",
+    "url": "https://huggingface.co/juliensimon"
+  },
+  "keywords": [
+    "tabular-classification",
+    "English",
+    "cc-by-4.0",
+    "1K - 10K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Geospatial",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "space",
+    "satellites",
+    "earth-observation",
+    "wmo",
+    "oscar",
+    "international",
+    "remote-sensing",
+    "open-data",
+    "tabular-data",
+    "parquet"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/juliensimon/wmo-oscar-satellites",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

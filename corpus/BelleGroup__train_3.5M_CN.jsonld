@@ -1,0 +1,259 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/BelleGroup/train_3.5M_CN/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "BelleGroup/train_3.5M_CN - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/conversations",
+          "name": "default/conversations",
+          "description": "Column 'conversations' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversations/from",
+              "name": "default/conversations/from",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/conversations/value",
+              "name": "default/conversations/value",
+              "description": "Column 'conversations' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/id",
+          "name": "default/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "train_3.5M_CN",
+  "description": "\n\t\n\t\t\n\t\t\u5185\u5bb9\n\t\n\n\u5305\u542b\u7ea6350\u4e07\u6761\u7531BELLE\u9879\u76ee\u751f\u6210\u7684\u4e2d\u6587\u6307\u4ee4\u6570\u636e\u3002\n\n\t\n\t\t\n\t\t\u6837\u4f8b\n\t\n\n{\n    \"id\":\"66623028\",\n    \"conversations\":[\n        {\n            \"from\":\"human\",\n            \"value\":\"\u5f52\u7eb3\u4ecb\u7ecd\u4e09\u79cd\u4e0d\u540c\u7c7b\u578b\u7684\u7535\u5f71\u9898\u6750\"\n        },\n        {\n            \"from\":\"assistant\",\n            \"value\":\"1. \u52a8\u4f5c\u7247\uff1a\u52a8\u4f5c\u7247\u901a\u5e38\u5f3a\u8c03\u52a8\u4f5c\u548c\u6218\u6597\u573a\u9762\uff0c\u6545\u4e8b\u60c5\u8282\u7d27\u51d1\uff0c\u5145\u6ee1\u4e86\u7d27\u5f20\u548c\u5174\u594b\u7684\u6c1b\u56f4\u3002\u4e3b\u89d2\u4e00\u822c\u662f\u5177\u6709\u8d85\u51e1\u5b9e\u529b\u6216\u7279\u6b8a\u6280\u80fd\u7684\u82f1\u96c4\u4eba\u7269\uff0c\u5f80\u5f80\u4f1a\u4e0e\u53cd\u6d3e\u89d2\u8272\u8fdb\u884c\u4e00\u7cfb\u5217\u6fc0\u70c8\u7684\u683c\u6597\uff0c\u8ffd\u9010\u548c\u7206\u7834\u7b49\u9177\u70ab\u573a\u9762\u3002\u4f8b\u5982\u300a\u901f\u5ea6\u4e0e\u6fc0\u60c5\u300b\u548c\u300a\u590d\u4ec7\u8005\u8054\u76df\u300b\u7b49\u3002\\n2. \u7231\u60c5\u7247\uff1a\u7231\u60c5\u7247\u662f\u4ee5\u7231\u60c5\u4e3a\u4e3b\u9898\u7684\u7535\u5f71\uff0c\u7740\u91cd\u5448\u73b0\u89d2\u8272\u4e4b\u95f4\u7684\u611f\u60c5\u7ea0\u845b\uff0c\u5c55\u73b0\u4e86\u7231\u60c5\u7684\u7f8e\u597d\u548c\u60b2\u58ee\u3002\u60c5\u8282\u4e0e\u89d2\u8272\u4e4b\u95f4\u7684\u53d1\u5c55\u4ee4\u4eba\u6df1\u601d\uff0c\u589e\u52a0\u4e86\u89c2\u4f17\u7684\u611f\u6027\u4f53\u9a8c\u3002\u8fd9\u79cd\u7535\u5f71\u7684\u6545\u4e8b\u60c5\u8282\u4e3b\u8981\u4ee5\u4eba\u7c7b\u4e0e\u4eba\u7c7b\u4e4b\u95f4\u7684\u60c5\u611f\u53d8\u5316\u4e3a\u4e3b\u9898\u3002\u4f8b\u5982\u300a\u6cf0\u5766\u5c3c\u514b\u53f7\u300b\u548c\u300a\u8ba9\u5b50\u5f39\u98de\u300b\u7b49\u3002\\n3.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/BelleGroup/train_3.5M_CN.",
+  "alternateName": [
+    "BelleGroup/train_3.5M_CN"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "BELLE Group // Be Everyone's Large Language model Engine",
+    "url": "https://huggingface.co/BelleGroup"
+  },
+  "keywords": [
+    "Chinese",
+    "gpl-3.0",
+    "1M - 10M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/gpl-3.0/",
+  "url": "https://huggingface.co/datasets/BelleGroup/train_3.5M_CN",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "GNU General Public License v3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

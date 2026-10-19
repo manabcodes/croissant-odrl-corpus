@@ -1,0 +1,239 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/legacy-datasets/banking77/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "legacy-datasets/banking77 - 'default' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/text",
+          "name": "default/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/label",
+          "name": "default/label",
+          "description": "ClassLabel column 'label' from the Hugging Face parquet file.\nLabels:\nactivate_my_card (0), age_limit (1), apple_pay_or_google_pay (2), atm_support (3), automatic_top_up (4), balance_not_updated_after_bank_transfer (5), balance_not_updated_after_cheque_or_cash_deposit (6), beneficiary_not_allowed (7), cancel_transfer (8), card_about_to_expire (9), card_acceptance (10), card_arrival (11), card_delivery_estimate (12), card_linking (13), card_not_working (14), card_payment_fee_charged (15), card_payment_not_recognised (16), card_payment_wrong_exchange_rate (17), card_swallowed (18), cash_withdrawal_charge (19), cash_withdrawal_not_recognised (20), change_pin (21), compromised_card (22), contactless_not_working (23), country_support (24), declined_card_payment (25), declined_cash_withdrawal (26), declined_transfer (27), direct_debit_payment_not_recognised (28), disposable_card_limits (29), edit_personal_details (30), exchange_charge (31), exchange_rate (32), exchange_via_app (33), extra_charge_on_statement (34), failed_transfer (35), fiat_currency_support (36), get_disposable_virtual_card (37), get_physical_card (38), getting_spare_card (39), getting_virtual_card (40), lost_or_stolen_card (41), lost_or_stolen_phone (42), order_physical_card (43), passcode_forgotten (44), pending_card_payment (45), pending_cash_withdrawal (46), pending_top_up (47), pending_transfer (48), pin_blocked (49), receiving_money (50), Refund_not_showing_up (51), request_refund (52), reverted_card_payment? (53), supported_cards_and_currencies (54), terminate_account (55), top_up_by_bank_transfer_charge (56), top_up_by_card_charge (57), top_up_by_cash_or_cheque (58), top_up_failed (59), top_up_limits (60), top_up_reverted (61), topping_up_by_card (62), transaction_charged_twice (63), transfer_fee_charged (64), transfer_into_account (65), transfer_not_received_by_recipient (66), transfer_timing (67), unable_to_verify_identity (68), verify_my_identity (69), verify_source_of_funds (70), verify_top_up (71), virtual_card_not_working (72), visa_or_mastercard (73), why_verify_identity (74), wrong_amount_of_cash_received (75), wrong_exchange_rate_for_cash_withdrawal (76)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "banking77",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for BANKING77\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\n\n  Deprecated: Dataset \"banking77\" is deprecated and will be deleted. Use \"PolyAI/banking77\" instead.\n\n\nDataset composed of online banking queries annotated with their corresponding intents.\nBANKING77 dataset provides a very fine-grained set of intents in a banking domain.\nIt comprises 13,083 customer service queries labeled with 77 intents. \nIt focuses on fine-grained single-domain intent detection.\n\n\t\n\t\n\t\n\t\tSupported Tasks and\u2026 See the full description on the dataset page: https://huggingface.co/datasets/legacy-datasets/banking77.",
+  "alternateName": [
+    "legacy-datasets/banking77",
+    "BANKING77"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Legacy Datasets",
+    "url": "https://huggingface.co/legacy-datasets"
+  },
+  "keywords": [
+    "text-classification",
+    "intent-classification",
+    "multi-class-classification",
+    "expert-generated",
+    "expert-generated",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2003.04807",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://github.com/PolyAI-LDN/task-specific-datasets",
+  "url": "https://huggingface.co/datasets/legacy-datasets/banking77",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

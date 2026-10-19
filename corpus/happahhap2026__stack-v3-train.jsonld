@@ -1,0 +1,566 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/happahhap2026/stack-v3-train/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "happahhap2026/stack-v3-train - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/repo_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "repo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/repo_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "repo_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/commit_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "commit_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/github_metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/branch",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "branch"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/commit_count",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "commit_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/repo_created_at",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "repo_created_at"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/is_fork",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "is_fork"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/is_org_owned",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "is_org_owned"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/forked_from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "forked_from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/stars",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "stars"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/forks",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "forks"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/issues",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "issues"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/github_metadata/pull_requests",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "github_metadata"
+                },
+                "transform": {
+                  "jsonPath": "pull_requests"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/num_files",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "num_files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/files",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/content_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "content_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/size_bytes",
+              "dataType": "cr:Int32",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "size_bytes"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/file_path",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "file_path"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/file_timestamp",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "file_timestamp"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/is_vendor",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "is_vendor"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/license_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "license_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/files/detected_licenses",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "files"
+                },
+                "transform": {
+                  "jsonPath": "detected_licenses"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "stack-v3-train",
+  "description": "\n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83e\udd5e The Stack v3\n\t\n\n\nWhat is it?\nWhat is being released\nHow to download and use it\nDataset statistics\nDataset structure\nDataset creation\nConsiderations for using the data\nAdditional information\n\n\n\t\n\t\t\n\t\n\t\n\t\tWhat is it?\n\t\n\nThe Stack v3 is the largest, most up-to-date open dataset of source code, crawled directly from GitHub and built to pre-train code LLMs with full-repository context. It is the successor to The Stack v2 and, like its predecessor, is released to make the training\u2026 See the full description on the dataset page: https://huggingface.co/datasets/happahhap2026/stack-v3-train.",
+  "alternateName": [
+    "happahhap2026/stack-v3-train",
+    "The Stack v3"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Tengfei",
+    "url": "https://huggingface.co/happahhap2026"
+  },
+  "keywords": [
+    "text-generation",
+    "crowdsourced",
+    "expert-generated",
+    "multilingual",
+    "code",
+    "odc-by",
+    "100M - 1B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2402.19173",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/happahhap2026/stack-v3-train",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

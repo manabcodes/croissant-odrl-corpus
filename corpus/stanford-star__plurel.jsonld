@@ -1,0 +1,308 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/stanford-star/plurel/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-databases",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "databases/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "databases_splits/split_name"
+      },
+      "@id": "databases_splits",
+      "name": "databases_splits",
+      "description": "Splits for the databases config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "databases_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "databases_splits/split_name": "pretrain"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "databases",
+      "description": "stanford-star/plurel - 'databases' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "databases/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "databases/(?:partial-)?(pretrain)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "databases_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_tables",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_activity_tables",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_activity_tables"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_rows",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_rows"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/num_cols",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "num_cols"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/size_mb",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "size_mb"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/val_timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "val_timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "databases/test_timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-databases"
+            },
+            "extract": {
+              "column": "test_timestamp"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "plurel",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tPluRel\n\t\n\nA large collection of 2000 synthetic relational databases (seeds plurel-0 \u2026\nplurel-1999) generated for pretraining relational/tabular foundation models. Each database\nis self-describing in the RelBench manifest layout (plain parquet + manifest.yaml):\n<dataset>/\n  manifest.yaml                 # tables, primary keys, foreign-key graph\n  schema.svg                    # ER diagram\n  db/*.parquet                  # relational tables (plain parquet)\n\nLoad with\u2026 See the full description on the dataset page: https://huggingface.co/datasets/stanford-star/plurel.",
+  "alternateName": [
+    "stanford-star/plurel"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Stanford Tabular and Relational (STAR) Project",
+    "url": "https://huggingface.co/stanford-star"
+  },
+  "keywords": [
+    "cc-by-sa-4.0",
+    "1K - 10K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "relbench",
+    "relational-deep-learning",
+    "tabular"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "url": "https://huggingface.co/datasets/stanford-star/plurel",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

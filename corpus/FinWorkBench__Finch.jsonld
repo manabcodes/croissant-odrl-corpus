@@ -1,0 +1,355 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/FinWorkBench/Finch/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Finch_Dataset_All",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Finch_Dataset_All/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Finch_Dataset_All_splits/split_name"
+      },
+      "@id": "Finch_Dataset_All_splits",
+      "name": "Finch_Dataset_All_splits",
+      "description": "Splits for the Finch_Dataset_All config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Finch_Dataset_All_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Finch_Dataset_All",
+      "description": "FinWorkBench/Finch - 'Finch_Dataset_All' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Finch_Dataset_All/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Finch_Dataset_All_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/instruction_en",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "instruction_en"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/source_files",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "source_files"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/source_files_urls",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "source_files_urls"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/reference_outputs",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Finch_Dataset_All/reference_outputs/files",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Finch_Dataset_All"
+                },
+                "extract": {
+                  "column": "reference_outputs"
+                },
+                "transform": {
+                  "jsonPath": "files"
+                }
+              },
+              "isArray": true,
+              "arrayShape": "-1"
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Finch_Dataset_All/reference_outputs/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Finch_Dataset_All"
+                },
+                "extract": {
+                  "column": "reference_outputs"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/reference_file_urls",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "reference_file_urls"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/business_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "business_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Finch_Dataset_All/task_constraints",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Finch_Dataset_All"
+            },
+            "extract": {
+              "column": "task_constraints"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Finch",
+  "description": "\n\n\n\t\n\t\t\n\t\tFinch (FinWorkBench): Benchmarking Finance & Accounting across Spreadsheet-Centric Enterprise Workflows\n\t\n\nThis repository contains the dataset for Finch, an enterprise-grade benchmark for evaluating an agent\u2019s ability to work like a skilled finance & accounting expert (work IQ) on real-world professional workflows.\n\nPaper: https://arxiv.org/abs/2512.13168\nEvaluation Code: https://github.com/FinWorkBench/Finch\n\n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83c\udf7b Updates\n\t\n\n\n2026-4-6: FinWorkBench is accepted to ACL\u2026 See the full description on the dataset page: https://huggingface.co/datasets/FinWorkBench/Finch.",
+  "alternateName": [
+    "FinWorkBench/Finch"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Finch: Finance and Accounting Cowork Benchmark",
+    "url": "https://huggingface.co/FinWorkBench"
+  },
+  "keywords": [
+    "cc-by-3.0",
+    "< 1K",
+    "json",
+    "Text",
+    "Document",
+    "Image",
+    "Tabular",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2512.13168",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "agent",
+    "workflow",
+    "multimodal",
+    "spreadsheet",
+    "pdf",
+    "image",
+    "code",
+    "finance",
+    "accounting",
+    "tabular"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-3.0/",
+  "url": "https://huggingface.co/datasets/FinWorkBench/Finch",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

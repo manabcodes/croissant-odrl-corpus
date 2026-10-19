@@ -1,0 +1,873 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/super/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Auto",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Auto/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Expert",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Expert/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Masked",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Masked/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Auto_splits/split_name"
+      },
+      "@id": "Auto_splits",
+      "name": "Auto_splits",
+      "description": "Splits for the Auto config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Auto_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Auto_splits/split_name": "all_examples"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Auto",
+      "description": "allenai/super - 'Auto' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Auto/(?:partial-)?(all_examples)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Auto_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/github_repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "column": "github_repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/git_commit",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "column": "git_commit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/query_components",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Auto/query_components/e2e_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Auto"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "e2e_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Auto/query_components/scenario_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Auto"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "scenario_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Auto/query_components/report",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Auto"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "report"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Auto/query_components/instructions",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Auto"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "instructions"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Auto/entrypoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Auto"
+            },
+            "extract": {
+              "column": "entrypoint"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Expert_splits/split_name"
+      },
+      "@id": "Expert_splits",
+      "name": "Expert_splits",
+      "description": "Splits for the Expert config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Expert_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Expert_splits/split_name": "all_examples"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Expert",
+      "description": "allenai/super - 'Expert' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Expert/(?:partial-)?(all_examples)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Expert_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/github_repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "github_repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/git_commit",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "git_commit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/query_components",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/query_components/e2e_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Expert"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "e2e_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/query_components/scenario_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Expert"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "scenario_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/query_components/report",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Expert"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "report"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/query_components/instructions",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Expert"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "instructions"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/solution_dependencies",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "solution_dependencies"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/landmarks",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Expert"
+            },
+            "extract": {
+              "column": "landmarks"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Expert/solution",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/solution/action",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "Expert/solution/action/content",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-Expert"
+                    },
+                    "extract": {
+                      "column": "solution"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "action"
+                      },
+                      {
+                        "jsonPath": "content"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "Expert/solution/action/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-Expert"
+                    },
+                    "extract": {
+                      "column": "solution"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "action"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Expert/solution/observation",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Expert"
+                },
+                "extract": {
+                  "column": "solution"
+                },
+                "transform": {
+                  "jsonPath": "observation"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Masked_splits/split_name"
+      },
+      "@id": "Masked_splits",
+      "name": "Masked_splits",
+      "description": "Splits for the Masked config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Masked_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Masked_splits/split_name": "all_examples"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Masked",
+      "description": "allenai/super - 'Masked' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Masked/(?:partial-)?(all_examples)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Masked_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/task_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/github_repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "github_repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/git_commit",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "git_commit"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/query_components",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Masked/query_components/e2e_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Masked"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "e2e_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Masked/query_components/scenario_task",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Masked"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "scenario_task"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Masked/query_components/instructions",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Masked"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "instructions"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Masked/query_components/report",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Masked"
+                },
+                "extract": {
+                  "column": "query_components"
+                },
+                "transform": {
+                  "jsonPath": "report"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/solution_dependencies",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "solution_dependencies"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/pre_execute_cells",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "pre_execute_cells"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/landmarks",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "landmarks"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Masked/entrypoint",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Masked"
+            },
+            "extract": {
+              "column": "entrypoint"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "super",
+  "description": "Paper: https://huggingface.co/papers/2409.07440\nSee GitHub repository here for details: https://github.com/allenai/super-benchmark\n",
+  "alternateName": [
+    "allenai/super",
+    "SUPER: Evaluating Agents on Setting Up and Executing Tasks from Research Repositories"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "English",
+    "apache-2.0",
+    "< 1K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2409.07440",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/allenai/super",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,545 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/yixuantt/MultiHopRAG/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-MultiHopRAG",
+      "name": "parquet-files-for-config-MultiHopRAG",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "MultiHopRAG/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-corpus",
+      "name": "parquet-files-for-config-corpus",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "corpus/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "MultiHopRAG_splits/split_name"
+      },
+      "@id": "MultiHopRAG_splits",
+      "name": "MultiHopRAG_splits",
+      "description": "Splits for the MultiHopRAG config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "MultiHopRAG_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "MultiHopRAG",
+      "name": "MultiHopRAG",
+      "description": "yixuantt/MultiHopRAG - 'MultiHopRAG' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG/split",
+          "name": "MultiHopRAG/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MultiHopRAG"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "MultiHopRAG/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "MultiHopRAG_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG/evidence_list",
+          "name": "MultiHopRAG/evidence_list",
+          "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/author",
+              "name": "MultiHopRAG/evidence_list/author",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "author"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/category",
+              "name": "MultiHopRAG/evidence_list/category",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "category"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/fact",
+              "name": "MultiHopRAG/evidence_list/fact",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "fact"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/published_at",
+              "name": "MultiHopRAG/evidence_list/published_at",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "published_at"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/source",
+              "name": "MultiHopRAG/evidence_list/source",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "source"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/title",
+              "name": "MultiHopRAG/evidence_list/title",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "title"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MultiHopRAG/evidence_list/url",
+              "name": "MultiHopRAG/evidence_list/url",
+              "description": "Column 'evidence_list' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MultiHopRAG"
+                },
+                "extract": {
+                  "column": "evidence_list"
+                },
+                "transform": {
+                  "jsonPath": "url"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG/answer",
+          "name": "MultiHopRAG/answer",
+          "description": "Column 'answer' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MultiHopRAG"
+            },
+            "extract": {
+              "column": "answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG/query",
+          "name": "MultiHopRAG/query",
+          "description": "Column 'query' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MultiHopRAG"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MultiHopRAG/question_type",
+          "name": "MultiHopRAG/question_type",
+          "description": "Column 'question_type' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MultiHopRAG"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "corpus_splits/split_name"
+      },
+      "@id": "corpus_splits",
+      "name": "corpus_splits",
+      "description": "Splits for the corpus config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "corpus_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "corpus",
+      "name": "corpus",
+      "description": "yixuantt/MultiHopRAG - 'corpus' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/split",
+          "name": "corpus/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "corpus/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "corpus_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/category",
+          "name": "corpus/category",
+          "description": "Column 'category' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/author",
+          "name": "corpus/author",
+          "description": "Column 'author' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/published_at",
+          "name": "corpus/published_at",
+          "description": "Column 'published_at' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "published_at"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/body",
+          "name": "corpus/body",
+          "description": "Column 'body' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "body"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/title",
+          "name": "corpus/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/url",
+          "name": "corpus/url",
+          "description": "Column 'url' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "url"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "corpus/source",
+          "name": "corpus/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-corpus"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "MultiHopRAG",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Dataset Name\n\t\n\nA Dataset for Evaluating Retrieval-Augmented Generation Across Documents\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nMultiHop-RAG: a QA dataset to evaluate retrieval and reasoning across documents with metadata in the RAG pipelines. It contains 2556 queries, with evidence for each query distributed across 2 to 4 documents. The queries also involve document metadata, reflecting complex scenarios commonly found in real-world RAG applications.\n\n\t\n\t\t\n\t\tDataset Sources\u2026 See the full description on the dataset page: https://huggingface.co/datasets/yixuantt/MultiHopRAG.",
+  "alternateName": [
+    "yixuantt/MultiHopRAG",
+    "MultiHop-RAG"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "yixuan",
+    "url": "https://huggingface.co/yixuantt"
+  },
+  "keywords": [
+    "question-answering",
+    "feature-extraction",
+    "English",
+    "odc-by",
+    "1K - 10K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2401.15391",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/yixuantt/MultiHopRAG",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

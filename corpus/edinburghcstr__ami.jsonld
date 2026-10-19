@@ -1,0 +1,479 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/edinburghcstr/ami/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ihm",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ihm/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sdm",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sdm/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ihm_splits/split_name"
+      },
+      "@id": "ihm_splits",
+      "name": "ihm_splits",
+      "description": "Splits for the ihm config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ihm_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ihm_splits/split_name": "train"
+        },
+        {
+          "ihm_splits/split_name": "validation"
+        },
+        {
+          "ihm_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ihm",
+      "description": "edinburghcstr/ami - 'ihm' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ihm/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ihm_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/meeting_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "meeting_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/audio_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "audio_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 16000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/begin_time",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "begin_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/end_time",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "end_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/microphone_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "microphone_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ihm/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ihm"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sdm_splits/split_name"
+      },
+      "@id": "sdm_splits",
+      "name": "sdm_splits",
+      "description": "Splits for the sdm config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sdm_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sdm_splits/split_name": "train"
+        },
+        {
+          "sdm_splits/split_name": "validation"
+        },
+        {
+          "sdm_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sdm",
+      "description": "edinburghcstr/ami - 'sdm' subset\n\nAdditional information:\n- 3 splits: train, validation, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sdm/(?:partial-)?(train|validation|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sdm_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/meeting_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "meeting_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/audio_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "audio_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "audio"
+            },
+            "sampling_rate": 16000
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/begin_time",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "begin_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/end_time",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "end_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/microphone_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "microphone_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sdm/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sdm"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "ami",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for AMI\n\t\n\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nThe AMI Meeting Corpus consists of 100 hours of meeting recordings. The recordings use a range of signals\nsynchronized to a common timeline. These include close-talking and far-field microphones, individual and\nroom-view video cameras, and output from a slide projector and an electronic whiteboard. During the meetings,\nthe participants also have unsynchronized pens available to them that record what is written. The meetings\nwere\u2026 See the full description on the dataset page: https://huggingface.co/datasets/edinburghcstr/ami.",
+  "alternateName": [
+    "edinburghcstr/ami",
+    "AMI"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "University of Edingburgh - Centre For Speech Technology Research",
+    "url": "https://huggingface.co/edinburghcstr"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "monolingual",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:1906.11047",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://groups.inf.ed.ac.uk/ami/corpus/",
+  "url": "https://huggingface.co/datasets/edinburghcstr/ami",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,319 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/ShareGPT4Video/ShareGPT4Video/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ShareGPT4Video",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ShareGPT4Video/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ShareGPT4Video_splits/split_name"
+      },
+      "@id": "ShareGPT4Video_splits",
+      "name": "ShareGPT4Video_splits",
+      "description": "Splits for the ShareGPT4Video config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ShareGPT4Video_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ShareGPT4Video",
+      "description": "ShareGPT4Video/ShareGPT4Video - 'ShareGPT4Video' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ShareGPT4Video/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ShareGPT4Video_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/video_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "column": "video_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/video_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "column": "video_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/keyframe",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "column": "keyframe"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/captions",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4Video/captions/idx",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4Video"
+                },
+                "extract": {
+                  "column": "captions"
+                },
+                "transform": {
+                  "jsonPath": "idx"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4Video/captions/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4Video"
+                },
+                "extract": {
+                  "column": "captions"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ShareGPT4Video/captions/time_stamp",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ShareGPT4Video"
+                },
+                "extract": {
+                  "column": "captions"
+                },
+                "transform": {
+                  "jsonPath": "time_stamp"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ShareGPT4Video/zip_folder",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ShareGPT4Video"
+            },
+            "extract": {
+              "column": "zip_folder"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ShareGPT4Video",
+  "identifier": "10.57967/hf/2494",
+  "description": "\n\t\n\t\t\n\t\tShareGPT4Video 4.8M Dataset Card\n\t\n\n\n\t\n\t\t\n\t\tDataset details\n\t\n\nDataset type:\nShareGPT4Video Captions 4.8M is a set of GPT4-Vision-powered multi-modal captions data of videos.\nIt is constructed to enhance modality alignment and fine-grained visual concept perception in Large Video-Language Models (LVLMs) and Text-to-Video Models (T2VMs). This advancement aims to bring LVLMs and T2VMs towards the capabilities of GPT4V and Sora.\n\nsharegpt4video_40k.jsonl is generated by GPT4-Vision\u2026 See the full description on the dataset page: https://huggingface.co/datasets/ShareGPT4Video/ShareGPT4Video.",
+  "alternateName": [
+    "ShareGPT4Video/ShareGPT4Video",
+    "ShareGPT4Video Captions Dataset Card"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "ShareGPT4Video",
+    "url": "https://huggingface.co/ShareGPT4Video"
+  },
+  "keywords": [
+    "visual-question-answering",
+    "question-answering",
+    "English",
+    "cc-by-nc-4.0",
+    "10K - 100K",
+    "json",
+    "Image",
+    "Text",
+    "Video",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2406.04325",
+    "doi:10.57967/hf/2494",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/ShareGPT4Video/ShareGPT4Video",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

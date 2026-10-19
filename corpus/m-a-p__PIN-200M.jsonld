@@ -1,0 +1,533 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/m-a-p/PIN-200M/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-pin",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "pin/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "pin_splits/split_name"
+      },
+      "@id": "pin_splits",
+      "name": "pin_splits",
+      "description": "Splits for the pin config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pin_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "pin_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "pin",
+      "description": "m-a-p/PIN-200M - 'pin' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "pin/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "pin/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "pin_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/oi_exist",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "oi_exist"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/doc_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "doc_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/page_id",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "page_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/date_download",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "date_download"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/oi_source",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "oi_source"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/meta/source_dataset",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "source_dataset"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/quality_signals",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/image_text_interleaving_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "image_text_interleaving_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/text_block_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "text_block_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/avg_text_block_length",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "avg_text_block_length"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/total_token_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "total_token_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/bold_char_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "bold_char_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/italic_char_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "italic_char_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/title_count",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "title_count"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/avg_tokens_per_text_block",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "avg_tokens_per_text_block"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "pin/quality_signals/doc_length",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-pin"
+                },
+                "extract": {
+                  "column": "quality_signals"
+                },
+                "transform": {
+                  "jsonPath": "doc_length"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/content_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "column": "content_image"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/overall_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "column": "overall_image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "pin/md",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-pin"
+            },
+            "extract": {
+              "column": "md"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "PIN-200M",
+  "description": "\n\t\n\t\t\n\t\tPIN-200M\n\t\n\nA mini version of \"PIN: A Knowledge-Intensive Dataset for Paired and Interleaved Multimodal Documents\"\nPaper: https://arxiv.org/abs/2406.13923\nThis dataset contains around 200M samples in PIN format, with around 312 TB storage.\n\ud83d\ude80 News\n[ 2025.09.22 ] !NEW! \ud83d\udd25 We have completed the final version of the PIN-200M dataset and conducted some simple statistics on it.\n[ 2024.12.06 ] !NEW! \ud83d\udd25 We have updated the quality signals, enabling a swift assessment of whether a sample meets\u2026 See the full description on the dataset page: https://huggingface.co/datasets/m-a-p/PIN-200M.",
+  "alternateName": [
+    "m-a-p/PIN-200M",
+    "pin-200m"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Multimodal Art Projection",
+    "url": "https://huggingface.co/m-a-p"
+  },
+  "keywords": [
+    "English",
+    "Chinese",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:2406.13923",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "multimodal",
+    "interleaved"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/m-a-p/PIN-200M",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

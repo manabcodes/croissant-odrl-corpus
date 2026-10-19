@@ -1,0 +1,491 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/SZLHOLDINGS/szl-lake/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-receipts",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "receipts/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "receipts_splits/split_name"
+      },
+      "@id": "receipts_splits",
+      "name": "receipts_splits",
+      "description": "Splits for the receipts config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "receipts_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "receipts_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "receipts",
+      "description": "SZLHOLDINGS/szl-lake - 'receipts' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "receipts/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "receipts_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/receipt_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "receipt_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/timestamp",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/organ",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "organ"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/kind",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "kind"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/lambda",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "lambda"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/lambda_pass",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "lambda_pass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/predicted_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "predicted_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/actual_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "actual_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/delta",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "delta"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/lutar_anchor",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "lutar_anchor"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/doctrine",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "doctrine"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/decl",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "decl"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/axioms",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "axioms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/sorries",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "sorries"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/neuro_citations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "neuro_citations"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/dsse_payload_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "dsse_payload_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/dsse_pae_sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "dsse_pae_sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/dsse_sig",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "dsse_sig"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/dsse_keyid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "dsse_keyid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/dsse_signed",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "dsse_signed"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "receipts/verify_key_url",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-receipts"
+            },
+            "extract": {
+              "column": "verify_key_url"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "szl-lake",
+  "description": "\n\n\n\n\n\n\n\n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83e\udea2 SZL Holdings Data Lake (szl-lake)\n\t\n\n\nA public, signed, diligence-defensible corpus of governance provenance.\nEvery governed action in the SZL substrate emits an ECDSA P-256 DSSE-signed Khipu receipt onto a hash-linked Merkle DAG. This dataset aggregates those receipts together with formal-verification doctrine snapshots, the Zenodo paper record, SBOM pointers, and compliance attestations so a reviewer can verify the claims end-to-end.\n\nDoctrine v11 LOCKED \u00b7 749\u2026 See the full description on the dataset page: https://huggingface.co/datasets/SZLHOLDINGS/szl-lake.",
+  "alternateName": [
+    "SZLHOLDINGS/szl-lake",
+    "SZL Holdings Data Lake"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "SZL Holdings",
+    "url": "https://huggingface.co/SZLHOLDINGS"
+  },
+  "keywords": [
+    "other",
+    "English",
+    "cc-by-4.0",
+    "< 1K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "agentic-ai",
+    "governance",
+    "provable-provenance",
+    "cosign",
+    "dsse",
+    "khipu",
+    "formal-verification",
+    "lean4",
+    "slsa",
+    "doi:10.5281/zenodo.19944926"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/SZLHOLDINGS/szl-lake",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

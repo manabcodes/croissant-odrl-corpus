@@ -1,0 +1,960 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/NousResearch/hermes-function-calling-v1/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-func_calling_singleturn",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "func_calling_singleturn/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-func_calling",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "func_calling/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-glaive_func_calling",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "glaive_func_calling/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-json_mode_agentic",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "json_mode_agentic/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-json_mode_singleturn",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "json_mode_singleturn/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "func_calling_singleturn_splits/split_name"
+      },
+      "@id": "func_calling_singleturn_splits",
+      "name": "func_calling_singleturn_splits",
+      "description": "Splits for the func_calling_singleturn config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "func_calling_singleturn_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "func_calling_singleturn",
+      "description": "NousResearch/hermes-function-calling-v1 - 'func_calling_singleturn' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "func_calling_singleturn/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "func_calling_singleturn_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "func_calling_singleturn/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-func_calling_singleturn"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "func_calling_singleturn/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-func_calling_singleturn"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/subcategory",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "column": "subcategory"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_singleturn/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling_singleturn"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "func_calling_splits/split_name"
+      },
+      "@id": "func_calling_splits",
+      "name": "func_calling_splits",
+      "description": "Splits for the func_calling config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "func_calling_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "func_calling",
+      "description": "NousResearch/hermes-function-calling-v1 - 'func_calling' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "func_calling/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "func_calling_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "func_calling/conversations/from_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-func_calling"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "func_calling/conversations/value_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-func_calling"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/subcategory",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "column": "subcategory"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "func_calling/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-func_calling"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "glaive_func_calling_splits/split_name"
+      },
+      "@id": "glaive_func_calling_splits",
+      "name": "glaive_func_calling_splits",
+      "description": "Splits for the glaive_func_calling config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "glaive_func_calling_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "glaive_func_calling",
+      "description": "NousResearch/hermes-function-calling-v1 - 'glaive_func_calling' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "glaive_func_calling/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "glaive_func_calling_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "glaive_func_calling/conversations/from_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-glaive_func_calling"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "glaive_func_calling/conversations/value_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-glaive_func_calling"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/subcategory",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "subcategory"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "glaive_func_calling/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-glaive_func_calling"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "json_mode_agentic_splits/split_name"
+      },
+      "@id": "json_mode_agentic_splits",
+      "name": "json_mode_agentic_splits",
+      "description": "Splits for the json_mode_agentic config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "json_mode_agentic_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "json_mode_agentic",
+      "description": "NousResearch/hermes-function-calling-v1 - 'json_mode_agentic' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_agentic"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "json_mode_agentic/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "json_mode_agentic_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_agentic"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "json_mode_agentic/conversations/from_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-json_mode_agentic"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "json_mode_agentic/conversations/value_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-json_mode_agentic"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_agentic"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/subcategory",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_agentic"
+            },
+            "extract": {
+              "column": "subcategory"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_agentic/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_agentic"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "json_mode_singleturn_splits/split_name"
+      },
+      "@id": "json_mode_singleturn_splits",
+      "name": "json_mode_singleturn_splits",
+      "description": "Splits for the json_mode_singleturn config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "json_mode_singleturn_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "json_mode_singleturn",
+      "description": "NousResearch/hermes-function-calling-v1 - 'json_mode_singleturn' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "json_mode_singleturn/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "json_mode_singleturn_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "json_mode_singleturn/conversations/from_0_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-json_mode_singleturn"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "json_mode_singleturn/conversations/value_0_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-json_mode_singleturn"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "column": "category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/subcategory",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "column": "subcategory"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/schema",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "column": "schema"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "json_mode_singleturn/__index_level_0__",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-json_mode_singleturn"
+            },
+            "extract": {
+              "column": "__index_level_0__"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "hermes-function-calling-v1",
+  "description": "\n\n\t\n\t\t\n\t\tHermes Function-Calling V1\n\t\n\nThis dataset is the compilation of structured output and function calling data used in the Hermes 2 Pro series of models.\nThis repository contains a structured output dataset with function-calling conversations, json-mode, agentic json-mode and structured extraction samples, designed to train LLM models in performing function calls and returning structured output based on natural language instructions. The dataset features various conversational scenarios\u2026 See the full description on the dataset page: https://huggingface.co/datasets/NousResearch/hermes-function-calling-v1.",
+  "alternateName": [
+    "NousResearch/hermes-function-calling-v1"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NousResearch",
+    "url": "https://huggingface.co/NousResearch"
+  },
+  "keywords": [
+    "text-generation",
+    "question-answering",
+    "feature-extraction",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "tool-use,",
+    "function-calling",
+    "agentic",
+    "synthetic-data"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/NousResearch/hermes-function-calling-v1",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

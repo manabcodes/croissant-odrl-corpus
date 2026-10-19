@@ -1,0 +1,285 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/snunlp/KoBALT-700/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-kobalt_v1",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "kobalt_v1/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "kobalt_v1_splits/split_name"
+      },
+      "@id": "kobalt_v1_splits",
+      "name": "kobalt_v1_splits",
+      "description": "Splits for the kobalt_v1 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "kobalt_v1_splits/split_name": "raw"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "kobalt_v1",
+      "description": "snunlp/KoBALT-700 - 'kobalt_v1' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "kobalt_v1/(?:partial-)?(raw)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "kobalt_v1_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/ID",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "ID"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Class",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Class"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Subclass",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Subclass"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Answer",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Answer"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Level",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Level"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "kobalt_v1/Sampling_YN",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-kobalt_v1"
+            },
+            "extract": {
+              "column": "Sampling_YN"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "KoBALT-700",
+  "description": "\n\t\n\t\t\n\t\tKoBALT: Korean Benchmark For Advanced Linguistic Tasks\n\t\n\nKoBALT is designed to advance the evaluation of large language models (LLMs) in Korean, a morphologically rich language, by addressing the limitations of conventional benchmarks that often lack linguistic depth and typological grounding. It consists of 700 expert-written multiple-choice questions covering 24 fine-grained linguistic phenomena across five core linguistic domains:\n\nSyntax (300)\nSemantics (215)\nPragmatics (81)\u2026 See the full description on the dataset page: https://huggingface.co/datasets/snunlp/KoBALT-700.",
+  "alternateName": [
+    "snunlp/KoBALT-700"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "SNU NLP Lab",
+    "url": "https://huggingface.co/snunlp"
+  },
+  "keywords": [
+    "Korean",
+    "cc-by-nc-4.0",
+    "< 1K",
+    "json",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2505.16125",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/snunlp/KoBALT-700",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

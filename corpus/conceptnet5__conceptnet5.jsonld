@@ -1,0 +1,557 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/conceptnet5/conceptnet5/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-conceptnet5",
+      "name": "parquet-files-for-config-conceptnet5",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "conceptnet5/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-omcs_sentences_free",
+      "name": "parquet-files-for-config-omcs_sentences_free",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "omcs_sentences_free/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-omcs_sentences_more",
+      "name": "parquet-files-for-config-omcs_sentences_more",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "omcs_sentences_more/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "conceptnet5_splits/split_name"
+      },
+      "@id": "conceptnet5_splits",
+      "name": "conceptnet5_splits",
+      "description": "Splits for the conceptnet5 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "conceptnet5_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "conceptnet5",
+      "name": "conceptnet5",
+      "description": "conceptnet5/conceptnet5 - 'conceptnet5' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/split",
+          "name": "conceptnet5/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "conceptnet5/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "conceptnet5_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/sentence",
+          "name": "conceptnet5/sentence",
+          "description": "Column 'sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "sentence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/full_rel",
+          "name": "conceptnet5/full_rel",
+          "description": "Column 'full_rel' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "full_rel"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/rel",
+          "name": "conceptnet5/rel",
+          "description": "Column 'rel' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "rel"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/arg1",
+          "name": "conceptnet5/arg1",
+          "description": "Column 'arg1' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "arg1"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/arg2",
+          "name": "conceptnet5/arg2",
+          "description": "Column 'arg2' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "arg2"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/lang",
+          "name": "conceptnet5/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/extra_info",
+          "name": "conceptnet5/extra_info",
+          "description": "Column 'extra_info' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "extra_info"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "conceptnet5/weight",
+          "name": "conceptnet5/weight",
+          "description": "Column 'weight' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-conceptnet5"
+            },
+            "extract": {
+              "column": "weight"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "omcs_sentences_free_splits/split_name"
+      },
+      "@id": "omcs_sentences_free_splits",
+      "name": "omcs_sentences_free_splits",
+      "description": "Splits for the omcs_sentences_free config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_free_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "omcs_sentences_free_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "omcs_sentences_free",
+      "name": "omcs_sentences_free",
+      "description": "conceptnet5/conceptnet5 - 'omcs_sentences_free' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_free/split",
+          "name": "omcs_sentences_free/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_free"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "omcs_sentences_free/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "omcs_sentences_free_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_free/sentence",
+          "name": "omcs_sentences_free/sentence",
+          "description": "Column 'sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_free"
+            },
+            "extract": {
+              "column": "sentence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_free/raw_data",
+          "name": "omcs_sentences_free/raw_data",
+          "description": "Column 'raw_data' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_free"
+            },
+            "extract": {
+              "column": "raw_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_free/lang",
+          "name": "omcs_sentences_free/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_free"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "omcs_sentences_more_splits/split_name"
+      },
+      "@id": "omcs_sentences_more_splits",
+      "name": "omcs_sentences_more_splits",
+      "description": "Splits for the omcs_sentences_more config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_more_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "omcs_sentences_more_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "omcs_sentences_more",
+      "name": "omcs_sentences_more",
+      "description": "conceptnet5/conceptnet5 - 'omcs_sentences_more' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_more/split",
+          "name": "omcs_sentences_more/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_more"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "omcs_sentences_more/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "omcs_sentences_more_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_more/sentence",
+          "name": "omcs_sentences_more/sentence",
+          "description": "Column 'sentence' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_more"
+            },
+            "extract": {
+              "column": "sentence"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_more/raw_data",
+          "name": "omcs_sentences_more/raw_data",
+          "description": "Column 'raw_data' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_more"
+            },
+            "extract": {
+              "column": "raw_data"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "omcs_sentences_more/lang",
+          "name": "omcs_sentences_more/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-omcs_sentences_more"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "conceptnet5",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for Conceptnet5\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nConceptNet is a multilingual knowledge base, representing words and\nphrases that people use and the common-sense relationships between\nthem. The knowledge in ConceptNet is collected from a variety of\nresources, including crowd-sourced resources (such as Wiktionary and\nOpen Mind Common Sense), games with a purpose (such as Verbosity and\nnadya.jp), and expert-created resources (such as WordNet and JMDict).\nYou can browse what\u2026 See the full description on the dataset page: https://huggingface.co/datasets/conceptnet5/conceptnet5.",
+  "alternateName": [
+    "conceptnet5/conceptnet5",
+    "Conceptnet5"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "conceptnet5",
+    "url": "https://huggingface.co/conceptnet5"
+  },
+  "keywords": [
+    "text-classification",
+    "multi-class-classification",
+    "crowdsourced",
+    "crowdsourced",
+    "found",
+    "monolingual",
+    "original",
+    "German",
+    "English",
+    "Spanish",
+    "French",
+    "Italian",
+    "Japanese",
+    "Dutch",
+    "Portuguese",
+    "Russian",
+    "Chinese",
+    "cc-by-4.0",
+    "10M - 100M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "arxiv:1612.03975",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "sameAs": "https://github.com/commonsense/conceptnet5/wiki",
+  "url": "https://huggingface.co/datasets/conceptnet5/conceptnet5",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

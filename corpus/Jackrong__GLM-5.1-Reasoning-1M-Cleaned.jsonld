@@ -1,0 +1,964 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/Jackrong/GLM-5.1-Reasoning-1M-Cleaned/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-main",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "main/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Math",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Math/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Multilingual-STEM",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Multilingual-STEM/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-PHD-Science",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "PHD-Science/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "main_splits/split_name"
+      },
+      "@id": "main_splits",
+      "name": "main_splits",
+      "description": "Splits for the main config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "main_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "main",
+      "description": "Jackrong/GLM-5.1-Reasoning-1M-Cleaned - 'main' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "main/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "main/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "main_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "main/conversations/from",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-main"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "main/conversations/value",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-main"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/input",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-main"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "main/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "main/meta/input_tokens",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-main"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "input_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "main/meta/output_tokens",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-main"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "output_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "main/meta/teacher_model",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-main"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "teacher_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Math_splits/split_name"
+      },
+      "@id": "Math_splits",
+      "name": "Math_splits",
+      "description": "Splits for the Math config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Math_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Math_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Math",
+      "description": "Jackrong/GLM-5.1-Reasoning-1M-Cleaned - 'Math' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Math/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Math"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Math/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Math_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Math"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Math/conversations/from_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Math"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Math/conversations/value_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Math"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/input",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Math"
+            },
+            "extract": {
+              "column": "input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Math"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Math"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Math/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Math/meta/input_tokens_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "input_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Math/meta/output_tokens_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "output_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Math/meta/teacher_model_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Math"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "teacher_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Multilingual-STEM_splits/split_name"
+      },
+      "@id": "Multilingual-STEM_splits",
+      "name": "Multilingual-STEM_splits",
+      "description": "Splits for the Multilingual-STEM config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Multilingual-STEM_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Multilingual-STEM",
+      "description": "Jackrong/GLM-5.1-Reasoning-1M-Cleaned - 'Multilingual-STEM' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Multilingual-STEM"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Multilingual\\-STEM/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Multilingual-STEM_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Multilingual-STEM"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Multilingual-STEM/conversations/from_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Multilingual-STEM"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Multilingual-STEM/conversations/value_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Multilingual-STEM"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/input",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Multilingual-STEM"
+            },
+            "extract": {
+              "column": "input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Multilingual-STEM"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Multilingual-STEM"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Multilingual-STEM/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Multilingual-STEM/meta/input_tokens_0_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Multilingual-STEM"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "input_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Multilingual-STEM/meta/output_tokens_0_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Multilingual-STEM"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "output_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Multilingual-STEM/meta/teacher_model_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Multilingual-STEM"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "teacher_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "PHD-Science_splits/split_name"
+      },
+      "@id": "PHD-Science_splits",
+      "name": "PHD-Science_splits",
+      "description": "Splits for the PHD-Science config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "PHD-Science_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "PHD-Science",
+      "description": "Jackrong/GLM-5.1-Reasoning-1M-Cleaned - 'PHD-Science' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PHD-Science"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "PHD\\-Science/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "PHD-Science_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PHD-Science"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/conversations",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "PHD-Science/conversations/from_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PHD-Science"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "from"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "PHD-Science/conversations/value_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PHD-Science"
+                },
+                "extract": {
+                  "column": "conversations"
+                },
+                "transform": {
+                  "jsonPath": "value"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/input",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PHD-Science"
+            },
+            "extract": {
+              "column": "input"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/output",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PHD-Science"
+            },
+            "extract": {
+              "column": "output"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/domain",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-PHD-Science"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "PHD-Science/meta",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "PHD-Science/meta/input_tokens_0_0_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PHD-Science"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "input_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "PHD-Science/meta/output_tokens_0_0_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PHD-Science"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "output_tokens"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "PHD-Science/meta/teacher_model_0_0_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-PHD-Science"
+                },
+                "extract": {
+                  "column": "meta"
+                },
+                "transform": {
+                  "jsonPath": "teacher_model"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "GLM-5.1-Reasoning-1M-Cleaned",
+  "description": "\n\t\n\t\t\n\t\tGLM-5.1-Reasoning-1M-Cleaned\n\t\n\n\nGLM-5.1-Reasoning-1M-Cleaned is a cleaned and reformatted derivative of Kassadin88/GLM-5.1-1000000x. It preserves the original four-subset layout (main, PHD-Science, Multilingual-STEM, Math) while converting every example into a unified SFT-ready schema with explicit conversations, input, output, domain, and meta fields.\nThis release was prepared from the original dataset published by Kassadin88. \n\n\t\n\t\t\n\t\tSummary\n\t\n\n\n\nTeacher model in the data: GLM-5.1\u2026 See the full description on the dataset page: https://huggingface.co/datasets/Jackrong/GLM-5.1-Reasoning-1M-Cleaned.",
+  "alternateName": [
+    "Jackrong/GLM-5.1-Reasoning-1M-Cleaned"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Jackrong",
+    "url": "https://huggingface.co/Jackrong"
+  },
+  "keywords": [
+    "text-generation",
+    "question-answering",
+    "English",
+    "Chinese",
+    "apache-2.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "reasoning",
+    "chain-of-thought",
+    "instruction-tuning",
+    "sft",
+    "distillation",
+    "glm",
+    "glm-5.1",
+    "cleaned"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/Jackrong/GLM-5.1-Reasoning-1M-Cleaned",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

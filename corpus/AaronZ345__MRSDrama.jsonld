@@ -1,0 +1,386 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/AaronZ345/MRSDrama/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-meta",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "meta/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "meta_splits/split_name"
+      },
+      "@id": "meta_splits",
+      "name": "meta_splits",
+      "description": "Splits for the meta config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "meta_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "meta_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "meta",
+      "description": "AaronZ345/MRSDrama - 'meta' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "meta/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "meta/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "meta_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/item_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "item_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/start_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "start_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/end_time",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "end_time"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/raw_txt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "raw_txt"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/ph",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "ph"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/ph_dur",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "ph_dur"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/geometric_pose_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "geometric_pose_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/wav_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "wav_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/textual_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "textual_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/scene_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "scene_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/camera_pos",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "camera_pos"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/video_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "video_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "meta/speaker",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-meta"
+            },
+            "extract": {
+              "column": "speaker"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "MRSDrama",
+  "identifier": "10.57967/hf/6012",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tISDrama: Immersive Spatial Drama Generation through Multimodal Prompting\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tYu Zhang*, Wenxiang Guo*, Changhao Pan*, Zhiyuan Zhu*, Tao Jin, Zhou Zhao | Zhejiang University\n\t\n\nDataset of ISDrama (ACMMM 2025): Immersive Spatial Drama Generation through Multimodal Prompting.\n \n\n\n\n\n\nWe construct MRSDrama, the first multimodal recorded spatial drama dataset, containing binaural drama audios, scripts, videos, geometric poses, and textual prompts.\nWe provide the full corpus\u2026 See the full description on the dataset page: https://huggingface.co/datasets/AaronZ345/MRSDrama.",
+  "alternateName": [
+    "AaronZ345/MRSDrama"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Yu Zhang",
+    "url": "https://huggingface.co/AaronZ345"
+  },
+  "keywords": [
+    "text-to-speech",
+    "text-to-audio",
+    "Chinese",
+    "cc-by-nc-sa-4.0",
+    "10K - 100K",
+    "Audio",
+    "Tabular",
+    "Text",
+    "Video",
+    "Croissant",
+    "arxiv:2504.20630",
+    "doi:10.57967/hf/6012",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "spatial-audio",
+    "drama",
+    "binaural",
+    "video",
+    "audio",
+    "croissant"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-sa-4.0/",
+  "url": "https://huggingface.co/datasets/AaronZ345/MRSDrama",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

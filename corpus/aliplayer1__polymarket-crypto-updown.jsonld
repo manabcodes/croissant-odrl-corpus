@@ -1,0 +1,1039 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/aliplayer1/polymarket-crypto-updown/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-markets",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "markets/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-orderbook",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "orderbook/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-prices",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "prices/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-spot_prices",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "spot_prices/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ticks",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ticks/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "markets_splits/split_name"
+      },
+      "@id": "markets_splits",
+      "name": "markets_splits",
+      "description": "Splits for the markets config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "markets_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "markets_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "markets",
+      "description": "aliplayer1/polymarket-crypto-updown - 'markets' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "markets/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "markets/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "markets_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "market_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/crypto",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "crypto"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/timeframe",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "timeframe"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/volume",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "volume"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/resolution",
+          "dataType": "cr:Int8",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "resolution"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/start_ts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "start_ts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/end_ts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "end_ts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/closed_ts",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "closed_ts"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/condition_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "condition_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/up_token_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "up_token_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/down_token_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "down_token_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/slug",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "slug"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "markets/fee_rate_bps",
+          "dataType": "cr:Int16",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-markets"
+            },
+            "extract": {
+              "column": "fee_rate_bps"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "orderbook_splits/split_name"
+      },
+      "@id": "orderbook_splits",
+      "name": "orderbook_splits",
+      "description": "Splits for the orderbook config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "orderbook_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "orderbook",
+      "description": "aliplayer1/polymarket-crypto-updown - 'orderbook' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "orderbook/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "orderbook_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/ts_ms",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "ts_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "market_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/token_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "token_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/outcome",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "outcome"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/best_bid",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "best_bid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/best_ask",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "best_ask"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/best_bid_size",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "best_bid_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/best_ask_size",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "best_ask_size"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "orderbook/local_recv_ts_ns",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-orderbook"
+            },
+            "extract": {
+              "column": "local_recv_ts_ns"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "prices_splits/split_name"
+      },
+      "@id": "prices_splits",
+      "name": "prices_splits",
+      "description": "Splits for the prices config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "prices_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "prices_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "prices",
+      "description": "aliplayer1/polymarket-crypto-updown - 'prices' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "prices/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-prices"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "prices/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "prices_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "prices/market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-prices"
+            },
+            "extract": {
+              "column": "market_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "prices/timestamp",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-prices"
+            },
+            "extract": {
+              "column": "timestamp"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "prices/up_price",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-prices"
+            },
+            "extract": {
+              "column": "up_price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "prices/down_price",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-prices"
+            },
+            "extract": {
+              "column": "down_price"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "spot_prices_splits/split_name"
+      },
+      "@id": "spot_prices_splits",
+      "name": "spot_prices_splits",
+      "description": "Splits for the spot_prices config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "spot_prices_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "spot_prices",
+      "description": "aliplayer1/polymarket-crypto-updown - 'spot_prices' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spot_prices"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "spot_prices/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "spot_prices_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices/ts_ms",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spot_prices"
+            },
+            "extract": {
+              "column": "ts_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices/symbol",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spot_prices"
+            },
+            "extract": {
+              "column": "symbol"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spot_prices"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "spot_prices/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-spot_prices"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ticks_splits/split_name"
+      },
+      "@id": "ticks_splits",
+      "name": "ticks_splits",
+      "description": "Splits for the ticks config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ticks_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ticks_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ticks",
+      "description": "aliplayer1/polymarket-crypto-updown - 'ticks' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ticks/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ticks_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/market_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "market_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/timestamp_ms",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "timestamp_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/token_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "token_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/outcome",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "outcome"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/side",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "side"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/price",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "price"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/size_usdc",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "size_usdc"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/tx_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "tx_hash"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/block_number",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "block_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/log_index",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "log_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/spot_price_usdt",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "spot_price_usdt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/spot_price_ts_ms",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "spot_price_ts_ms"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/local_recv_ts_ns",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "local_recv_ts_ns"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ticks/order_hash",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ticks"
+            },
+            "extract": {
+              "column": "order_hash"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "polymarket-crypto-updown",
+  "description": "\n\t\n\t\t\n\t\tPolymarket Crypto Up/Down Markets\n\t\n\nComprehensive dataset of Polymarket binary prediction markets for cryptocurrency price movements. Covers BTC, ETH, SOL, BNB, XRP, DOGE, and HYPE across multiple timeframes (5-minute, 15-minute, 1-hour, 4-hour).\nUpdated automatically every 3 hours.\n\n\t\n\t\t\n\t\tSubsets\n\t\n\nLoad a specific subset:\nfrom datasets import load_dataset\n\nmarkets = load_dataset(\"aliplayer1/polymarket-crypto-updown\", \"markets\")\nprices =\u2026 See the full description on the dataset page: https://huggingface.co/datasets/aliplayer1/polymarket-crypto-updown.",
+  "alternateName": [
+    "aliplayer1/polymarket-crypto-updown",
+    "Polymarket Crypto Up/Down Markets"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Ali Asadpoor",
+    "url": "https://huggingface.co/aliplayer1"
+  },
+  "keywords": [
+    "time-series-forecasting",
+    "tabular-classification",
+    "English",
+    "mit",
+    "1B - 10B",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "polymarket",
+    "prediction-markets",
+    "crypto",
+    "on-chain",
+    "orderbook",
+    "bitcoin",
+    "ethereum",
+    "defi",
+    "finance"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/aliplayer1/polymarket-crypto-updown",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

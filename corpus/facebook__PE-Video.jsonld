@@ -1,0 +1,543 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/facebook/PE-Video/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "facebook/PE-Video - 'default' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/json",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/Unnamed: 0.1",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "Unnamed: 0.1"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/category",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "category"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/category_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "category_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/description",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "description"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/file_size_mb",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "file_size_mb"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/fps",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "fps"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/has_face",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "has_face"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/height",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "height"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/human_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "human_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/keywords",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "keywords"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/model_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "model_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/motion_vector_magnitude_mean",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "motion_vector_magnitude_mean"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/motion_vector_var_x",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "motion_vector_var_x"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/motion_vector_var_y",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "motion_vector_var_y"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/num_frames",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "num_frames"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/number_of_I_frames",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "number_of_I_frames"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/video_duration_in_s",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "video_duration_in_s"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/video_id",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "video_id"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/json/width",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "json"
+                },
+                "transform": {
+                  "jsonPath": "width"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/mp4",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "mp4"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__key__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__key__"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/__url__",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "__url__"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "PE-Video",
+  "description": "\n\t\n\t\t\n\t\tPE Video Dataset (PVD)\n\t\n\n[\ud83d\udcc3 Tech Report]\n[\ud83d\udcc2 Github]\nThe PE Video Dataset (PVD) is a large-scale collection of 1 million diverse videos, featuring 120,000+ expertly annotated clips. The dataset was introduced in our paper \"Perception Encoder\".\n\n\t\n\t\t\n\t\tOverview\n\t\n\nPE Video Dataset (PVD) comprises 1M high quality and diverse videos. Among them, 120K videos are accompanied by automated and human-verified annotations. and all videos are accompanied with video description and keywords.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/facebook/PE-Video.",
+  "alternateName": [
+    "facebook/PE-Video"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "AI at Meta",
+    "url": "https://huggingface.co/facebook"
+  },
+  "keywords": [
+    "cc-by-nc-4.0",
+    "100K - 1M",
+    "webdataset",
+    "Text",
+    "Datasets",
+    "WebDataset",
+    "Croissant",
+    "arxiv:2504.13181",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-nc-4.0/",
+  "url": "https://huggingface.co/datasets/facebook/PE-Video",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-NC 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:prohibition": {
+      "@type": "odrl:Prohibition",
+      "odrl:action": {
+        "@id": "odrl:commercialize"
+      }
+    },
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

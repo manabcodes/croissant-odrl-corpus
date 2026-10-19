@@ -1,0 +1,539 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MrSupW/ContextASR-Bench/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ContextASR-Dialogue",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ContextASR-Dialogue/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ContextASR-Speech",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ContextASR-Speech/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ContextASR-Dialogue_splits/split_name"
+      },
+      "@id": "ContextASR-Dialogue_splits",
+      "name": "ContextASR-Dialogue_splits",
+      "description": "Splits for the ContextASR-Dialogue config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ContextASR-Dialogue_splits/split_name": "English"
+        },
+        {
+          "ContextASR-Dialogue_splits/split_name": "Mandarin"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ContextASR-Dialogue",
+      "description": "MrSupW/ContextASR-Bench - 'ContextASR-Dialogue' subset\n\nAdditional information:\n- 2 splits: English, Mandarin",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ContextASR\\-Dialogue/(?:partial-)?(English|Mandarin)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ContextASR-Dialogue_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/uniq_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "uniq_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/audio",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/dialogue",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ContextASR-Dialogue/dialogue/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ContextASR-Dialogue"
+                },
+                "extract": {
+                  "column": "dialogue"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ContextASR-Dialogue/dialogue/tts_text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ContextASR-Dialogue"
+                },
+                "extract": {
+                  "column": "dialogue"
+                },
+                "transform": {
+                  "jsonPath": "tts_text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ContextASR-Dialogue/dialogue/start",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ContextASR-Dialogue"
+                },
+                "extract": {
+                  "column": "dialogue"
+                },
+                "transform": {
+                  "jsonPath": "start"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ContextASR-Dialogue/dialogue/end",
+              "dataType": "cr:Float64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ContextASR-Dialogue"
+                },
+                "extract": {
+                  "column": "dialogue"
+                },
+                "transform": {
+                  "jsonPath": "end"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ContextASR-Dialogue/dialogue/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ContextASR-Dialogue"
+                },
+                "extract": {
+                  "column": "dialogue"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/movie_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "movie_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Dialogue/entity_list",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Dialogue"
+            },
+            "extract": {
+              "column": "entity_list"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ContextASR-Speech_splits/split_name"
+      },
+      "@id": "ContextASR-Speech_splits",
+      "name": "ContextASR-Speech_splits",
+      "description": "Splits for the ContextASR-Speech config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ContextASR-Speech_splits/split_name": "English"
+        },
+        {
+          "ContextASR-Speech_splits/split_name": "Mandarin"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ContextASR-Speech",
+      "description": "MrSupW/ContextASR-Bench - 'ContextASR-Speech' subset\n\nAdditional information:\n- 2 splits: English, Mandarin",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ContextASR\\-Speech/(?:partial-)?(English|Mandarin)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ContextASR-Speech_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/uniq_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "uniq_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/audio",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/domain_label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "domain_label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ContextASR-Speech/entity_list",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ContextASR-Speech"
+            },
+            "extract": {
+              "column": "entity_list"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "ContextASR-Bench",
+  "description": "\n\t\n\t\t\n\t\tContextASR-Bench: A Massive Contextual Speech Recognition Benchmark\n\t\n\n\n\n\n\nAutomatic Speech Recognition (ASR) has been extensively investigated, yet prior benchmarks have largely focused on assessing the acoustic robustness of ASR models, leaving evaluations of their linguistic capabilities relatively underexplored. This largely stems from the limited parameter sizes and training corpora of conventional ASR models, leaving them with insufficient world knowledge, which is crucial for\u2026 See the full description on the dataset page: https://huggingface.co/datasets/MrSupW/ContextASR-Bench.",
+  "alternateName": [
+    "MrSupW/ContextASR-Bench",
+    "ContextASR-Bench"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "He Wang",
+    "url": "https://huggingface.co/MrSupW"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "Chinese",
+    "English",
+    "mit",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Audio",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2507.05727",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "audio",
+    "automatic-speech-recognition",
+    "named-entity-recognition"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/MrSupW/ContextASR-Bench",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/aisbergpublicorganization/telegram-news-ua-dataset/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-monthly_splits",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "monthly_splits/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "monthly_splits_splits/split_name"
+      },
+      "@id": "monthly_splits_splits",
+      "name": "monthly_splits_splits",
+      "description": "Splits for the monthly_splits config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "monthly_splits_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "monthly_splits",
+      "description": "aisbergpublicorganization/telegram-news-ua-dataset - 'monthly_splits' subset\n\nAdditional information:\n- 1 skipped column: reactions",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monthly_splits"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "monthly_splits/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "monthly_splits_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits/channel",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monthly_splits"
+            },
+            "extract": {
+              "column": "channel"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits/post_text_redacted",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monthly_splits"
+            },
+            "extract": {
+              "column": "post_text_redacted"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits/comments",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "monthly_splits/comments/user_name",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-monthly_splits"
+                },
+                "extract": {
+                  "column": "comments"
+                },
+                "transform": {
+                  "jsonPath": "user_name"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "monthly_splits/comments/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-monthly_splits"
+                },
+                "extract": {
+                  "column": "comments"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "monthly_splits/comments/time",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-monthly_splits"
+                },
+                "extract": {
+                  "column": "comments"
+                },
+                "transform": {
+                  "jsonPath": "time"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "monthly_splits/date",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-monthly_splits"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "telegram-news-ua-dataset",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tAisberg Telegram News UA (anon)\n\t\n\nAisberg Telegram News UA (anon) is a de-identified dataset of Ukrainian Telegram news and discussions.The data is collected by the Aisberg Public Organization for research in information security, narrative tracking, and the detection of manipulative techniques.\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Overview\n\t\n\n\nPosts: channel name, anonymized text, publication date, aggregated reactions (emoji \u2192 counts).  \nComments (anon.): user pseudonym, comment text, timestamp\u2026 See the full description on the dataset page: https://huggingface.co/datasets/aisbergpublicorganization/telegram-news-ua-dataset.",
+  "alternateName": [
+    "aisbergpublicorganization/telegram-news-ua-dataset",
+    "Aisberg Telegram News UA (anon)"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "aisberg.public.organization",
+    "url": "https://huggingface.co/aisbergpublicorganization"
+  },
+  "keywords": [
+    "text-classification",
+    "text-retrieval",
+    "Ukrainian",
+    "Russian",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "ukraine",
+    "telegram",
+    "news",
+    "social-media",
+    "nlp",
+    "disinformation",
+    "media-literacy"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/aisbergpublicorganization/telegram-news-ua-dataset",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

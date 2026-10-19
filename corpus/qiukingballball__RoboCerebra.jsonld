@@ -1,0 +1,541 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/qiukingballball/RoboCerebra/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-train",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "train/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_splits/split_name"
+      },
+      "@id": "test_splits",
+      "name": "test_splits",
+      "description": "Splits for the test config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test",
+      "description": "qiukingballball/RoboCerebra - 'test' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/task_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "task_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/case_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "case_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/video_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "video_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/image_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "image_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/demo_path",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "demo_path"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/distractor_object",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "distractor_object"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/task_description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "task_description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/steps",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "test/steps/object",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "steps"
+                },
+                "transform": {
+                  "jsonPath": "object"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "test/steps/step",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-test"
+                },
+                "extract": {
+                  "column": "steps"
+                },
+                "transform": {
+                  "jsonPath": "step"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/num_steps",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "num_steps"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/objects_involved",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "objects_involved"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test/high_level_instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test"
+            },
+            "extract": {
+              "column": "high_level_instruction"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "train_splits/split_name"
+      },
+      "@id": "train_splits",
+      "name": "train_splits",
+      "description": "Splits for the train config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "train_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "train",
+      "description": "qiukingballball/RoboCerebra - 'train' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "train/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "train/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "train_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/scene",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "scene"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/case",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "case"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/video",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "video"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/demo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "demo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/distractor_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "distractor_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/high_level_instruction",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "high_level_instruction"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "train/task_description",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-train"
+            },
+            "extract": {
+              "column": "task_description"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "RoboCerebra",
+  "description": "\n\t\n\t\t\n\t\tOverview\n\t\n\nRoboCerebra is a large-scale benchmark designed to evaluate robotic manipulation in long-horizon tasks, shifting the focus of robotic imitation learning from fast, reactive System 1 behavior to slow, deliberate System 2 reasoning.\n\n\t\n\t\t\n\t\tResources\n\t\n\n\nCode (conversion scripts and evaluation): https://github.com/qiuboxiang/RoboCerebra/\nBenchmark (pre-converted RLDS): https://huggingface.co/datasets/qiukingballball/RoboCerebraBench\n\n\n\t\n\t\t\n\t\tKey Features\n\t\n\n\nLong-Horizon\u2026 See the full description on the dataset page: https://huggingface.co/datasets/qiukingballball/RoboCerebra.",
+  "alternateName": [
+    "qiukingballball/RoboCerebra"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "boxiang qiu",
+    "url": "https://huggingface.co/qiukingballball"
+  },
+  "keywords": [
+    "mit",
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Video",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/qiukingballball/RoboCerebra",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

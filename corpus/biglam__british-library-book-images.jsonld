@@ -1,0 +1,742 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/biglam/british-library-book-images/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-covers",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "covers/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-embellishments",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "embellishments/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-medium",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "medium/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-plates",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "plates/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-siglip2_embeddings",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "siglip2_embeddings/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "covers_splits/split_name"
+      },
+      "@id": "covers_splits",
+      "name": "covers_splits",
+      "description": "Splits for the covers config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "covers_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "covers_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "covers",
+      "description": "biglam/british-library-book-images - 'covers' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "covers/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-covers"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "covers/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "covers_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "covers/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-covers"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "covers/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-covers"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "covers/fname",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-covers"
+            },
+            "extract": {
+              "column": "fname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "covers/image_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-covers"
+            },
+            "extract": {
+              "column": "image_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "embellishments_splits/split_name"
+      },
+      "@id": "embellishments_splits",
+      "name": "embellishments_splits",
+      "description": "Splits for the embellishments config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "embellishments_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "embellishments",
+      "description": "biglam/british-library-book-images - 'embellishments' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embellishments"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "embellishments/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "embellishments_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embellishments"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embellishments"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments/fname",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embellishments"
+            },
+            "extract": {
+              "column": "fname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "embellishments/image_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-embellishments"
+            },
+            "extract": {
+              "column": "image_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "medium_splits/split_name"
+      },
+      "@id": "medium_splits",
+      "name": "medium_splits",
+      "description": "Splits for the medium config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "medium_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "medium",
+      "description": "biglam/british-library-book-images - 'medium' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "medium/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "medium_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/fname",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "fname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/image_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "image_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "plates_splits/split_name"
+      },
+      "@id": "plates_splits",
+      "name": "plates_splits",
+      "description": "Splits for the plates config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plates_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "plates_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "plates",
+      "description": "biglam/british-library-book-images - 'plates' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "plates/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plates"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "plates/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "plates_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plates/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plates"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plates/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plates"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plates/fname",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plates"
+            },
+            "extract": {
+              "column": "fname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "plates/image_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-plates"
+            },
+            "extract": {
+              "column": "image_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "siglip2_embeddings_splits/split_name"
+      },
+      "@id": "siglip2_embeddings_splits",
+      "name": "siglip2_embeddings_splits",
+      "description": "Splits for the siglip2_embeddings config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "siglip2_embeddings_splits/split_name": "embellishments"
+        },
+        {
+          "siglip2_embeddings_splits/split_name": "plates"
+        },
+        {
+          "siglip2_embeddings_splits/split_name": "medium"
+        },
+        {
+          "siglip2_embeddings_splits/split_name": "covers"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "siglip2_embeddings",
+      "description": "biglam/british-library-book-images - 'siglip2_embeddings' subset\n\nAdditional information:\n- 4 splits: embellishments, plates, medium, covers",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "siglip2_embeddings/(?:partial-)?(embellishments|plates|medium|covers)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "siglip2_embeddings_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/fname",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "fname"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/date",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "date"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/image_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "image_type"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/source_filename",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "source_filename"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/file_row_number",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "file_row_number"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "siglip2_embeddings/embedding",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-siglip2_embeddings"
+            },
+            "extract": {
+              "column": "embedding"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "british-library-book-images",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tBritish Library Book Images\n\t\n\n1,080,814 images cut out of 49,455 digitised books (65,227 volumes, ~25 million pages) published\nbetween c. 1510 and c. 1900, digitised by the British Library in partnership\nwith Microsoft and released by British Library Labs\non Flickr Commons as the \"1 Million Images from Scanned Books\" release. The books cover geography,\nphilosophy, history, poetry and literature, in several languages.\n\n\t\n\t\t\n\t\n\t\n\t\tThe four image types\n\t\n\nBritish Library Labs\u2026 See the full description on the dataset page: https://huggingface.co/datasets/biglam/british-library-book-images.",
+  "alternateName": [
+    "biglam/british-library-book-images",
+    "British Library Book Images"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "BigLAM: BigScience Libraries, Archives and Museums",
+    "url": "https://huggingface.co/biglam"
+  },
+  "keywords": [
+    "image-classification",
+    "image-to-text",
+    "text-to-image",
+    "machine-generated",
+    "found",
+    "blbooks",
+    "cc0-1.0",
+    "1M - 10M",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "image",
+    "digital-humanities-research",
+    "glam",
+    "book-illustration"
+  ],
+  "license": "https://choosealicense.com/licenses/cc0-1.0/",
+  "url": "https://huggingface.co/datasets/biglam/british-library-book-images",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC0 1.0 Universal \u2014 public domain dedication",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ]
+  }
+}

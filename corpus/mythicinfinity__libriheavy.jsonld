@@ -1,0 +1,1338 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/mythicinfinity/libriheavy/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-small",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "small/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dev",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dev/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-large",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "large/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-medium",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "medium/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test_clean",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test_clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test_clean_large",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test_clean_large/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test_other",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test_other/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-test_other_large",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "test_other_large/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "small_splits/split_name"
+      },
+      "@id": "small_splits",
+      "name": "small_splits",
+      "description": "Splits for the small config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "small_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "small",
+      "description": "mythicinfinity/libriheavy - 'small' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "small/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "small_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dev_splits/split_name"
+      },
+      "@id": "dev_splits",
+      "name": "dev_splits",
+      "description": "Splits for the dev config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dev_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dev",
+      "description": "mythicinfinity/libriheavy - 'dev' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dev/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dev/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dev_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dev/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dev"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "large_splits/split_name"
+      },
+      "@id": "large_splits",
+      "name": "large_splits",
+      "description": "Splits for the large config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "large_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "large_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "large",
+      "description": "mythicinfinity/libriheavy - 'large' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "large/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "large/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "large_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "large/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-large"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "medium_splits/split_name"
+      },
+      "@id": "medium_splits",
+      "name": "medium_splits",
+      "description": "Splits for the medium config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "medium_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "medium",
+      "description": "mythicinfinity/libriheavy - 'medium' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "medium/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "medium/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "medium_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "medium/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-medium"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_clean_splits/split_name"
+      },
+      "@id": "test_clean_splits",
+      "name": "test_clean_splits",
+      "description": "Splits for the test_clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_clean_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_clean",
+      "description": "mythicinfinity/libriheavy - 'test_clean' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test_clean/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_clean_large_splits/split_name"
+      },
+      "@id": "test_clean_large_splits",
+      "name": "test_clean_large_splits",
+      "description": "Splits for the test_clean_large config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_clean_large_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_clean_large",
+      "description": "mythicinfinity/libriheavy - 'test_clean_large' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test_clean_large/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_clean_large_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_clean_large/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_clean_large"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_other_splits/split_name"
+      },
+      "@id": "test_other_splits",
+      "name": "test_other_splits",
+      "description": "Splits for the test_other config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_other_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_other",
+      "description": "mythicinfinity/libriheavy - 'test_other' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test_other/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_other_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "test_other_large_splits/split_name"
+      },
+      "@id": "test_other_large_splits",
+      "name": "test_other_large_splits",
+      "description": "Splits for the test_other_large config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "test_other_large_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "test_other_large",
+      "description": "mythicinfinity/libriheavy - 'test_other_large' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "test_other_large/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "test_other_large_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/audio",
+          "dataType": "sc:AudioObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "audio"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/audio_duration",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "audio_duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/speaker_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "speaker_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/text_original",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "text_original"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/text_transcription",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "text_transcription"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "test_other_large/librivox_book_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-test_other_large"
+            },
+            "extract": {
+              "column": "librivox_book_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "libriheavy",
+  "description": "\n\t\n\t\t\n\t\tLibriheavy\n\t\n\nLibriheavy: a 50,000 hours ASR corpus with punctuation casing and context. Libriheavy is a labeled version of Librilight.\nThis uploaded version replaces the default Libri-Light audio files with the highest quality available versions\nfrom librivox. In most cases, this consists an upgrade of the source audio from a 64kbps mp3 to a 128kbps mp3.\nAudio files are then re-encoded using the Opus 68kbps codec to retain quality and reduce size.\n\nHomepage:\u2026 See the full description on the dataset page: https://huggingface.co/datasets/mythicinfinity/libriheavy.",
+  "alternateName": [
+    "mythicinfinity/libriheavy",
+    "Libriheavy"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Mythic Infinity",
+    "url": "https://huggingface.co/mythicinfinity"
+  },
+  "keywords": [
+    "text-to-speech",
+    "automatic-speech-recognition",
+    "English",
+    "apache-2.0",
+    "10M - 100M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2309.08105",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/mythicinfinity/libriheavy",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

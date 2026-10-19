@@ -1,0 +1,244 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/wdndev/webnovel-chinese/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "wdndev/webnovel-chinese - 'default' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/title",
+          "name": "default/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/chapter",
+          "name": "default/chapter",
+          "description": "Column 'chapter' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "chapter"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/text",
+          "name": "default/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "webnovel-chinese",
+  "description": "\n\t\n\t\t\n\t\t\u7b80\u4ecb\n\t\n\n\u641c\u96c6\u7f51\u7edc\u4e0a\u7684\u7f51\u6587\u5c0f\u8bf4\uff0c\u6e05\u6d17\uff0c\u5206\u5272\u540e\uff0c\u7528\u4e8e\u8bad\u7ec3\u5927\u8bed\u8a00\u6a21\u578b\uff0c\u5171\u8ba19000\u672c\u5de6\u53f3\uff0c\u5927\u7ea69B\u5de6\u53f3token\u3002\n\n\t\n\t\t\n\t\t\u4f7f\u7528\n\t\n\n\n\t\n\t\t\n\t\t\u683c\u5f0f\u8bf4\u660e\n\t\n\n\u91c7\u7528jsonl\u683c\u5f0f\u5b58\u50a8\uff0c\u5206\u4e3a\u4e09\u4e2a\u5b57\u6bb5\uff1a\n\ntitle \uff1a\u5c0f\u8bf4\u540d\u79f0\nchapter\uff1a\u7ae0\u8282\ntext\uff1a\u6b63\u6587\u5185\u5bb9\n\n\u793a\u4f8b\uff1a\n{\"title\": \"\u6597\u7834\u82cd\u7a79\", \"chapter\": \" \u7b2c\u4e00\u7ae0 \u9668\u843d\u7684\u5929\u624d\", \"text\": \"\u201c\u6597\u4e4b\u529b\uff0c\u4e09\u6bb5\uff01\u201d\\n\u671b\u7740\u6d4b\u9a8c\u9b54\u77f3\u7891\u4e0a\u9762\u95ea\u4eae\u5f97\u751a\u81f3\u6709\u4e9b\u523a\u773c\u7684\u4e94\u4e2a\u5927\u5b57\uff0c\u5c11\u5e74\u9762\u65e0\u8868\u60c5\uff0c\u5507\u89d2\u6709\u7740\u4e00\u62b9\u81ea\u5632\uff0c\u7d27\u63e1\u7684\u624b\u638c\uff0c\u56e0\u4e3a\u5927\u529b\uff0c\u800c\u5bfc\u81f4\u7565\u5fae\u5c16\u9510\u7684\u6307\u7532\u6df1\u6df1\u7684\u523a\u8fdb\u4e86\u638c\u5fc3\u4e4b\u4e2d\uff0c\u5e26\u6765\u4e00\u9635\u9635\u94bb\u5fc3\u7684\u75bc\u75db\u2026\u2026\\n\u201c\u8427\u708e\uff0c\u6597\u4e4b\u529b\uff0c\u4e09\u6bb5\uff01\u7ea7\u522b\uff1a\u4f4e\u7ea7\uff01\u201d\u6d4b\u9a8c\u9b54\u77f3\u7891\u4e4b\u65c1\uff0c\u4e00\u4f4d\u4e2d\u5e74\u7537\u5b50\uff0c\u770b\u4e86\u4e00\u773c\u7891\u4e0a\u6240\u663e\u793a\u51fa\u6765\u7684\u4fe1\u606f\uff0c\u8bed\u6c14\u6f20\u7136\u7684\u5c06\u4e4b\u516c\u5e03\u4e86\u51fa\u6765\u2026\u2026\\n\"}\n\n",
+  "alternateName": [
+    "wdndev/webnovel-chinese"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Dongnian",
+    "url": "https://huggingface.co/wdndev"
+  },
+  "keywords": [
+    "text-generation",
+    "Chinese",
+    "apache-2.0",
+    "100K - 1M",
+    "json",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "llm",
+    "pretrain"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/wdndev/webnovel-chinese",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

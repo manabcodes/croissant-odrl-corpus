@@ -1,0 +1,1146 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/nvidia/Open-SWE-Traces/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-openhands",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "openhands/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-sweagent",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "sweagent/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "openhands_splits/split_name"
+      },
+      "@id": "openhands_splits",
+      "name": "openhands_splits",
+      "description": "Splits for the openhands config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "openhands_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "openhands_splits/split_name": "minimax_m25"
+        },
+        {
+          "openhands_splits/split_name": "qwen35_122b"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "openhands",
+      "description": "nvidia/Open-SWE-Traces - 'openhands' subset\n\nAdditional information:\n- 2 splits: minimax_m25, qwen35_122b",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "openhands/(?:partial-)?(minimax_m25|qwen35_122b)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "openhands_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/instance_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "instance_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/trajectory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "trajectory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/trajectory",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/trajectory/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-openhands"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/trajectory/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-openhands"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/trajectory/reasoning_content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-openhands"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "reasoning_content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/trajectory/think",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-openhands"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "think"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/trajectory/tool_calls",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/trajectory/tool_calls/function",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "openhands/trajectory/tool_calls/function/arguments",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-openhands"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "arguments"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "openhands/trajectory/tool_calls/function/name",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-openhands"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "name"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/trajectory/tool_calls/id",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/trajectory/tool_calls/type",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/resolved",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "resolved"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/metadata/category",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-openhands"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "category"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/metadata/reference_patch",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/reference_patch/patch",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "patch"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/reference_patch/num_modified_files",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_files"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/reference_patch/num_modified_lines",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_lines"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "openhands/metadata/model_patch",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/model_patch/patch_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "patch"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/model_patch/num_modified_files_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_files"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "openhands/metadata/model_patch/num_modified_lines_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-openhands"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_lines"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openhands/hf_dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openhands"
+            },
+            "extract": {
+              "column": "hf_dataset_name"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "sweagent_splits/split_name"
+      },
+      "@id": "sweagent_splits",
+      "name": "sweagent_splits",
+      "description": "Splits for the sweagent config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "sweagent_splits/split_name": "minimax_m25"
+        },
+        {
+          "sweagent_splits/split_name": "qwen35_122b"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "sweagent",
+      "description": "nvidia/Open-SWE-Traces - 'sweagent' subset\n\nAdditional information:\n- 2 splits: minimax_m25, qwen35_122b",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "sweagent/(?:partial-)?(minimax_m25|qwen35_122b)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "sweagent_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/instance_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "instance_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/repo",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "repo"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/license",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "license"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/trajectory_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "trajectory_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/trajectory",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/trajectory/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-sweagent"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/trajectory/content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-sweagent"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/trajectory/reasoning_content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-sweagent"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "reasoning_content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/trajectory/think_0",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-sweagent"
+                },
+                "extract": {
+                  "column": "trajectory"
+                },
+                "transform": {
+                  "jsonPath": "think"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/trajectory/tool_calls_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/trajectory/tool_calls_0/function_0",
+                  "subField": [
+                    {
+                      "@type": "cr:Field",
+                      "@id": "sweagent/trajectory/tool_calls_0/function_0/arguments_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-sweagent"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "arguments"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "@type": "cr:Field",
+                      "@id": "sweagent/trajectory/tool_calls_0/function_0/name_0",
+                      "dataType": "sc:Text",
+                      "source": {
+                        "fileSet": {
+                          "@id": "parquet-files-for-config-sweagent"
+                        },
+                        "extract": {
+                          "column": "trajectory"
+                        },
+                        "transform": [
+                          {
+                            "jsonPath": "tool_calls"
+                          },
+                          {
+                            "jsonPath": "function"
+                          },
+                          {
+                            "jsonPath": "name"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/trajectory/tool_calls_0/id_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "id"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/trajectory/tool_calls_0/type_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "trajectory"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "tool_calls"
+                      },
+                      {
+                        "jsonPath": "type"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "isArray": true,
+              "arrayShape": "-1"
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/tools",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "tools"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/resolved",
+          "dataType": "cr:Int32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "resolved"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/metadata",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/metadata/category_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-sweagent"
+                },
+                "extract": {
+                  "column": "metadata"
+                },
+                "transform": {
+                  "jsonPath": "category"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/metadata/reference_patch_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/reference_patch_0/patch_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "patch"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/reference_patch_0/num_modified_files_0_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_files"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/reference_patch_0/num_modified_lines_0_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "reference_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_lines"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "sweagent/metadata/model_patch_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/model_patch_0/patch_0_0_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "patch"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/model_patch_0/num_modified_files_0_0_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_files"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "sweagent/metadata/model_patch_0/num_modified_lines_0_0_0",
+                  "dataType": "cr:Int64",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-sweagent"
+                    },
+                    "extract": {
+                      "column": "metadata"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "model_patch"
+                      },
+                      {
+                        "jsonPath": "num_modified_lines"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "sweagent/hf_dataset_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-sweagent"
+            },
+            "extract": {
+              "column": "hf_dataset_name"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Open-SWE-Traces",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tOpen-SWE-Traces: Advancing Distillation for Software Engineering Agents\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tData Overview\n\t\n\nOpen-SWE-Traces is an agentic instruction tuning dataset designed to advance the capabilities of LLMs in software engineering. This dataset comprises 200k+ agent \ntrajectories collected using the SWE-agent and OpenHands framework. The trajectories \nwere synthesized using Minimax-M2.5 (with thinking) and Qwen3.5-122B-A10B \n(without thinking) and specifically curated for supervised\u2026 See the full description on the dataset page: https://huggingface.co/datasets/nvidia/Open-SWE-Traces.",
+  "alternateName": [
+    "nvidia/Open-SWE-Traces"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "NVIDIA",
+    "url": "https://huggingface.co/nvidia"
+  },
+  "keywords": [
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2606.16038",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code",
+    "Synthetic",
+    "tools",
+    "agents",
+    "software"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/nvidia/Open-SWE-Traces",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

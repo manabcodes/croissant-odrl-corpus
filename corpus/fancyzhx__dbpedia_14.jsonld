@@ -1,0 +1,262 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/fancyzhx/dbpedia_14/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-dbpedia_14",
+      "name": "parquet-files-for-config-dbpedia_14",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "dbpedia_14/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "dbpedia_14_splits/split_name"
+      },
+      "@id": "dbpedia_14_splits",
+      "name": "dbpedia_14_splits",
+      "description": "Splits for the dbpedia_14 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dbpedia_14_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "dbpedia_14_splits/split_name": "train"
+        },
+        {
+          "dbpedia_14_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "dbpedia_14",
+      "name": "dbpedia_14",
+      "description": "fancyzhx/dbpedia_14 - 'dbpedia_14' subset\n\nAdditional information:\n- 2 splits: train, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "dbpedia_14/split",
+          "name": "dbpedia_14/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dbpedia_14"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "dbpedia_14/(?:partial-)?(train|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "dbpedia_14_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dbpedia_14/label",
+          "name": "dbpedia_14/label",
+          "description": "ClassLabel column 'label' from the Hugging Face parquet file.\nLabels:\nCompany (0), EducationalInstitution (1), Artist (2), Athlete (3), OfficeHolder (4), MeanOfTransportation (5), Building (6), NaturalPlace (7), Village (8), Animal (9), Plant (10), Album (11), Film (12), WrittenWork (13)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dbpedia_14"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dbpedia_14/title",
+          "name": "dbpedia_14/title",
+          "description": "Column 'title' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dbpedia_14"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "dbpedia_14/content",
+          "name": "dbpedia_14/content",
+          "description": "Column 'content' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-dbpedia_14"
+            },
+            "extract": {
+              "column": "content"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "dbpedia_14",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for DBpedia14\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe DBpedia ontology classification dataset is constructed by picking 14 non-overlapping classes\nfrom DBpedia 2014. They are listed in classes.txt. From each of thse 14 ontology classes, we\nrandomly choose 40,000 training samples and 5,000 testing samples. Therefore, the total size\nof the training dataset is 560,000 and testing dataset 70,000.\nThere are 3 columns in the dataset (same for train and test splits), corresponding to\u2026 See the full description on the dataset page: https://huggingface.co/datasets/fancyzhx/dbpedia_14.",
+  "alternateName": [
+    "fancyzhx/dbpedia_14",
+    "DBpedia"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Xiang Zhang",
+    "url": "https://huggingface.co/fancyzhx"
+  },
+  "keywords": [
+    "text-classification",
+    "topic-classification",
+    "machine-generated",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-3.0",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:1509.01626",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-3.0/",
+  "sameAs": "https://github.com/huggingface/datasets/blob/master/CONTRIBUTING.md#how-to-contribute-to-the-dataset-cards",
+  "url": "https://huggingface.co/datasets/fancyzhx/dbpedia_14",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 3.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

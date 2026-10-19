@@ -1,0 +1,690 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-MM",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "MM/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-Text",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "Text/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "MM_splits/split_name"
+      },
+      "@id": "MM_splits",
+      "name": "MM_splits",
+      "description": "Splits for the MM config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "MM_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "MM_splits/split_name": "dev"
+        },
+        {
+          "MM_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "MM",
+      "description": "TsinghuaC3I/MedXpertQA - 'MM' subset\n\nAdditional information:\n- 2 splits: dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "MM/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "MM/(?:partial-)?(dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "MM_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/options",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "MM/options/A",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MM"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "A"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MM/options/B",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MM"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "B"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MM/options/C",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MM"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "C"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MM/options/D",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MM"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "D"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "MM/options/E",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-MM"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "E"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/images",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "images"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/medical_task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "medical_task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/body_system",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "body_system"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "MM/question_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-MM"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "Text_splits/split_name"
+      },
+      "@id": "Text_splits",
+      "name": "Text_splits",
+      "description": "Splits for the Text config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Text_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "Text_splits/split_name": "dev"
+        },
+        {
+          "Text_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "Text",
+      "description": "TsinghuaC3I/MedXpertQA - 'Text' subset\n\nAdditional information:\n- 2 splits: dev, test",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "Text/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "Text/(?:partial-)?(dev|test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "Text_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/options",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/A",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "A"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/B",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "B"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/C",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "C"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/D",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "D"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/E",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "E"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/F",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "F"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/G",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "G"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/H",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "H"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/I",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "I"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "Text/options/J",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-Text"
+                },
+                "extract": {
+                  "column": "options"
+                },
+                "transform": {
+                  "jsonPath": "J"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/label",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "label"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/medical_task",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "medical_task"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/body_system",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "body_system"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "Text/question_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-Text"
+            },
+            "extract": {
+              "column": "question_type"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "MedXpertQA",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for MedXpertQA\n\t\n\n\n\nMedXpertQA is a highly challenging and comprehensive benchmark designed to evaluate expert-level medical knowledge and advanced reasoning capabilities. It features both text-based and multimodal question-answering tasks, with the multimodal subset leveraging structured clinical information alongside images.\n\n\t\n\t\t\n\t\tDataset Description\n\t\n\nMedXpertQA comprises 4,460 questions spanning diverse medical specialties, tasks, body systems, and image types. It\u2026 See the full description on the dataset page: https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA.",
+  "alternateName": [
+    "TsinghuaC3I/MedXpertQA"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "TsinghuaC3I",
+    "url": "https://huggingface.co/TsinghuaC3I"
+  },
+  "keywords": [
+    "table-question-answering",
+    "question-answering",
+    "text-generation",
+    "English",
+    "mit",
+    "1K - 10K",
+    "json",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2501.18362",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "medical",
+    "question-answering",
+    "multimodal",
+    "reasoning",
+    "expert-level"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/TsinghuaC3I/MedXpertQA",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

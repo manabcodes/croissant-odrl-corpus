@@ -1,0 +1,679 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/HIT-TMG/Hansel/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hansel-few-shot",
+      "name": "parquet-files-for-config-hansel-few-shot",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hansel-few-shot/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hansel-zero-shot",
+      "name": "parquet-files-for-config-hansel-zero-shot",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hansel-zero-shot/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-wiki",
+      "name": "parquet-files-for-config-wiki",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "wiki/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hansel-few-shot_splits/split_name"
+      },
+      "@id": "hansel-few-shot_splits",
+      "name": "hansel-few-shot_splits",
+      "description": "Splits for the hansel-few-shot config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hansel-few-shot_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hansel-few-shot",
+      "name": "hansel-few-shot",
+      "description": "HIT-TMG/Hansel - 'hansel-few-shot' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/split",
+          "name": "hansel-few-shot/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hansel\\-few\\-shot/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hansel-few-shot_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/id",
+          "name": "hansel-few-shot/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/text",
+          "name": "hansel-few-shot/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/start",
+          "name": "hansel-few-shot/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/end",
+          "name": "hansel-few-shot/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/mention",
+          "name": "hansel-few-shot/mention",
+          "description": "Column 'mention' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "mention"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/gold_id",
+          "name": "hansel-few-shot/gold_id",
+          "description": "Column 'gold_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "gold_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/source",
+          "name": "hansel-few-shot/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-few-shot/domain",
+          "name": "hansel-few-shot/domain",
+          "description": "Column 'domain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-few-shot"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hansel-zero-shot_splits/split_name"
+      },
+      "@id": "hansel-zero-shot_splits",
+      "name": "hansel-zero-shot_splits",
+      "description": "Splits for the hansel-zero-shot config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hansel-zero-shot_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hansel-zero-shot",
+      "name": "hansel-zero-shot",
+      "description": "HIT-TMG/Hansel - 'hansel-zero-shot' subset (first 5GB)",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/split",
+          "name": "hansel-zero-shot/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hansel\\-zero\\-shot/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hansel-zero-shot_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/id",
+          "name": "hansel-zero-shot/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/text",
+          "name": "hansel-zero-shot/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/start",
+          "name": "hansel-zero-shot/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/end",
+          "name": "hansel-zero-shot/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/mention",
+          "name": "hansel-zero-shot/mention",
+          "description": "Column 'mention' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "mention"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/gold_id",
+          "name": "hansel-zero-shot/gold_id",
+          "description": "Column 'gold_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "gold_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/source",
+          "name": "hansel-zero-shot/source",
+          "description": "Column 'source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hansel-zero-shot/domain",
+          "name": "hansel-zero-shot/domain",
+          "description": "Column 'domain' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hansel-zero-shot"
+            },
+            "extract": {
+              "column": "domain"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "wiki_splits/split_name"
+      },
+      "@id": "wiki_splits",
+      "name": "wiki_splits",
+      "description": "Splits for the wiki config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wiki_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "wiki_splits/split_name": "train"
+        },
+        {
+          "wiki_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "wiki",
+      "name": "wiki",
+      "description": "HIT-TMG/Hansel - 'wiki' subset (first 5GB)\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/split",
+          "name": "wiki/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "wiki/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "wiki_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/id",
+          "name": "wiki/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/text",
+          "name": "wiki/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/start",
+          "name": "wiki/start",
+          "description": "Column 'start' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "start"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/end",
+          "name": "wiki/end",
+          "description": "Column 'end' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "end"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/mention",
+          "name": "wiki/mention",
+          "description": "Column 'mention' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "mention"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "wiki/gold_id",
+          "name": "wiki/gold_id",
+          "description": "Column 'gold_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-wiki"
+            },
+            "extract": {
+              "column": "gold_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "Hansel",
+  "description": "Hansel is a high-quality human-annotated Chinese entity linking (EL) dataset, used for testing Chinese EL systems' generalization ability to tail entities and emerging entities.\nThe test set contains Few-shot (FS) and zero-shot (ZS) slices, has 10K examples and uses Wikidata as the corresponding knowledge base.\nThe training and validation sets are from Wikipedia hyperlinks, useful for large-scale pretraining of Chinese EL systems.",
+  "alternateName": [
+    "HIT-TMG/Hansel",
+    "Hansel"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Lychee Team",
+    "url": "https://huggingface.co/HIT-TMG"
+  },
+  "keywords": [
+    "text-retrieval",
+    "entity-linking-retrieval",
+    "crowdsourced",
+    "found",
+    "found",
+    "crowdsourced",
+    "monolingual",
+    "original",
+    "Chinese",
+    "cc-by-sa-4.0",
+    "1M - 10M",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Croissant",
+    "arxiv:2207.13005",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "sameAs": "https://github.com/HITsz-TMG/Hansel",
+  "url": "https://huggingface.co/datasets/HIT-TMG/Hansel",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

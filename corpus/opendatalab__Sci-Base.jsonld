@@ -1,0 +1,915 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/opendatalab/Sci-Base/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-paper",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "paper/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-textbook",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "textbook/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "paper_splits/split_name"
+      },
+      "@id": "paper_splits",
+      "name": "paper_splits",
+      "description": "Splits for the paper config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "paper_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "paper_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "paper",
+      "description": "opendatalab/Sci-Base - 'paper' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "paper/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "paper/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "paper_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/content_list",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/bbox",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "bbox"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/code_body",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "code_body"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/code_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "code_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/image_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "image_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/image_footnote",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "image_footnote"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/img_path",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "img_path"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/list_items",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "list_items"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/page_idx",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "page_idx"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/sub_type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "sub_type"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/table_body",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_body"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/table_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/table_footnote",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_footnote"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/text",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/text_format",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/text_level",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text_level"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "paper/content_list/type",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-paper"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/doi",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "doi"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/is_oa",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "is_oa"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/sci_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "sci_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "paper/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-paper"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "textbook_splits/split_name"
+      },
+      "@id": "textbook_splits",
+      "name": "textbook_splits",
+      "description": "Splits for the textbook config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "textbook_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "textbook_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "textbook",
+      "description": "opendatalab/Sci-Base - 'textbook' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "textbook/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "textbook_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/abstract",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "abstract"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/author",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "author"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/content_list",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/img_caption",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "img_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/img_footnote",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "img_footnote"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/img_path_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "img_path"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/page_idx_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "page_idx"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/table_body_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_body"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/table_caption_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_caption"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/table_footnote_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "table_footnote"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/text_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/text_format_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text_format"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/text_level_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "text_level"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "textbook/content_list/type_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-textbook"
+                },
+                "extract": {
+                  "column": "content_list"
+                },
+                "transform": {
+                  "jsonPath": "type"
+                }
+              }
+            }
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/grade_class",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "grade_class"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/isbn",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "isbn"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/sci_category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "sci_category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/sha256",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "sha256"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "textbook/title",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-textbook"
+            },
+            "extract": {
+              "column": "title"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Sci-Base",
+  "description": "\n\t\n\t\t\n\t\tSci-Base: The Largest AI-Ready Scientific Foundation Dataset\n\t\n\n\n\t\n\t\t\n\t\t\ud83c\udf0c The Sciverse Data Foundation\n\t\n\nSciverse is a comprehensive, multi-layered scientific data foundation designed to provide the ultimate data infrastructure for the AI for Science (AI4S) community. As scientific research becomes increasingly data-driven, Sciverse supplies the essential, high-quality data resources required to build robust scientific knowledge systems and accelerate research.\n\n  \n\n\nSciverse\u2026 See the full description on the dataset page: https://huggingface.co/datasets/opendatalab/Sci-Base.",
+  "alternateName": [
+    "opendatalab/Sci-Base",
+    "Sci-Base"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenDataLab",
+    "url": "https://huggingface.co/opendatalab"
+  },
+  "keywords": [
+    "English",
+    "cc-by-4.0",
+    "1M - 10M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "chem",
+    "bio",
+    "climate",
+    "medical",
+    "material",
+    "earth",
+    "physics"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/opendatalab/Sci-Base",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

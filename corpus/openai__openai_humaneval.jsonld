@@ -1,0 +1,278 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/openai/openai_humaneval/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-openai_humaneval",
+      "name": "parquet-files-for-config-openai_humaneval",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "openai_humaneval/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "openai_humaneval_splits/split_name"
+      },
+      "@id": "openai_humaneval_splits",
+      "name": "openai_humaneval_splits",
+      "description": "Splits for the openai_humaneval config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "openai_humaneval_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "openai_humaneval",
+      "name": "openai_humaneval",
+      "description": "openai/openai_humaneval - 'openai_humaneval' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/split",
+          "name": "openai_humaneval/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "openai_humaneval/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "openai_humaneval_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/task_id",
+          "name": "openai_humaneval/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/prompt",
+          "name": "openai_humaneval/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/canonical_solution",
+          "name": "openai_humaneval/canonical_solution",
+          "description": "Column 'canonical_solution' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "column": "canonical_solution"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/test",
+          "name": "openai_humaneval/test",
+          "description": "Column 'test' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "column": "test"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "openai_humaneval/entry_point",
+          "name": "openai_humaneval/entry_point",
+          "description": "Column 'entry_point' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-openai_humaneval"
+            },
+            "extract": {
+              "column": "entry_point"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "openai_humaneval",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for OpenAI HumanEval\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nThe HumanEval dataset released by OpenAI includes 164 programming problems with a function sig- nature, docstring, body, and several unit tests. They were handwritten to ensure not to be included in the training set of code generation models.\n\n\t\n\t\t\n\t\tSupported Tasks and Leaderboards\n\t\n\n\n\t\n\t\t\n\t\tLanguages\n\t\n\nThe programming problems are written in Python and contain English natural text in comments and docstrings.\u2026 See the full description on the dataset page: https://huggingface.co/datasets/openai/openai_humaneval.",
+  "alternateName": [
+    "openai/openai_humaneval",
+    "OpenAI HumanEval"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenAI",
+    "url": "https://huggingface.co/openai"
+  },
+  "keywords": [
+    "expert-generated",
+    "expert-generated",
+    "monolingual",
+    "original",
+    "English",
+    "mit",
+    "< 1K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2107.03374",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code-generation"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/openai/openai_humaneval",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

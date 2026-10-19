@@ -1,0 +1,367 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/FreedomIntelligence/ShareGPT-4o-Image/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-1_text_to_image",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "1_text_to_image/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-2_text_and_image_to_image",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "2_text_and_image_to_image/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "1_text_to_image_splits/split_name"
+      },
+      "@id": "1_text_to_image_splits",
+      "name": "1_text_to_image_splits",
+      "description": "Splits for the 1_text_to_image config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "1_text_to_image_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "1_text_to_image_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "1_text_to_image",
+      "description": "FreedomIntelligence/ShareGPT-4o-Image - '1_text_to_image' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "1_text_to_image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1_text_to_image"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "1_text_to_image/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "1_text_to_image_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1_text_to_image/input_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1_text_to_image"
+            },
+            "extract": {
+              "column": "input_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1_text_to_image/output_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1_text_to_image"
+            },
+            "extract": {
+              "column": "output_image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "1_text_to_image/output_image_resolution",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-1_text_to_image"
+            },
+            "extract": {
+              "column": "output_image_resolution"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "2_text_and_image_to_image_splits/split_name"
+      },
+      "@id": "2_text_and_image_to_image_splits",
+      "name": "2_text_and_image_to_image_splits",
+      "description": "Splits for the 2_text_and_image_to_image config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "2_text_and_image_to_image_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "2_text_and_image_to_image",
+      "description": "FreedomIntelligence/ShareGPT-4o-Image - '2_text_and_image_to_image' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "2_text_and_image_to_image/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "2_text_and_image_to_image_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/input_prompt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "column": "input_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/input_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "column": "input_image"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/input_image_resolution",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "column": "input_image_resolution"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/output_image",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "column": "output_image"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "2_text_and_image_to_image/output_image_resolution",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-2_text_and_image_to_image"
+            },
+            "extract": {
+              "column": "output_image_resolution"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "ShareGPT-4o-Image",
+  "description": "\n\t\n\t\t\n\t\t\ud83d\udcda ShareGPT-4o-Image\n\t\n\nShareGPT-4o-Image is a large-scale and high-quality image generation dataset, where all images are produced by GPT-4o\u2019s image generation capabilities. This dataset is designed to align open multimodal models with GPT-4o\u2019s strengths in visual content creation. It includes 45K text-to-image and 46K text-and-image-to-image samples, making it a useful resource for enhancing multimodal models in both image generation and editing tasks.\n\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Overview\u2026 See the full description on the dataset page: https://huggingface.co/datasets/FreedomIntelligence/ShareGPT-4o-Image.",
+  "alternateName": [
+    "FreedomIntelligence/ShareGPT-4o-Image"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "FreedomAI",
+    "url": "https://huggingface.co/FreedomIntelligence"
+  },
+  "keywords": [
+    "text-to-image",
+    "image-to-image",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2506.18095",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "GPT-4o-Image-Generation"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/FreedomIntelligence/ShareGPT-4o-Image",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

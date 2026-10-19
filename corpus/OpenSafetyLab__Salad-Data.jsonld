@@ -1,0 +1,915 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/OpenSafetyLab/Salad-Data/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-attack_enhanced_set",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "attack_enhanced_set/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-base_set",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "base_set/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-defense_enhanced_set",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "defense_enhanced_set/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mcq_set",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mcq_set/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-small_attack_subset",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "small_attack_subset/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "attack_enhanced_set_splits/split_name"
+      },
+      "@id": "attack_enhanced_set_splits",
+      "name": "attack_enhanced_set_splits",
+      "description": "Splits for the attack_enhanced_set config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "attack_enhanced_set_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "attack_enhanced_set",
+      "description": "OpenSafetyLab/Salad-Data - 'attack_enhanced_set' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "attack_enhanced_set/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "attack_enhanced_set_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/qid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/aid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "aid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/baseq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "baseq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/augq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "augq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/1-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "1-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/2-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "2-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "attack_enhanced_set/3-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-attack_enhanced_set"
+            },
+            "extract": {
+              "column": "3-category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "base_set_splits/split_name"
+      },
+      "@id": "base_set_splits",
+      "name": "base_set_splits",
+      "description": "Splits for the base_set config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "base_set_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "base_set_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "base_set",
+      "description": "OpenSafetyLab/Salad-Data - 'base_set' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "base_set/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "base_set_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/qid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/question",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/1-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "1-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/2-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "2-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "base_set/3-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-base_set"
+            },
+            "extract": {
+              "column": "3-category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "defense_enhanced_set_splits/split_name"
+      },
+      "@id": "defense_enhanced_set_splits",
+      "name": "defense_enhanced_set_splits",
+      "description": "Splits for the defense_enhanced_set config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "defense_enhanced_set_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "defense_enhanced_set",
+      "description": "OpenSafetyLab/Salad-Data - 'defense_enhanced_set' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "defense_enhanced_set/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "defense_enhanced_set_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/qid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/did",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "did"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/baseq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "baseq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/daugq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "daugq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/dmethod",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "dmethod"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/1-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "1-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/2-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "2-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "defense_enhanced_set/3-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-defense_enhanced_set"
+            },
+            "extract": {
+              "column": "3-category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mcq_set_splits/split_name"
+      },
+      "@id": "mcq_set_splits",
+      "name": "mcq_set_splits",
+      "description": "Splits for the mcq_set config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mcq_set_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mcq_set",
+      "description": "OpenSafetyLab/Salad-Data - 'mcq_set' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mcq_set/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mcq_set_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/mcq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "mcq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/baseq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "baseq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/choices",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "choices"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/gt",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "gt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/1-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "1-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/2-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "2-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mcq_set/3-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mcq_set"
+            },
+            "extract": {
+              "column": "3-category"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "small_attack_subset_splits/split_name"
+      },
+      "@id": "small_attack_subset_splits",
+      "name": "small_attack_subset_splits",
+      "description": "Splits for the small_attack_subset config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "small_attack_subset_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "small_attack_subset",
+      "description": "OpenSafetyLab/Salad-Data - 'small_attack_subset' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "small_attack_subset/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "small_attack_subset_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/qid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "qid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/aid",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "aid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/baseq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "baseq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/augq",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "augq"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/method",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "method"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/1-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "1-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/2-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "2-category"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "small_attack_subset/3-category",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-small_attack_subset"
+            },
+            "extract": {
+              "column": "3-category"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Salad-Data",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tData Description\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\t\u270a How to use\n\t\n\nfrom datasets import load_dataset\n\ndataset = load_dataset(\"OpenSafetyLab/Salad-Data\", name='base_set', split='train') \n\n\n\t\n\t\t\n\t\n\t\n\t\t\ud83d\udcca Statistical Overview of Base Question\n\t\n\n\n\t\n\t\t\nType\nData Source\nNums\n\n\n\t\t\nSelf-instructed\nFinetuned GPT-3.5\n15,433\n\n\nOpen-Sourced\nHH-harmless\n4,184\n\n\n\nHH-red-team\n659\n\n\n\nAdvbench\n359\n\n\n\nMultilingual\n230\n\n\n\nDo-Not-Answer\n189\n\n\n\nToxicChat\n129\n\n\n\nDo Anything Now\n93\n\n\n\nGPTFuzzer\n42\n\n\nTotal\n\n21,318\u2026 See the full description on the dataset page: https://huggingface.co/datasets/OpenSafetyLab/Salad-Data.",
+  "alternateName": [
+    "OpenSafetyLab/Salad-Data",
+    "Salad"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "OpenSafetyLab",
+    "url": "https://huggingface.co/OpenSafetyLab"
+  },
+  "keywords": [
+    "text-classification",
+    "text-generation",
+    "English",
+    "apache-2.0",
+    "10K - 100K",
+    "Tabular",
+    "Text",
+    "arxiv:2402.05044",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "Safety",
+    "AIGC",
+    "LLM Safety",
+    "Jailbreak",
+    "Question-Answer",
+    "Multiple Choice"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/OpenSafetyLab/Salad-Data",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

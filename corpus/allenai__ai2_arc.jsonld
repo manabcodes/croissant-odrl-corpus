@@ -1,0 +1,473 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/",
+    "cc": "http://creativecommons.org/ns#"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/ai2_arc/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ARC-Challenge",
+      "name": "parquet-files-for-config-ARC-Challenge",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ARC-Challenge/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-ARC-Easy",
+      "name": "parquet-files-for-config-ARC-Easy",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "ARC-Easy/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ARC-Challenge_splits/split_name"
+      },
+      "@id": "ARC-Challenge_splits",
+      "name": "ARC-Challenge_splits",
+      "description": "Splits for the ARC-Challenge config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ARC-Challenge_splits/split_name": "train"
+        },
+        {
+          "ARC-Challenge_splits/split_name": "test"
+        },
+        {
+          "ARC-Challenge_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ARC-Challenge",
+      "name": "ARC-Challenge",
+      "description": "allenai/ai2_arc - 'ARC-Challenge' subset\n\nAdditional information:\n- 3 splits: train, test, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge/split",
+          "name": "ARC-Challenge/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Challenge"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ARC\\-Challenge/(?:partial-)?(train|test|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ARC-Challenge_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge/id",
+          "name": "ARC-Challenge/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Challenge"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge/question",
+          "name": "ARC-Challenge/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Challenge"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge/choices",
+          "name": "ARC-Challenge/choices",
+          "description": "Column 'choices' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ARC-Challenge/choices/text",
+              "name": "ARC-Challenge/choices/text",
+              "description": "Column 'choices' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ARC-Challenge"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ARC-Challenge/choices/label",
+              "name": "ARC-Challenge/choices/label",
+              "description": "Column 'choices' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ARC-Challenge"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "label"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Challenge/answerKey",
+          "name": "ARC-Challenge/answerKey",
+          "description": "Column 'answerKey' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Challenge"
+            },
+            "extract": {
+              "column": "answerKey"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "ARC-Easy_splits/split_name"
+      },
+      "@id": "ARC-Easy_splits",
+      "name": "ARC-Easy_splits",
+      "description": "Splits for the ARC-Easy config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "ARC-Easy_splits/split_name": "train"
+        },
+        {
+          "ARC-Easy_splits/split_name": "test"
+        },
+        {
+          "ARC-Easy_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "ARC-Easy",
+      "name": "ARC-Easy",
+      "description": "allenai/ai2_arc - 'ARC-Easy' subset\n\nAdditional information:\n- 3 splits: train, test, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy/split",
+          "name": "ARC-Easy/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Easy"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "ARC\\-Easy/(?:partial-)?(train|test|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "ARC-Easy_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy/id",
+          "name": "ARC-Easy/id",
+          "description": "Column 'id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Easy"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy/question",
+          "name": "ARC-Easy/question",
+          "description": "Column 'question' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Easy"
+            },
+            "extract": {
+              "column": "question"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy/choices",
+          "name": "ARC-Easy/choices",
+          "description": "Column 'choices' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "ARC-Easy/choices/text",
+              "name": "ARC-Easy/choices/text",
+              "description": "Column 'choices' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ARC-Easy"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "text"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "ARC-Easy/choices/label",
+              "name": "ARC-Easy/choices/label",
+              "description": "Column 'choices' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-ARC-Easy"
+                },
+                "extract": {
+                  "column": "choices"
+                },
+                "transform": {
+                  "jsonPath": "label"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "ARC-Easy/answerKey",
+          "name": "ARC-Easy/answerKey",
+          "description": "Column 'answerKey' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-ARC-Easy"
+            },
+            "extract": {
+              "column": "answerKey"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "ai2_arc",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tDataset Card for \"ai2_arc\"\n\t\n\n\n\t\n\t\t\n\t\n\t\n\t\tDataset Summary\n\t\n\nA new dataset of 7,787 genuine grade-school level, multiple-choice science questions, assembled to encourage research in\n advanced question-answering. The dataset is partitioned into a Challenge Set and an Easy Set, where the former contains\n only questions answered incorrectly by both a retrieval-based algorithm and a word co-occurrence algorithm. We are also\n including a corpus of over 14 million science sentences\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/ai2_arc.",
+  "alternateName": [
+    "allenai/ai2_arc",
+    "Ai2Arc"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "question-answering",
+    "open-domain-qa",
+    "multiple-choice-qa",
+    "found",
+    "found",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-sa-4.0",
+    "1K - 10K",
+    "parquet",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "arxiv:1803.05457",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-sa-4.0/",
+  "sameAs": "https://allenai.org/data/arc",
+  "url": "https://huggingface.co/datasets/allenai/ai2_arc",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY-SA 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": [
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "odrl:attribution"
+        }
+      },
+      {
+        "@type": "odrl:Duty",
+        "odrl:action": {
+          "@id": "cc:ShareAlike"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,544 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/stormbreaker20/mppe-dataset-yolo-v2/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "validation"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "stormbreaker20/mppe-dataset-yolo-v2 - 'default' subset\n\nAdditional information:\n- 2 splits: train, validation",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|validation)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image",
+          "dataType": "sc:ImageObject",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image"
+            },
+            "transform": {
+              "jsonPath": "bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/file_name",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "file_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/yolo_annotations",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "yolo_annotations"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/classes",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "classes"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/class_names",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "class_names"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/num_objects",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "num_objects"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/class_counts",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Coverall",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Coverall"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Face_Shield",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Face_Shield"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Goggles",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Goggles"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/No_Facial_Gear",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "No_Facial_Gear"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/No_Medical_Attire",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "No_Medical_Attire"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/No_Surgical_Cap",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "No_Surgical_Cap"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/No_Surgical_Gloves",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "No_Surgical_Gloves"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Person",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Person"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Shoe_Covers",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Shoe_Covers"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Surgical_Cap",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Surgical_Cap"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Surgical_Gloves",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Surgical_Gloves"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Surgical_Gown",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Surgical_Gown"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Surgical_Mask",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Surgical_Mask"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/class_counts/Surgical_Scrubs",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "class_counts"
+                },
+                "transform": {
+                  "jsonPath": "Surgical_Scrubs"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image_width",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image_width"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/image_height",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "image_height"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "mppe-dataset-yolo-v2",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tMPPE Dataset YOLO v2\n\t\n\nDataset orientado a la detecci\u00f3n autom\u00e1tica de elementos de protecci\u00f3n personal m\u00e9dico mediante modelos de visi\u00f3n artificial.\nIncluye im\u00e1genes anotadas con bounding boxes en formato YOLO para tareas de detecci\u00f3n de objetos.\n\n\t\n\t\t\n\t\n\t\n\t\tInformaci\u00f3n general\n\t\n\n\nNombre: MPPE Dataset YOLO v2\nTarea: Detecci\u00f3n de objetos\nFormato de anotaciones: YOLO\nFormato de im\u00e1genes: JPG\nTotal de im\u00e1genes: 2931\nDivisi\u00f3n entrenamiento: 2344 im\u00e1genes\nDivisi\u00f3n validaci\u00f3n: 587\u2026 See the full description on the dataset page: https://huggingface.co/datasets/stormbreaker20/mppe-dataset-yolo-v2.",
+  "alternateName": [
+    "stormbreaker20/mppe-dataset-yolo-v2"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Facundo Majda",
+    "url": "https://huggingface.co/stormbreaker20"
+  },
+  "keywords": [
+    "object-detection",
+    "mit",
+    "1K - 10K",
+    "parquet",
+    "Image",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Polars",
+    "Croissant",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "vision-artificial",
+    "deteccion-de-objetos",
+    "yolo",
+    "mppe",
+    "ppe"
+  ],
+  "license": "https://choosealicense.com/licenses/mit/",
+  "url": "https://huggingface.co/datasets/stormbreaker20/mppe-dataset-yolo-v2",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "MIT License",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

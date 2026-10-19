@@ -1,0 +1,667 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/allenai/Dolci-Instruct-DPO/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "description": "allenai/Dolci-Instruct-DPO - 'default' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/chosen",
+          "subField": [
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/content",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/country",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "country"
+                }
+              }
+            },
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/hashed_ip",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "hashed_ip"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/header",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/chosen/header/accept-language",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "chosen"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "header"
+                      },
+                      {
+                        "jsonPath": "['accept-language']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/chosen/header/user-agent",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "chosen"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "header"
+                      },
+                      {
+                        "jsonPath": "['user-agent']"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/language",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/redacted",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "redacted"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/role",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/state",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "state"
+                }
+              }
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/toxic",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "toxic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/chosen/turn_identifier",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "chosen"
+                },
+                "transform": {
+                  "jsonPath": "turn_identifier"
+                }
+              }
+            },
+            null
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rejected",
+          "subField": [
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/content_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "content"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/country_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "country"
+                }
+              }
+            },
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/hashed_ip_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "hashed_ip"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/header_0",
+              "subField": [
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/rejected/header_0/accept-language_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "rejected"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "header"
+                      },
+                      {
+                        "jsonPath": "['accept-language']"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "@type": "cr:Field",
+                  "@id": "default/rejected/header_0/user-agent_0",
+                  "dataType": "sc:Text",
+                  "source": {
+                    "fileSet": {
+                      "@id": "parquet-files-for-config-default"
+                    },
+                    "extract": {
+                      "column": "rejected"
+                    },
+                    "transform": [
+                      {
+                        "jsonPath": "header"
+                      },
+                      {
+                        "jsonPath": "['user-agent']"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/language_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/redacted_0",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "redacted"
+                }
+              }
+            },
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/role_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "role"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/state_0",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "state"
+                }
+              }
+            },
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/toxic_0",
+              "dataType": "sc:Boolean",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "toxic"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/rejected/turn_identifier_0",
+              "dataType": "cr:Int64",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "rejected"
+                },
+                "transform": {
+                  "jsonPath": "turn_identifier"
+                }
+              }
+            },
+            null
+          ],
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/chosen_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "chosen_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/rejected_model",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "rejected_model"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/prompt_id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "prompt_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/preference_type",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "preference_type"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "Dolci-Instruct-DPO",
+  "description": "\n\t\n\t\t\n\t\tDolci Instruct DPO Mixture\n\t\n\nThis dataset is licensed under ODC-BY. It is intended for research and educational use in accordance with Ai2's Responsible Use Guidelines.\nThe Dolci Instruct DPO mixture was used to preference tune Olmo 3 Instruct 7B. It contains 260,000 preference pairs in total, including:\n\n125,000 pairs created with the preference heuristic described in Delta Learning (Geng et al. 2025)\n125,000 pairs created with a delta-aware Ultrafeedback-esque GPT-judge pipeline\u2026 See the full description on the dataset page: https://huggingface.co/datasets/allenai/Dolci-Instruct-DPO.",
+  "alternateName": [
+    "allenai/Dolci-Instruct-DPO"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Ai2",
+    "url": "https://huggingface.co/allenai"
+  },
+  "keywords": [
+    "odc-by",
+    "100K - 1M",
+    "parquet",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2507.06187",
+    "arxiv:2512.13961",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/odc-by/",
+  "url": "https://huggingface.co/datasets/allenai/Dolci-Instruct-DPO",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Open Data Commons Attribution License v1.0 (ODC-BY)",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

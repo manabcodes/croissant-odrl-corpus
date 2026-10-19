@@ -1,0 +1,756 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-documents",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "documents/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-queries",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "queries/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-scores_merged",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "scores_merged/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-scores_merged_subsampled",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "scores_merged_subsampled/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-scores_subsampled",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "scores_subsampled/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "documents_splits/split_name"
+      },
+      "@id": "documents_splits",
+      "name": "documents_splits",
+      "description": "Splits for the documents config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "documents_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "documents_splits/split_name": "fiqa"
+        },
+        {
+          "documents_splits/split_name": "hotpotqa"
+        },
+        {
+          "documents_splits/split_name": "msmarco"
+        },
+        {
+          "documents_splits/split_name": "nq"
+        },
+        {
+          "documents_splits/split_name": "fever"
+        },
+        {
+          "documents_splits/split_name": "squadv2"
+        },
+        {
+          "documents_splits/split_name": "trivia"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "documents",
+      "description": "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1 - 'documents' subset\n\nAdditional information:\n- 7 splits: fiqa, hotpotqa, msmarco, nq, fever, squadv2, trivia",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "documents/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "documents/(?:partial-)?(fiqa|hotpotqa|msmarco|nq|fever|squadv2|trivia)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "documents_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/document_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "document_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "documents/document",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-documents"
+            },
+            "extract": {
+              "column": "document"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "queries_splits/split_name"
+      },
+      "@id": "queries_splits",
+      "name": "queries_splits",
+      "description": "Splits for the queries config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "queries_splits/split_name": "fiqa"
+        },
+        {
+          "queries_splits/split_name": "hotpotqa"
+        },
+        {
+          "queries_splits/split_name": "msmarco"
+        },
+        {
+          "queries_splits/split_name": "nq"
+        },
+        {
+          "queries_splits/split_name": "fever"
+        },
+        {
+          "queries_splits/split_name": "squadv2"
+        },
+        {
+          "queries_splits/split_name": "trivia"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "queries",
+      "description": "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1 - 'queries' subset\n\nAdditional information:\n- 7 splits: fiqa, hotpotqa, msmarco, nq, fever, squadv2, trivia",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "queries/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "queries/(?:partial-)?(fiqa|hotpotqa|msmarco|nq|fever|squadv2|trivia)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "queries_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/query_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "query_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "queries/query",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-queries"
+            },
+            "extract": {
+              "column": "query"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "scores_merged_splits/split_name"
+      },
+      "@id": "scores_merged_splits",
+      "name": "scores_merged_splits",
+      "description": "Splits for the scores_merged config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "scores_merged_splits/split_name": "fiqa"
+        },
+        {
+          "scores_merged_splits/split_name": "hotpotqa"
+        },
+        {
+          "scores_merged_splits/split_name": "msmarco"
+        },
+        {
+          "scores_merged_splits/split_name": "nq"
+        },
+        {
+          "scores_merged_splits/split_name": "fever"
+        },
+        {
+          "scores_merged_splits/split_name": "squadv2"
+        },
+        {
+          "scores_merged_splits/split_name": "trivia"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "scores_merged",
+      "description": "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1 - 'scores_merged' subset\n\nAdditional information:\n- 7 splits: fiqa, hotpotqa, msmarco, nq, fever, squadv2, trivia",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "scores_merged/(?:partial-)?(fiqa|hotpotqa|msmarco|nq|fever|squadv2|trivia)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "scores_merged_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged/query_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged"
+            },
+            "extract": {
+              "column": "query_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged/document_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged"
+            },
+            "extract": {
+              "column": "document_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged/scores",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged"
+            },
+            "extract": {
+              "column": "scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged/positive_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged"
+            },
+            "extract": {
+              "column": "positive_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "scores_merged_subsampled_splits/split_name"
+      },
+      "@id": "scores_merged_subsampled_splits",
+      "name": "scores_merged_subsampled_splits",
+      "description": "Splits for the scores_merged_subsampled config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "scores_merged_subsampled_splits/split_name": "fiqa"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "hotpotqa"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "msmarco"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "nq"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "fever"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "squadv2"
+        },
+        {
+          "scores_merged_subsampled_splits/split_name": "trivia"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "scores_merged_subsampled",
+      "description": "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1 - 'scores_merged_subsampled' subset\n\nAdditional information:\n- 7 splits: fiqa, hotpotqa, msmarco, nq, fever, squadv2, trivia",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged_subsampled"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "scores_merged_subsampled/(?:partial-)?(fiqa|hotpotqa|msmarco|nq|fever|squadv2|trivia)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "scores_merged_subsampled_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled/query_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged_subsampled"
+            },
+            "extract": {
+              "column": "query_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled/document_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged_subsampled"
+            },
+            "extract": {
+              "column": "document_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled/scores",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged_subsampled"
+            },
+            "extract": {
+              "column": "scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_merged_subsampled/positive_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_merged_subsampled"
+            },
+            "extract": {
+              "column": "positive_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "scores_subsampled_splits/split_name"
+      },
+      "@id": "scores_subsampled_splits",
+      "name": "scores_subsampled_splits",
+      "description": "Splits for the scores_subsampled config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "scores_subsampled_splits/split_name": "fiqa"
+        },
+        {
+          "scores_subsampled_splits/split_name": "hotpotqa"
+        },
+        {
+          "scores_subsampled_splits/split_name": "msmarco"
+        },
+        {
+          "scores_subsampled_splits/split_name": "nq"
+        },
+        {
+          "scores_subsampled_splits/split_name": "fever"
+        },
+        {
+          "scores_subsampled_splits/split_name": "squadv2"
+        },
+        {
+          "scores_subsampled_splits/split_name": "trivia"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "scores_subsampled",
+      "description": "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1 - 'scores_subsampled' subset\n\nAdditional information:\n- 7 splits: fiqa, hotpotqa, msmarco, nq, fever, squadv2, trivia",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_subsampled"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "scores_subsampled/(?:partial-)?(fiqa|hotpotqa|msmarco|nq|fever|squadv2|trivia)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "scores_subsampled_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled/query_id",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_subsampled"
+            },
+            "extract": {
+              "column": "query_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled/document_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_subsampled"
+            },
+            "extract": {
+              "column": "document_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled/scores",
+          "dataType": "cr:Float32",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_subsampled"
+            },
+            "extract": {
+              "column": "scores"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "scores_subsampled/positive_ids",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-scores_subsampled"
+            },
+            "extract": {
+              "column": "positive_ids"
+            }
+          },
+          "isArray": true,
+          "arrayShape": "-1"
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "lightonai-embeddings-fine-tuning-reranked-v1",
+  "description": "\n\t\n\t\t\n\t\n\t\n\t\tLightOn embeddings-fine-tuning, rescored with mxbai-rerank-large-v2\n\t\n\nThis dataset is a teacher-rescored version of lightonai/embeddings-fine-tuning. For every (query, candidate-document) pair in the source, we ran mixedbread-ai/mxbai-rerank-large-v2 and stored the resulting score. The point is to make the source data usable as a teacher target for distilling reranker students. It's the upstream artifact behind the rerank-scored configs of cross-encoder/ettin-reranker-v1-data\u2026 See the full description on the dataset page: https://huggingface.co/datasets/cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1.",
+  "alternateName": [
+    "cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1",
+    "LightOn embeddings-fine-tuning rescored with mxbai-rerank-large-v2"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Sentence Transformers - Cross-Encoders",
+    "url": "https://huggingface.co/cross-encoder"
+  },
+  "keywords": [
+    "text-ranking",
+    "text-retrieval",
+    "English",
+    "apache-2.0",
+    "10M - 100M",
+    "parquet",
+    "optimized-parquet",
+    "Text",
+    "Time-series",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2604.04734",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "sentence-transformers",
+    "cross-encoder",
+    "reranker",
+    "distillation",
+    "knowledge-distillation",
+    "retrieval"
+  ],
+  "license": "https://choosealicense.com/licenses/apache-2.0/",
+  "url": "https://huggingface.co/datasets/cross-encoder/lightonai-embeddings-fine-tuning-reranked-v1",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "Apache License 2.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

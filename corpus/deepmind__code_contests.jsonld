@@ -1,0 +1,691 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/deepmind/code_contests/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-default",
+      "name": "parquet-files-for-config-default",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "default/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "default_splits/split_name"
+      },
+      "@id": "default_splits",
+      "name": "default_splits",
+      "description": "Splits for the default config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "default_splits/split_name": "train"
+        },
+        {
+          "default_splits/split_name": "test"
+        },
+        {
+          "default_splits/split_name": "valid"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "default",
+      "name": "default",
+      "description": "deepmind/code_contests - 'default' subset (first 5GB)\n\nAdditional information:\n- 3 splits: train, test, valid",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "default/split",
+          "name": "default/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "default/(?:partial-)?(train|test|valid)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "default_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/name",
+          "name": "default/name",
+          "description": "Column 'name' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/description",
+          "name": "default/description",
+          "description": "Column 'description' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/public_tests",
+          "name": "default/public_tests",
+          "description": "Column 'public_tests' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/public_tests/input",
+              "name": "default/public_tests/input",
+              "description": "Column 'public_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "public_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/public_tests/output",
+              "name": "default/public_tests/output",
+              "description": "Column 'public_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "public_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/private_tests",
+          "name": "default/private_tests",
+          "description": "Column 'private_tests' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/private_tests/input",
+              "name": "default/private_tests/input",
+              "description": "Column 'private_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "private_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/private_tests/output",
+              "name": "default/private_tests/output",
+              "description": "Column 'private_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "private_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/generated_tests",
+          "name": "default/generated_tests",
+          "description": "Column 'generated_tests' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/generated_tests/input",
+              "name": "default/generated_tests/input",
+              "description": "Column 'generated_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "generated_tests"
+                },
+                "transform": {
+                  "jsonPath": "input"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/generated_tests/output",
+              "name": "default/generated_tests/output",
+              "description": "Column 'generated_tests' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "generated_tests"
+                },
+                "transform": {
+                  "jsonPath": "output"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/source",
+          "name": "default/source",
+          "description": "ClassLabel column 'source' from the Hugging Face parquet file.\nLabels:\nUNKNOWN_SOURCE (0), CODECHEF (1), CODEFORCES (2), HACKEREARTH (3), CODEJAM (4), ATCODER (5), AIZU (6)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/difficulty",
+          "name": "default/difficulty",
+          "description": "ClassLabel column 'difficulty' from the Hugging Face parquet file.\nLabels:\nUNKNOWN_DIFFICULTY (0), EASY (1), MEDIUM (2), HARD (3), HARDER (4), HARDEST (5), EXTERNAL (6), A (7), B (8), C (9), D (10), E (11), F (12), G (13), H (14), I (15), J (16), K (17), L (18), M (19), N (20), O (21), P (22), Q (23), R (24), S (25), T (26), U (27), V (28)",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "difficulty"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/solutions",
+          "name": "default/solutions",
+          "description": "Column 'solutions' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/solutions/language",
+              "name": "default/solutions/language",
+              "description": "ClassLabel column 'solutions' from the Hugging Face parquet file.\nLabels:\nUNKNOWN_LANGUAGE (0), PYTHON (1), CPP (2), PYTHON3 (3), JAVA (4)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "solutions"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/solutions/solution",
+              "name": "default/solutions/solution",
+              "description": "Column 'solutions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "solutions"
+                },
+                "transform": {
+                  "jsonPath": "solution"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/incorrect_solutions",
+          "name": "default/incorrect_solutions",
+          "description": "Column 'incorrect_solutions' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/incorrect_solutions/language",
+              "name": "default/incorrect_solutions/language",
+              "description": "ClassLabel column 'incorrect_solutions' from the Hugging Face parquet file.\nLabels:\nUNKNOWN_LANGUAGE (0), PYTHON (1), CPP (2), PYTHON3 (3), JAVA (4)",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "incorrect_solutions"
+                },
+                "transform": {
+                  "jsonPath": "language"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/incorrect_solutions/solution",
+              "name": "default/incorrect_solutions/solution",
+              "description": "Column 'incorrect_solutions' from the Hugging Face parquet file.",
+              "dataType": "sc:Text",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "incorrect_solutions"
+                },
+                "transform": {
+                  "jsonPath": "solution"
+                }
+              }
+            }
+          ],
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cf_contest_id",
+          "name": "default/cf_contest_id",
+          "description": "Column 'cf_contest_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cf_contest_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cf_index",
+          "name": "default/cf_index",
+          "description": "Column 'cf_index' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cf_index"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cf_points",
+          "name": "default/cf_points",
+          "description": "Column 'cf_points' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cf_points"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cf_rating",
+          "name": "default/cf_rating",
+          "description": "Column 'cf_rating' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cf_rating"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/cf_tags",
+          "name": "default/cf_tags",
+          "description": "Column 'cf_tags' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "cf_tags"
+            }
+          },
+          "repeated": true
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/is_description_translated",
+          "name": "default/is_description_translated",
+          "description": "Column 'is_description_translated' from the Hugging Face parquet file.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "is_description_translated"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/untranslated_description",
+          "name": "default/untranslated_description",
+          "description": "Column 'untranslated_description' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "untranslated_description"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/time_limit",
+          "name": "default/time_limit",
+          "description": "Column 'time_limit' from the Hugging Face parquet file.",
+          "subField": [
+            {
+              "@type": "cr:Field",
+              "@id": "default/time_limit/seconds",
+              "name": "default/time_limit/seconds",
+              "description": "Column 'time_limit' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "time_limit"
+                },
+                "transform": {
+                  "jsonPath": "seconds"
+                }
+              }
+            },
+            {
+              "@type": "cr:Field",
+              "@id": "default/time_limit/nanos",
+              "name": "default/time_limit/nanos",
+              "description": "Column 'time_limit' from the Hugging Face parquet file.",
+              "dataType": "sc:Integer",
+              "source": {
+                "fileSet": {
+                  "@id": "parquet-files-for-config-default"
+                },
+                "extract": {
+                  "column": "time_limit"
+                },
+                "transform": {
+                  "jsonPath": "nanos"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/memory_limit_bytes",
+          "name": "default/memory_limit_bytes",
+          "description": "Column 'memory_limit_bytes' from the Hugging Face parquet file.",
+          "dataType": "sc:Integer",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "memory_limit_bytes"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/input_file",
+          "name": "default/input_file",
+          "description": "Column 'input_file' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "input_file"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "default/output_file",
+          "name": "default/output_file",
+          "description": "Column 'output_file' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-default"
+            },
+            "extract": {
+              "column": "output_file"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "code_contests",
+  "description": "\n\t\n\t\t\n\t\tDataset Card for CodeContests\n\t\n\n\n\t\n\t\t\n\t\tDataset Summary\n\t\n\nCodeContests is a competitive programming dataset for machine-learning. This\ndataset was used when training AlphaCode.\nIt consists of programming problems, from a variety of sources:\n\n\t\n\t\t\nSite\nURL\nSource\n\n\n\t\t\nAizu\nhttps://judge.u-aizu.ac.jp\nCodeNet\n\n\nAtCoder\nhttps://atcoder.jp\nCodeNet\n\n\nCodeChef\nhttps://www.codechef.com\ndescription2code\n\n\nCodeforces\nhttps://codeforces.com\ndescription2code and Codeforces\n\n\nHackerEarth\u2026 See the full description on the dataset page: https://huggingface.co/datasets/deepmind/code_contests.",
+  "alternateName": [
+    "deepmind/code_contests",
+    "CodeContests"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "Deepmind",
+    "url": "https://huggingface.co/deepmind"
+  },
+  "keywords": [
+    "translation",
+    "found",
+    "found",
+    "monolingual",
+    "original",
+    "English",
+    "cc-by-4.0",
+    "1K - 10K",
+    "parquet",
+    "Tabular",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Polars",
+    "Croissant",
+    "arxiv:2203.07814",
+    "arxiv:2105.12655",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/deepmind/code_contests",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

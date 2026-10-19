@@ -1,0 +1,564 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "arrayShape": "cr:arrayShape",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isArray": "cr:isArray",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "containedIn": "cr:containedIn",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/FBK-MT/mosel/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-hr",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "hr/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-mt",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "mt/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "hr_splits/split_name"
+      },
+      "@id": "hr_splits",
+      "name": "hr_splits",
+      "description": "Splits for the hr config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hr_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "hr_splits/split_name": "train_voxpopuli"
+        },
+        {
+          "hr_splits/split_name": "train_youtubecommons"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "hr",
+      "description": "FBK-MT/mosel - 'hr' subset\n\nAdditional information:\n- 2 splits: train_voxpopuli, train_youtubecommons",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "hr/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "hr/(?:partial-)?(train_voxpopuli|train_youtubecommons)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "hr_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/lid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "lid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/hall_repeated_ngrams",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "hall_repeated_ngrams"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/hall_long_word",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "hall_long_word"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/hall_frequent_single_word",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "hall_frequent_single_word"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/source",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "source"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/offset",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "offset"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/duration",
+          "dataType": "cr:Float64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/translation_en",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "translation_en"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "hr/text_version_changed",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-hr"
+            },
+            "extract": {
+              "column": "text_version_changed"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "mt_splits/split_name"
+      },
+      "@id": "mt_splits",
+      "name": "mt_splits",
+      "description": "Splits for the mt config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mt_splits/split_name",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "mt_splits/split_name": "train_voxpopuli"
+        },
+        {
+          "mt_splits/split_name": "train_youtubecommons"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "mt",
+      "description": "FBK-MT/mosel - 'mt' subset\n\nAdditional information:\n- 2 splits: train_voxpopuli, train_youtubecommons",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "mt/split",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "mt/(?:partial-)?(train_voxpopuli|train_youtubecommons)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "mt_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/id",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/language",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "language"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/text",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/lid",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "lid"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/hall_repeated_ngrams",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "hall_repeated_ngrams"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/hall_long_word",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "hall_long_word"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/hall_frequent_single_word",
+          "dataType": "sc:Boolean",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "hall_frequent_single_word"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/translation_en",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "translation_en"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "mt/text_version_changed",
+          "dataType": "cr:Int64",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-mt"
+            },
+            "extract": {
+              "column": "text_version_changed"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.1",
+  "name": "mosel",
+  "description": "\n\n\n\t\n\t\t\n\t\tDataset Description, Collection, and Source\n\t\n\nThe MOSEL corpus is a multilingual dataset collection including up to 950K hours of open-source speech recordings covering the 24 official languages of the European Union. We collect data by surveying labeled and unlabeled speech corpora under open-source compliant licenses.\nIn particular, MOSEL includes the automatic transcripts of 441k hours of unlabeled speech from VoxPopuli and LibriLight. The data is transcribed using Whisper large\u2026 See the full description on the dataset page: https://huggingface.co/datasets/FBK-MT/mosel.",
+  "alternateName": [
+    "FBK-MT/mosel",
+    "MOSEL"
+  ],
+  "creator": {
+    "@type": "Organization",
+    "name": "FBK-MT",
+    "url": "https://huggingface.co/FBK-MT"
+  },
+  "keywords": [
+    "automatic-speech-recognition",
+    "text-to-speech",
+    "machine-generated",
+    "found",
+    "multilingual",
+    "English",
+    "Bulgarian",
+    "Croatian",
+    "Czech",
+    "Danish",
+    "Dutch",
+    "Estonian",
+    "Finnish",
+    "French",
+    "German",
+    "Greek",
+    "Hungarian",
+    "Irish",
+    "Italian",
+    "Latvian",
+    "Lithuanian",
+    "Maltese",
+    "Polish",
+    "Portuguese",
+    "Romanian",
+    "Slovak",
+    "Slovenian",
+    "Spanish",
+    "Swedish",
+    "cc-by-4.0",
+    "1M - 10M",
+    "Image",
+    "Tabular",
+    "Text",
+    "Audio",
+    "arxiv:2410.01036",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "speech",
+    "speech-to-text",
+    "open-source",
+    "whisper",
+    "text",
+    "audio"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/FBK-MT/mosel",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

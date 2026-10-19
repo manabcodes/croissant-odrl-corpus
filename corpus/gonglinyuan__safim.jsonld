@@ -1,0 +1,930 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/gonglinyuan/safim/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-api",
+      "name": "parquet-files-for-config-api",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "api/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-block",
+      "name": "parquet-files-for-config-block",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "block/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-block_v2",
+      "name": "parquet-files-for-config-block_v2",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "block_v2/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-control",
+      "name": "parquet-files-for-config-control",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "control/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-control_fixed",
+      "name": "parquet-files-for-config-control_fixed",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "control_fixed/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "api_splits/split_name"
+      },
+      "@id": "api_splits",
+      "name": "api_splits",
+      "description": "Splits for the api config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "api_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "api_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "api",
+      "name": "api",
+      "description": "gonglinyuan/safim - 'api' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "api/split",
+          "name": "api/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "api/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "api_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/lang",
+          "name": "api/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/prompt",
+          "name": "api/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/eval_prompt",
+          "name": "api/eval_prompt",
+          "description": "Column 'eval_prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "eval_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/ground_truth",
+          "name": "api/ground_truth",
+          "description": "Column 'ground_truth' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/task_id",
+          "name": "api/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "api/unit_tests",
+          "name": "api/unit_tests",
+          "description": "Column 'unit_tests' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-api"
+            },
+            "extract": {
+              "column": "unit_tests"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "block_splits/split_name"
+      },
+      "@id": "block_splits",
+      "name": "block_splits",
+      "description": "Splits for the block config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "block_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "block_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "block",
+      "name": "block",
+      "description": "gonglinyuan/safim - 'block' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "block/split",
+          "name": "block/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "block/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "block_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/lang",
+          "name": "block/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/prompt",
+          "name": "block/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/eval_prompt",
+          "name": "block/eval_prompt",
+          "description": "Column 'eval_prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "eval_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/ground_truth",
+          "name": "block/ground_truth",
+          "description": "Column 'ground_truth' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/unit_tests",
+          "name": "block/unit_tests",
+          "description": "Column 'unit_tests' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "unit_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block/task_id",
+          "name": "block/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "block_v2_splits/split_name"
+      },
+      "@id": "block_v2_splits",
+      "name": "block_v2_splits",
+      "description": "Splits for the block_v2 config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "block_v2_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "block_v2",
+      "name": "block_v2",
+      "description": "gonglinyuan/safim - 'block_v2' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/split",
+          "name": "block_v2/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "block_v2/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "block_v2_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/lang",
+          "name": "block_v2/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/prompt",
+          "name": "block_v2/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/eval_prompt",
+          "name": "block_v2/eval_prompt",
+          "description": "Column 'eval_prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "eval_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/ground_truth",
+          "name": "block_v2/ground_truth",
+          "description": "Column 'ground_truth' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/unit_tests",
+          "name": "block_v2/unit_tests",
+          "description": "Column 'unit_tests' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "unit_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/task_id",
+          "name": "block_v2/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "block_v2/problem_source",
+          "name": "block_v2/problem_source",
+          "description": "Column 'problem_source' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-block_v2"
+            },
+            "extract": {
+              "column": "problem_source"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "control_splits/split_name"
+      },
+      "@id": "control_splits",
+      "name": "control_splits",
+      "description": "Splits for the control config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "control_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "control_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "control",
+      "name": "control",
+      "description": "gonglinyuan/safim - 'control' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "control/split",
+          "name": "control/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "control/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "control_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/lang",
+          "name": "control/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/prompt",
+          "name": "control/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/eval_prompt",
+          "name": "control/eval_prompt",
+          "description": "Column 'eval_prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "eval_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/ground_truth",
+          "name": "control/ground_truth",
+          "description": "Column 'ground_truth' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/unit_tests",
+          "name": "control/unit_tests",
+          "description": "Column 'unit_tests' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "unit_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control/task_id",
+          "name": "control/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "control_fixed_splits/split_name"
+      },
+      "@id": "control_fixed_splits",
+      "name": "control_fixed_splits",
+      "description": "Splits for the control_fixed config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "control_fixed_splits/split_name": "test"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "control_fixed",
+      "name": "control_fixed",
+      "description": "gonglinyuan/safim - 'control_fixed' subset",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/split",
+          "name": "control_fixed/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "control_fixed/(?:partial-)?(test)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "control_fixed_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/lang",
+          "name": "control_fixed/lang",
+          "description": "Column 'lang' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "lang"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/prompt",
+          "name": "control_fixed/prompt",
+          "description": "Column 'prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/eval_prompt",
+          "name": "control_fixed/eval_prompt",
+          "description": "Column 'eval_prompt' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "eval_prompt"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/ground_truth",
+          "name": "control_fixed/ground_truth",
+          "description": "Column 'ground_truth' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "ground_truth"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/unit_tests",
+          "name": "control_fixed/unit_tests",
+          "description": "Column 'unit_tests' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "unit_tests"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "control_fixed/task_id",
+          "name": "control_fixed/task_id",
+          "description": "Column 'task_id' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-control_fixed"
+            },
+            "extract": {
+              "column": "task_id"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "safim",
+  "description": "\n\t\n\t\t\n\t\tSAFIM Benchmark\n\t\n\nSyntax-Aware Fill-in-the-Middle (SAFIM) is a benchmark for evaluating Large Language Models (LLMs) on\nthe code Fill-in-the-Middle (FIM) task. SAFIM has three subtasks: Algorithmic Block Completion,\nControl-Flow Expression Completion, and API Function Call Completion. SAFIM is sourced from code\nsubmitted from April 2022 to January 2023 to minimize the impact of data contamination on evaluation\nresults.\n\nAuthors: Linyuan Gong, Sida Wang, Mostafa Elhoushi, Alvin Cheung\u2026 See the full description on the dataset page: https://huggingface.co/datasets/gonglinyuan/safim.",
+  "alternateName": [
+    "gonglinyuan/safim",
+    "SAFIM"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Linyuan Gong",
+    "url": "https://huggingface.co/gonglinyuan"
+  },
+  "keywords": [
+    "English",
+    "cc-by-4.0",
+    "10K - 100K",
+    "json",
+    "Text",
+    "Datasets",
+    "pandas",
+    "Croissant",
+    "Polars",
+    "arxiv:2403.04814",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US",
+    "code-generation",
+    "code-infilling",
+    "fill-in-the-middle"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/gonglinyuan/safim",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}

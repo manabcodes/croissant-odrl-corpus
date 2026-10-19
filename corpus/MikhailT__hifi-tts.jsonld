@@ -1,0 +1,629 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "cr": "http://mlcommons.org/croissant/",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataBiases": "cr:dataBiases",
+    "dataCollection": "cr:dataCollection",
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "dct": "http://purl.org/dc/terms/",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileProperty": "cr:fileProperty",
+    "fileObject": "cr:fileObject",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "personalSensitiveInformation": "cr:personalSensitiveInformation",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "sc": "https://schema.org/",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "odrl": "http://www.w3.org/ns/odrl/2/"
+  },
+  "@type": "sc:Dataset",
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "repo",
+      "name": "repo",
+      "description": "The Hugging Face git repository.",
+      "contentUrl": "https://huggingface.co/datasets/MikhailT/hifi-tts/tree/refs%2Fconvert%2Fparquet",
+      "encodingFormat": "git+https",
+      "sha256": "https://github.com/mlcommons/croissant/issues/80"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-all",
+      "name": "parquet-files-for-config-all",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "all/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-clean",
+      "name": "parquet-files-for-config-clean",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "clean/*/*.parquet"
+    },
+    {
+      "@type": "cr:FileSet",
+      "@id": "parquet-files-for-config-other",
+      "name": "parquet-files-for-config-other",
+      "description": "The underlying Parquet files as converted by Hugging Face (see: https://huggingface.co/docs/dataset-viewer/parquet).",
+      "containedIn": {
+        "@id": "repo"
+      },
+      "encodingFormat": "application/x-parquet",
+      "includes": "other/*/*.parquet"
+    }
+  ],
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "all_splits/split_name"
+      },
+      "@id": "all_splits",
+      "name": "all_splits",
+      "description": "Splits for the all config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "all_splits/split_name": "train.clean"
+        },
+        {
+          "all_splits/split_name": "train.other"
+        },
+        {
+          "all_splits/split_name": "dev.clean"
+        },
+        {
+          "all_splits/split_name": "dev.other"
+        },
+        {
+          "all_splits/split_name": "test.clean"
+        },
+        {
+          "all_splits/split_name": "test.other"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "all",
+      "name": "all",
+      "description": "MikhailT/hifi-tts - 'all' subset\n\nAdditional information:\n- 6 splits: train.clean, train.other, dev.clean, dev.other, test.clean, test.other\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "all/split",
+          "name": "all/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "all/(?:partial-)?(train\\.clean|train\\.other|dev\\.clean|dev\\.other|test\\.clean|test\\.other)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "all_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/speaker",
+          "name": "all/speaker",
+          "description": "Column 'speaker' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "speaker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/file",
+          "name": "all/file",
+          "description": "Column 'file' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "file"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/duration",
+          "name": "all/duration",
+          "description": "Column 'duration' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/text",
+          "name": "all/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/text_no_preprocessing",
+          "name": "all/text_no_preprocessing",
+          "description": "Column 'text_no_preprocessing' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "text_no_preprocessing"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "all/text_normalized",
+          "name": "all/text_normalized",
+          "description": "Column 'text_normalized' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-all"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "clean_splits/split_name"
+      },
+      "@id": "clean_splits",
+      "name": "clean_splits",
+      "description": "Splits for the clean config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "clean_splits/split_name": "train"
+        },
+        {
+          "clean_splits/split_name": "test"
+        },
+        {
+          "clean_splits/split_name": "dev"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "clean",
+      "name": "clean",
+      "description": "MikhailT/hifi-tts - 'clean' subset\n\nAdditional information:\n- 3 splits: train, test, dev\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "clean/split",
+          "name": "clean/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "clean/(?:partial-)?(train|test|dev)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "clean_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/speaker",
+          "name": "clean/speaker",
+          "description": "Column 'speaker' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "speaker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/file",
+          "name": "clean/file",
+          "description": "Column 'file' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "file"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/duration",
+          "name": "clean/duration",
+          "description": "Column 'duration' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text",
+          "name": "clean/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text_no_preprocessing",
+          "name": "clean/text_no_preprocessing",
+          "description": "Column 'text_no_preprocessing' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text_no_preprocessing"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "clean/text_normalized",
+          "name": "clean/text_normalized",
+          "description": "Column 'text_normalized' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-clean"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "dataType": "cr:Split",
+      "key": {
+        "@id": "other_splits/split_name"
+      },
+      "@id": "other_splits",
+      "name": "other_splits",
+      "description": "Splits for the other config.",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "other_splits/split_name",
+          "name": "split_name",
+          "description": "The name of the split.",
+          "dataType": "sc:Text"
+        }
+      ],
+      "data": [
+        {
+          "other_splits/split_name": "train"
+        },
+        {
+          "other_splits/split_name": "test"
+        },
+        {
+          "other_splits/split_name": "dev"
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "other",
+      "name": "other",
+      "description": "MikhailT/hifi-tts - 'other' subset\n\nAdditional information:\n- 3 splits: train, test, dev\n- 1 skipped column: audio",
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "other/split",
+          "name": "other/split",
+          "description": "Split to which the example belongs to.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "fileProperty": "fullpath"
+            },
+            "transform": {
+              "regex": "other/(?:partial-)?(train|test|dev)/.+parquet$"
+            }
+          },
+          "references": {
+            "field": {
+              "@id": "other_splits/split_name"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/speaker",
+          "name": "other/speaker",
+          "description": "Column 'speaker' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "speaker"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/file",
+          "name": "other/file",
+          "description": "Column 'file' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "file"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/duration",
+          "name": "other/duration",
+          "description": "Column 'duration' from the Hugging Face parquet file.",
+          "dataType": "sc:Float",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "duration"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/text",
+          "name": "other/text",
+          "description": "Column 'text' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "text"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/text_no_preprocessing",
+          "name": "other/text_no_preprocessing",
+          "description": "Column 'text_no_preprocessing' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "text_no_preprocessing"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "other/text_normalized",
+          "name": "other/text_normalized",
+          "description": "Column 'text_normalized' from the Hugging Face parquet file.",
+          "dataType": "sc:Text",
+          "source": {
+            "fileSet": {
+              "@id": "parquet-files-for-config-other"
+            },
+            "extract": {
+              "column": "text_normalized"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "conformsTo": "http://mlcommons.org/croissant/1.0",
+  "name": "hifi-tts",
+  "description": "Hi-Fi Multi-Speaker English TTS Dataset (Hi-Fi TTS) is based on LibriVox's public domain audio books and Gutenberg Project texts.",
+  "alternateName": [
+    "MikhailT/hifi-tts",
+    "HiFi TTS"
+  ],
+  "creator": {
+    "@type": "Person",
+    "name": "Mikhail Tsimashkou",
+    "url": "https://huggingface.co/MikhailT"
+  },
+  "keywords": [
+    "text-to-speech",
+    "text-to-audio",
+    "English",
+    "cc-by-4.0",
+    "100K - 1M",
+    "parquet",
+    "Audio",
+    "Text",
+    "Datasets",
+    "Dask",
+    "Croissant",
+    "Polars",
+    "\ud83c\uddfa\ud83c\uddf8 Region: US"
+  ],
+  "license": "https://choosealicense.com/licenses/cc-by-4.0/",
+  "url": "https://huggingface.co/datasets/MikhailT/hifi-tts",
+  "usageInfo": {
+    "@type": [
+      "CreativeWork",
+      "odrl:Offer"
+    ],
+    "name": "CC BY 4.0",
+    "odrl:permission": [
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:use"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:distribute"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:commercialize"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:derive"
+        }
+      },
+      {
+        "@type": "odrl:Permission",
+        "odrl:action": {
+          "@id": "odrl:reproduce"
+        }
+      }
+    ],
+    "odrl:duty": {
+      "@type": "odrl:Duty",
+      "odrl:action": {
+        "@id": "odrl:attribution"
+      }
+    }
+  }
+}
